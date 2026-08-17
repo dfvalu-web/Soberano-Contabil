@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: soberano-postgres-prod
+    restart: always
+    environment:
+      POSTGRES_DB: soberano_contabil
+      POSTGRES_USER: soberano_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-SoberanoSecure2026!}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: soberano-redis-prod
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend-api:
+    build:
+      context: .
+      target: server
+    container_name: soberano-api-prod
+    restart: always
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://soberano_admin:${DB_PASSWORD:-SoberanoSecure2026!}@postgres:5432/soberano_contabil
+      REDIS_URL: redis://redis:6379
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+      - redis
+
+  frontend-web:
+    build:
+      context: .
+      target: web
+    container_name: soberano-web-prod
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-api
+
+volumes:
+  postgres_data:
+  redis_data:

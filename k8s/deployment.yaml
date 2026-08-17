@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: soberano-api-deployment
+  labels:
+    app: soberano-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: soberano-api
+  template:
+    metadata:
+      labels:
+        app: soberano-api
+    spec:
+      containers:
+      - name: soberano-api
+        image: soberanocontabil/api:latest
+        ports:
+        - containerPort: 4000
+        resources:
+          limits:
+            cpu: "2000m"
+            memory: "2048Mi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 5

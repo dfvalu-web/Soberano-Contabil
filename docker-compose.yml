@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: soberano-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: soberano_contabil
+      POSTGRES_USER: soberano_admin
+      POSTGRES_PASSWORD: soberano_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./packages/core/src/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soberano_admin -d soberano_contabil"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: soberano-api
+    restart: always
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://soberano_admin:soberano_secure_password_2026@postgres:5432/soberano_contabil
+      JWT_SECRET: soberano_jwt_secret_token_signature_2026
+      ENCRYPTION_MASTER_KEY: e4d909c290d0fb1ca068ffaddf22cbd000000000000000000000000000000000
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: soberano-web
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+
+volumes:
+  pgdata:

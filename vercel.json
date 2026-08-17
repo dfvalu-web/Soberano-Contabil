@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npx vite build packages/web",
+  "outputDirectory": "packages/web/dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
