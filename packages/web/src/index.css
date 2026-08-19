@@ -951,3 +951,126 @@ html, body, #root {
     break-inside: avoid !important;
   }
 }
+
+
+/* ==========================================================================
+   DIAMOND CHAMPION MAIN MENU & DUAL-TIER TOPBAR (ZERO OVERLAP & ROUNDED)
+   ========================================================================== */
+
+.app-topbar-global {
+  background: linear-gradient(180deg, #0F172A 0%, #0A0F1D 100%);
+  border-bottom: 1px solid var(--border-medium, rgba(255, 255, 255, 0.1));
+  display: flex;
+  flex-direction: column;
+  padding: 10px 18px 12px 18px;
+  gap: 10px;
+  flex-shrink: 0;
+  z-index: 50;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
+  min-height: auto;
+  height: auto;
+}
+
+.topbar-executive-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.topbar-department-hub-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 6px 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.department-pill-btn {
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #94A3B8;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.department-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.department-pill-btn.active {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #FFFFFF;
+  border: 1.5px solid #34D399;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+  transform: translateY(-1px);
+}
+
+.department-pill-badge {
+  font-size: 0.62rem;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: inherit;
+  font-weight: 800;
+}
+
+.topbar-control-card {
+  background: var(--bg-surface-elevated, #131C30);
+  border: 1px solid var(--border-medium, rgba(255, 255, 255, 0.12));
+  border-radius: 10px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.topbar-control-card:hover {
+  border-color: var(--emerald-500, #10B981);
+}
+
+/* Rounded Cards & Items across sidebar and views */
+.category-card {
+  border-radius: 12px !important;
+}
+
+.module-item-btn {
+  border-radius: 8px !important;
+  margin: 1px 0 !important;
+}
+
+.dept-header-btn {
+  border-radius: 10px !important;
+}
+
+.sidebar-tenant-badge,
+.sidebar-search-container,
+.sidebar-pills-bar {
+  border-radius: 10px !important;
+  margin: 4px 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.sidebar-pill-btn {
+  border-radius: 10px !important;
+}

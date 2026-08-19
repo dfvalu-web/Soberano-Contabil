@@ -553,36 +553,6 @@ export const App: React.FC = () => {
         {/* 3. WORKSPACE CENTRAL (CANVAS PRINCIPAL DO MÃ“DULO)                       */}
         {/* ======================================================================= */}
         <main className="app-center-workspace">
-          {/* Barra de Filtro Estratégico de Abas */}
-          <div className="category-filter-bar">
-            {[
-              { id: 'CORE', label: '💎 Core Escritório (68)', icon: '🏛️' },
-              { id: 'ESCRITORIO', label: '📊 GestÃ£o & Produtividade (10)', icon: '⚡' },
-              { id: 'COMERCIO', label: '🏪 Comércio & Varejo (8)', icon: '📦' },
-              { id: 'INDUSTRIA', label: '🏭 Indústria & Manufatura (7)', icon: '⚙️' },
-              { id: 'SERVICOS', label: '💼 Serviços & PJ (8)', icon: '💼' },
-              { id: 'DP', label: '👥 Folha DP & eSocial (12)', icon: '👥' },
-              { id: 'CONTABIL', label: '📚 Contabilidade & SPED (9)', icon: '📚' },
-              { id: 'SOCIETARIO', label: '🏛️ Societário & CNDs (8)', icon: '📜' },
-              { id: 'TODOS', label: '🌐 Todos os 181 Módulos', icon: '💎' }
-            ].map(tab => {
-              const isSelected = activeFilterTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => {
-                    setSelectedCategoryTab(tab.id);
-                    if (tab.id === 'CORE' || tab.id === 'TODOS') setSearchQuery('');
-                  }}
-                  className={`category-filter-pill ${isSelected ? 'active' : ''}`}
-                >
-                  <span>{tab.icon}</span>
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
           {/* Renderização do Módulo Ativo */}
           <CnaeSectorBanner tenant={currentTenantObj} onSelectModule={setCurrentModuleId} currentModuleId={currentModuleId} />
           <div className="view-card-container">
