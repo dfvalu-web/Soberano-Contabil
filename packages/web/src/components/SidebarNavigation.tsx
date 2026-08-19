@@ -139,6 +139,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   });
 
   // 5. Accordion Open/Collapsed State
+  const [isFavoritesCollapsed, setIsFavoritesCollapsed] = useState(false);
   const [collapsedDepts, setCollapsedDepts] = useState<Record<DepartmentId, boolean>>({
     gestao: false,
     dp: false,
@@ -157,6 +158,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
   // Mass Expand / Collapse
   const expandAllDepartments = () => {
+    setIsFavoritesCollapsed(false);
     setCollapsedDepts({
       gestao: false,
       dp: false,
@@ -167,6 +169,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   };
 
   const collapseAllDepartments = () => {
+    setIsFavoritesCollapsed(true);
     setCollapsedDepts({
       gestao: true,
       dp: true,
@@ -462,48 +465,71 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         }}
       >
         
-        {/* Pinned / Favorite Routines */}
+        {/* Pinned / Favorite Routines (Collapsible Accordion) */}
         {favoriteModules.length > 0 && !searchQuery.trim() && activeFilter === 'todos' && (
-          <div style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '8px', padding: '8px', flexShrink: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px', padding: '0 4px' }}>
+          <div style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '8px', padding: '6px 8px', flexShrink: 0 }}>
+            {/* Header / Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setIsFavoritesCollapsed(prev => !prev)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                background: 'transparent',
+                border: 'none',
+                padding: '2px 4px',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
               <span style={{ fontSize: '0.68rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--amber-400)', display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <Star size={11} className="fill-amber-400 text-amber-400" />
                 Rotinas Favoritas ({favoriteModules.length})
               </span>
-              <span style={{ fontSize: '0.62rem', color: 'var(--text-muted)' }}>Fixadas</span>
-            </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontSize: '0.62rem', color: 'var(--text-muted)' }}>Fixadas</span>
+                <span style={{ color: 'var(--amber-400)', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease', transform: isFavoritesCollapsed ? 'rotate(0deg)' : 'rotate(180deg)' }}>
+                  <ChevronDown size={12} />
+                </span>
+              </div>
+            </button>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              {favoriteModules.map(module => {
-                const isActive = currentModuleId === module.id;
-                const isRecommended = isModuleRecommendedForTenant(module.id, tenant);
-                return (
-                  <button
-                    key={module.id}
-                    type="button"
-                    onClick={() => onSelectModule(module.id)}
-                    className={`module-item-btn routine-item ${isActive ? 'active' : ''}`}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
-                      <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
-                      <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{module.name}</span>
-                      {isRecommended && (
-                        <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 4px', borderRadius: '3px', background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', flexShrink: 0 }}>
-                          ⭐ CNAE
-                        </span>
-                      )}
-                    </div>
-                    <span
-                      onClick={e => toggleFavorite(module.id, e)}
-                      title="Remover dos favoritos"
-                      style={{ padding: '2px', color: 'var(--amber-400)', cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}
+            {/* Accordion Body */}
+            {!isFavoritesCollapsed && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '6px', borderTop: '1px solid rgba(245, 158, 11, 0.15)', paddingTop: '4px' }}>
+                {favoriteModules.map(module => {
+                  const isActive = currentModuleId === module.id;
+                  const isRecommended = isModuleRecommendedForTenant(module.id, tenant);
+                  return (
+                    <button
+                      key={module.id}
+                      type="button"
+                      onClick={() => onSelectModule(module.id)}
+                      className={`module-item-btn routine-item ${isActive ? 'active' : ''}`}
                     >
-                      <Star size={11} className="fill-amber-400" />
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
+                        <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{module.name}</span>
+                        {isRecommended && (
+                          <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 4px', borderRadius: '3px', background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', flexShrink: 0 }}>
+                            ⭐ CNAE
+                          </span>
+                        )}
+                      </div>
+                      <span
+                        onClick={e => toggleFavorite(module.id, e)}
+                        title="Remover dos favoritos"
+                        style={{ padding: '2px', color: 'var(--amber-400)', cursor: 'pointer', display: 'flex', alignItems: 'center', flexShrink: 0 }}
+                      >
+                        <Star size={11} className="fill-amber-400" />
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
 
