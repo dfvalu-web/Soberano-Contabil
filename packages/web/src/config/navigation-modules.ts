@@ -444,6 +444,16 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "defaultCollapsed": false,
     "modules": [
       {
+        "id": "office_sped_batch_prevalidator",
+        "name": "Geração & Validação de SPEDs (EFD/ECD/ECF)",
+        "label": "Geração & Validação de SPEDs (EFD/ECD/ECF)",
+        "icon": "⚡",
+        "file": "OfficeSpedBatchPrevalidatorView",
+        "badge": "SPED PVA",
+        "departmentId": "fiscal",
+        "isCore": true
+      },
+      {
         "id": "office_products_services_stock",
         "name": "Catálogo de Produtos, Estoques & Serviços",
         "label": "Catálogo de Produtos, Estoques & Serviços",
@@ -1782,6 +1792,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
 export const ALL_MODULES: NavigationModule[] = DEPARTMENT_CATEGORIES.flatMap(dept => dept.modules);
 
 export const DEFAULT_FAVORITE_MODULE_IDS: string[] = [
+  'office_sped_batch_prevalidator',
   'office_multi_client_grid',
   'office_products_services_stock',
   'office_invoice_billing_issuer',
