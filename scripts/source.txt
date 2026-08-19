@@ -1,0 +1,666 @@
+import { describe, it, expect } from 'vitest';
+import * as NavConfig from '../config/navigation-modules.js';
+
+describe('SUÍTE DE TESTES: Soberano Contábil — Sidebar Navigation & Arquitetura Departamental', () => {
+
+  function getDepartmentCategories() {
+    const cats = (NavConfig as any).DEPARTMENT_CATEGORIES ||
+                 (NavConfig as any).DEPARTMENTS ||
+                 (NavConfig as any).CATEGORIES ||
+                 ((NavConfig as any).default && ((NavConfig as any).default.DEPARTMENT_CATEGORIES || (NavConfig as any).default.DEPARTMENTS || (NavConfig as any).default.CATEGORIES)) ||
+                 [];
+    return cats;
+  }
+���չ�ѥ��������5��ձ�̠���(��������Ё�����9���������́��䤹11}5=U1L���(������������������9���������́��䤹����ձЀ����9���������́��䤹����ձй11}5=U1L����(����������������mt�(����������������Ѡ������ɕ��ɸ�����(��������Ё���̀􁝕�����ѵ����ѕ��ɥ�̠��(����ɕ��ɸ����̹����5�����聅�䤀��������ձ�́������ѕ�́���mt��(���((���չ�ѥ�����ɵ���锡������ɥ������ɥ����(����������������9���������́��䤹��ɵ����Q��Ѐ��􀝙չ�ѥ������(������ɕ��ɸ��9���������́��䤹��ɵ����Q��С��Ȥ�(�����(����ɕ��ɸ����ȁ������(���������ɵ���锠�9��(�������ɕ�������mq������q���ٙt�������(�������ѽ1�ݕ��͔��(��������ɥ����(���("gV�7F����F6�W5VW'����GV�S���VW'��7G&��r��&���V����b�G�V�b��d6��f�r2璒��F6���GV�U6V&6����vgV�7F���r���&WGW&���d6��f�r2璒��F6���GV�U6V&6����GV�R�VW'����Т�b�VW'���VW'��G&�҂��&WGW&�G'VS��6��7B��&����&�Ɨ�R�VW'����6��7B�D��&����&�Ɨ�R���GV�R�B��rr���6��7B��T��&����&�Ɨ�R���GV�R���R����GV�R��&V���rr���6��7BFWD��&����&�Ɨ�R���GV�R�FW'F�V�D�B����GV�R�6FVv�'���rr���6��7B&FvT��&����&�Ɨ�R���GV�R�&FvR����GV�R�Fr��rr���&WGW&��D��&���6�VFW2���&Ғ����T��&���6�VFW2���&Ғ��FWD��&���6�VFW2���&Ғ��&FvT��&���6�VFW2���&ғ��Р�gV�7F���f��FW$FW'F�V�G4'�F"�6FVv�&�W3�畵��F#�7G&��r��畵����b�G�V�b��d6��f�r2璒�f��FW$FW'F�V�G4'�F"���vgV�7F���r���&WGW&���d6��f�r2璒�f��FW$FW'F�V�G4'�F"�6FVv�&�W2�F"���Т6��7BF$��vW"��F"��wF�F�2r��F���vW$66R�����b�F$��vW"���wF�F�2r�&WGW&�6FVv�&�W3���b�F$��vW"���v6�&Rr���&WGW&�6FVv�&�W2�f��FW"��3�璒���vvW7F�r�vGr�vf�66�r�v6��F&��u���6�VFW2�2�B���2�46�&R���Т&WGW&�6FVv�&�W2�f��FW"��3�璒���2�B��rr��F���vW$66R�����F$��vW"���2�Fr��rr��F���vW$66R�����F$��vW"���Р�  // =========================================================================
+  // TIER 1 — FEAURE COVERAGE (>=5 tests per feature)
+  // =========================================================================
+
+  describe('Tier 1.1: 5 Categorias Departamentais Oficiais', () => {
+    it('1. Deve conter exatamente 5 categorias departamentais com os IDs canônicos', () => {
+      const categories = getDepartmentCategories();
+      expect(categories.length).toBe(5);
+      const ids = categories.map((c: any) => c.id);
+      expect(ids).toContain('gestao');
+      expect(ids).toContain('dp');
+      expect(ids).toContain('fiscal');
+      expect(ids).toContain('contabil');
+      expect(ids).toContain('setoriais');
+    });
+
+    it('2. Deve conter a nomenclatura exata oficial de cada um dos 5 departamentos', () => {
+      const categories = getDepartmentCategories();
+      const catMap = new Map(categories.map((c: any) => [c.id, c.name || c.category]));
+      
+      expect(catMap.get('gestao')).toBe('Gestão & Cockpit do Escritório');
+      expect(catMap.get('dp')).toBe('Departamento Pessoal & Folha');
+      expect(catMap.get('fiscal')).toBe('Fiscal & Tributário');
+      expect(catMap.get('contabil')).toBe('Contabilidade & IFRS');
+      expect(catMap.get('setoriais')).toBe('Módulos Setoriais & Especiais');
+    });
+
+    it('3. Cada departamento deve possuir ícone visual dedicado e não vazio', () => {
+      const categories = getDepartmentCategories();
+      categories.forEach((cat: any) => {
+        const icon = cat.icon || cat.iconName;
+        expect(icon).toBeDefined();
+        expect(typeof icon).toBe('string');
+        expect(icon.length).toBeGreaterThan(0);
+      });
+    });
+
+    it('4. A categoria "Módulos Setoriais & Especiais" deve ser colapsada por padrão (defaultCollapsed = true)', () => {
+      const categories = getDepartmentCategories();
+      const setoriais = categories.find((c: any) => c.id === 'setoriais');
+      expect(setoriais).toBeDefined();
+      expect(setoriais.defaultCollapsed).toBe(true);
+    });
+
+    it('5. As 4 categorias Core (gestao, dp, fiscal, contabil) devem vir expandidas por padrão (defaultCollapsed = false)', () => {
+      const categories = getDepartmentCategories();
+      const coreIds = ['gestao', 'dp', 'fiscal', 'contabil'];
+      coreIds.forEach((id) => {
+        const cat = categories.find((c: any) => c.id === id);
+        expect(cat).toBeDefined();
+        expect(cat.defaultCollapsed).toBe(false);
+      });
+    });
+  });
+  describe('Tier 1.2: Mapeamento Completo dos 181 Módulos e Contadores', () => {
+    it('1. Deve mapear rigorosamente o total de 181 módulos no catalogo do Soberano Contábil', () => {
+      const allModules = getAllModules();
+      expect(allModules.length).toBe(181);
+    });
+
+    it('2. Todos os 181 IDs de módulos devem ser estritamente únicos (sem duplicatas)', () => {
+      const allModules = getAllModules();
+      const ids = allModules.map((m: any) => m.id);
+      const uniqueIds = new Set(ids);
+      expect(uniqueIds.size).toBe(181);
+    });
+
+    it('3. Cada módulo deve possuir ID, Nome/Label válido e pertencer a um departamento válido', () => {
+      const allModules = getAllModules();
+      const validDepts = new Set(['gestao', 'dp', 'fiscal', 'contabil', 'setoriais']);
+
+      allModules.forEach((mod: any) => {
+        expect(mod.id).toBeDefined();
+        expect(typeof mod.id).toBe('string');
+        expect(mod.id.trim().length).toBeGreaterThan(0);
+
+        const name = mod.name || mod.label;
+        expect(name).toBeDefined();
+        expect(typeof name).toBe('string');
+        expect(name.trim().length).toBeGreaterThan(0);
+
+        expect(validDepts.has(mod.departmentId)).toBe(true);
+      });
+    });
+
+    it('4. A soma dos módulos por departamento deve coincidir exatamente com 181', () => {
+      const categories = getDepartmentCategories();
+      const counts = categories.map((c: any) => (c.modules || c.items || []).length);
+      const sum = counts.reduce((acc: number, val: number) => acc + val, 0);
+      expect(sum).toBe(181);
+    });
+
+    it('5. Módulos âncoras essenciais devem estar presentes no departamento correto', () => {
+      const allModules = getAllModules();
+      const modMap = new Map(allModules.map((m: any) => [m.id, m]));
+
+      // Gestão & Cockpit
+      expect(modMap.get('office_multi_client_grid')?.departmentId).toBe('gestao');
+      expect(modMap.get('dashboard')?.departmentId).toBe('gestao');
+      expect(modMap.get('office_batch_dispatch_bundle')?.departmentId).toBe('gestao');
+
+      // DP & Folha
+      expect(modMap.get('payroll')?.departmentId).toBe('dp');
+      expect(modMap.get('office_labor_termination')?.departmentId).toBe('dp');
+      expect(modMap.get('office_sst_esocial')?.departmentId).toBe('dp');
+
+      // Fiscal & Tributário
+      expect(modMap.get('office_monophasic_tax')?.departmentId).toBe('fiscal');
+      expect(modMap.get('office_tax_credit_recovery')?.departmentId).toBe('fiscal');
+      expect(modMap.get('office_reinf_r4000')?.departmentId).toBe('fiscal');
+
+      // Contabilidade & IFRS
+      expect(modMap.get('accounting')?.departmentId).toBe('contabil');
+      expect(modMap.get('office_annual_closing_are')?.departmentId).toBe('contabil');
+      expect(modMap.get('sped')?.departmentId).toBe('contabil');
+
+      // Setoriais & Especiais
+      expect(modMap.get('agri_derivatives')?.departmentId).toBe('setoriais');
+      expect(modMap.get('drex_cbdc_tpft')?.departmentId).toBe('setoriais');
+    });
+  });
+
+  describe('Tier 1.3: Funcionalidade de Acordões e Expansão/Colapso', () => {
+    it('1. Estado inicial de colapso deve manter apenas "setoriais" colapsado', () => {
+      const categories = getDepartmentCategories();
+      const initialState: Record<string, boolean> = {};
+      categories.forEach((cat: any) => {
+        initialState+[cat.id] = cat.defaultCollapsed ?? false;
+      });
+
+      expect(initialState['gestao']).toBe(false);
+      expect(initialState['dp']).toBe(false);
+      expect(initialState['fiscal']).toBe(false);
+      expect(initialState['contabil']).toBe(false);
+      expect(initialState['setoriais']).toBe(true);
+    });
+
+    it('2. Toggle individual de um departamento deve inverter seu estado de colapso', () => {
+      let collapsedState: Record<string, boolean> = {
+        gestao: false,
+        dp: false,
+        fiscal: false,
+        contabil: false,
+        setoriais: true
+      };
+
+      // Toggle gestao (inverter para true)
+      collapsedState = { ...collapsedState, gestao: !collapsedState.gestao };
+      expect(collapsedState.gestao).toBe(true);
+
+      // Toggle setoriais (inverter para false)
+      collapsedState = { ...collapsedState, setoriais: !collapsedState.setoriais };
+      expect(collapsedState.setoriais).toBe(false);
+    });
+
+    it('3. Toggle de um departamento não deve alterar o estado dos outros 4 departamentos', () => {
+      const beforeState: Record<string, boolean> = {
+        gestao: false,
+        dp: false,
+        fiscal: false,
+        contabil: false,
+        setoriais: true
+      };
+
+      const afterState = { ...beforeState, fiscal: !beforeState.fiscal };
+      expect(afterState.fiscal).toBe(true);
+      expect(afterState.gestao).toBe(beforeState.gestao);
+      expect(afterState.dp).toBe(beforeState.dp);
+      expect(afterState.contabil).toBe(beforeState.contabil);
+      expect(afterState.setoriais).toBe(beforeState.setoriais);
+    });
+
+    it('4. Ação "Expandir Todos" deve setar todos os 5 departamentos como não colapsados (false', () => {
+      const state: Record<string, boolean> = {
+        gestao: true,
+        dp: true,
+        fiscal: true,
+        contabil: true,
+        setoriais: true
+      };
+
+      const expandedState: Record<string, boolean> = {};
+      Object.keys(state).forEach((key) => {
+        expandedState[key] = false;
+      });
+
+      expect(Object.values(expandedState).every((val) => val === false)).toBe(true);
+    });
+
+    it('5. Ação "Recolher Todos" deve setar todos os 5 departamentos como colapsados (true)', () => {
+      const state: Record<string, boolean> = {
+        gestao: false,
+        dp: false,
+        fiscal: false,
+        contabil: false,
+        setoriais: false
+      };
+
+      const collapsedState: Record<string, boolean> = {};
+      Object.keys(state).forEach((key) => {
+        collapsedState[key] = true;
+      });
+
+      expect(Object.values(collapsedState).every((val) => val === true)).toBe(true);
+    });
+  });
+  describe('Tier 1.4: Abas de Filtro Rápido (Quick Filter Tabs)', () => {
+    it('1. Aba "Todos" deve retornar todos os 5 departamentos', () => {
+      const categories = getDepartmentCategories();
+      const filtered = filterDepartmentsByTab(categories, 'todos');
+      expect(filtered.length).toBe(5);
+    });
+
+    it('2. Aba "Core" deve retornar os 4 departamentos operacionais centrais (Gestão, DP, Fiscal, Contábil)', () => {
+      const categories = getDepartmentCategories();
+      const filtered = filterDepartmentsByTab(categories, 'core');
+      const filteredIds = filtered.map((c: any) => c.id);
+      
+      expect(filtered.length).toBe(4);
+      expect(filteredIds).toContain('gestao');
+      expect(filteredIds).toContain('dp');
+      expect(filteredIds).toContain('fiscal');
+      expect(filteredIds).toContain('contabil');
+      expect(filteredIds).not.toContain('setoriais');
+    });
+
+    it('3. Aba "DP" deve isolar exclusivamente o Departamento Pessoal & Folha', () => {
+      const categories = getDepartmentCategories();
+      const filtered = filterDepartmentsByTab(categories, 'dp');
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].id).toBe('dp');
+      expect(filtered[0].name).toBe('Departamento Pessoal & Folha');
+    });
+
+    it('4. Aba "Fiscal" deve isolar exclusivamente o departamento Fiscal & Tributário', () => {
+      const categories = getDepartmentCategories();
+      const filtered = filterDepartmentsByTab(categories, 'fiscal');
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].id).toBe('fiscal');
+      expect(filtered[0].name).toBe('Fiscal & Tributário');
+    });
+
+    it('5. Aba "Contábil" deve isolar exclusivamente o departamento Contabilidade & IFRS', () => {
+      const categories = getDepartmentCategories();
+      const filtered = filterDepartmentsByTab(categories, 'contabil');
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].id).toBe('contabil');
+      expect(filtered[0].name).toBe('Contabilidade & IFRS');
+    });
+  });
+
+  describe('Tier 1.5: Busca Instantânea e Lógica de Destaque Textual', () => {
+    it('1. Busca por termo existente deve filtrar os módulos correspondentes', () => {
+      const allModules = getAllModules();
+      const results = allModules.filter((m: any) => matchesQuery(m, 'Folha'));
+      expect(results.length).toBeGreaterThan(0);
+      results.forEach((m: any) => {
+        const name = (m.name || m.label || '').toLowerCase();
+        const id = (m.id || '').toLowerCase();
+        expect(name.includes('folha') || id.includes('folha')).toBe(true);
+      });
+    });
+
+    it('2. Busca por ID técnico deve encontrar o módulo exato', () => {
+      const allModules = getAllModules();
+      const results = allModules.filter((m: any) => matchesQuery(m, 'office_universal_dropzone_ocr'));
+      expect(results.length).toBe(1);
+      expect(results[0].id).toBe('office_universal_dropzone_ocr');
+    });
+
+    it('3. Busca deve ser insensível a maiúcculas/minúcculas (case-insensitive)', () => {
+      const allModules = getAllModules();
+      const resultsLower = allModules.filter((m: any) => matchesQuery(m, 'sped'));
+      const resultsUpper = allModules.filter((m: any) => matchesQuery(m, 'SPED'));
+      expect(resultsLower.length).toBe(resultsUpper.length);
+      expect(resultsLower.length).toBeGreaterThan(0);
+    });
+
+    it('4. Busca deve retornar contagem de correspondências em tempo real', () => {
+      const allModules = getAllModules();
+      const query = 'eSocial';
+      const count = allModules.filter((m: any) => matchesQuery(m, query)).length;
+      expect(count).toBeGreaterThan(0);
+    });
+
+    it('5. Função de destaque (highlight) deve localizar o índice ou fragmentar a palavra correspondentes', () => {
+      const label = 'Folha de Pagamento Central & Encargos';
+      const term = 'Folha';
+      const normLabel = normalize(label);
+      const normTerm = normalize(term);
+      
+      const matchIndex = normLabel.indexOf(normTerm);
+      expect(matchIndex).toBe(0);
+      const extracted = label.substring(matchIndex, matchIndex + term.length);
+      expect(extracted).toBe('Folha');
+    });
+  });
+  describe('Tier 1.6: Rotinas Favoritas / Fixadas (1-Click Access)', () => {
+    it('1. Deve fornecer lista inicial de favoritos padrão recomendados', () => {
+      const defaultFavs = (NavConfig as any).DEFAULT_FAVORITE_MODULE_IDS || (NavConfig as any).DEFAULT_FAVORITE_IDS || [
+        'office_multi_client_grid',
+        'office_universal_dropzone_ocr',
+        'payroll',
+        'office_monophasic_tax',
+        'accounting'
+      ];
+      expect(defaultFavs.length).toBeGreaterThan(0);
+      const allModules = getAllModules();
+      const allIds = new Set(allModules.map((m: any) => m.id));
+      defaultFavs.forEach((id: string) => {
+        expect(allIds.has(id)).toBe(true);
+      });
+    });
+
+    it('2. Adicionar módulo aos favoritos deve incluir o ID na lista de favoritos', () => {
+      let favorites = ['office_multi_client_grid', 'payroll'];
+      const newFavId = 'office_labor_termination';
+      
+      if (!favorites.includes(newFavId)) {
+        favorites = [...favorites, newFavId];
+      }
+
+      expect(favorites).toContain('office_labor_termination');
+      expect(favorites.length).toBe(3);
+    });
+
+    it('3. Remover módulo dos favoritos deve retirar o ID na lista', () => {
+      let favorites = ['office_multi_client_grid', 'payroll', 'accounting'];
+      favorites = favorites.filter((id) => id !== 'payroll');
+      expect(favorites).not.toContain('payroll');
+      expect(favorites.length).toBe(2);
+    });
+
+    it('4. Toggle de favorito deve adicionar se ausente e remover se presente', () => {
+      let favorites = ['office_multi_client_grid'];
+      const targetId = 'sped';
+
+      // 1º toggle: adiciona
+      favorites = favorites.includes(targetId)
+        ? favorites.filter((id) => id !== targetId)
+        : [...favorites, targetId];
+      expect(favorites).toContain('sped');
+
+      // 2ª toggle: remove
+      favorites = favorites.includes(targetId)
+        ? favorites.filter((id) => id !== targetId)
+        : [...favorites, targetId];
+      expect(favorites).not.toContain('sped');
+    });
+
+    it('5. Chave de armazenamento no LocalStorage deve seguir o padrão soberano_favorite_modules', () => {
+      const key = (NavConfig as any).FAVORITES_STORAGE_KEY || 'soberano_favorite_modules';
+      expect(key).toBe('soberano_favorite_modules');
+    });
+  });
+
+  // ==========================================================================
+  // TIER 2 — BOUNDARY & CORNER CASES
+  // =========================================================================
+
+  describe('Tier 2: Boundary & Corner Cases', () => {
+    it('1. Busca com query vazia ou apenas espaços deve retornar todos os 181 módulos', () => {
+      const allModules = getAllModules();
+      const emptyResults = allModules.filter((m: any) => matchesQuery(m, ''));
+      const spaceResults = allModules.filter((m: any) => matchesQuery(m, '   '));
+      expect(emptyResults.length).toBe(181);
+      expect(spaceResults.length).toBe(181);
+    });
+
+    it('2. Busca com caracteres especiais e meta-caracteres regex não deve lançar erro de sintaxe', () => {
+      const allModules = getAllModules();
+      const specialQueries = ['[', '*', '+', '?', '(', ')', '{\', '}', '^', '$', '|', '\\', '/', '[A-Z]'];
+
+      specialQueries.forEach((q) => {
+        expect(() => {
+          allModules.filter((m: any) => matchesQuery(m, q));
+        }).not.toThrow();
+      });
+    });
+
+    it('3. Busca insensível a acentos (diacritic-insensitive): "tributario" deve encontrar "Tributário"', () => {
+      const allModules = getAllModules();
+      const results = allModules.filter((m: any) => matchesQuery(m, 'tributario'));
+      expect(results.length).toBeGreaterThan(0);
+      
+      const foundWithAccent = results.some((m: any) => (m.name || m.label || '').includes('Tributário') || (m.name || m.label || '').includes('tributário'));
+      expect(foundWithAccent).toBe(true);
+    });
+
+    it('4. Busca insensível a acentos: "gestao" deve encontrar "Gestão"', () => {
+      const allModules = getAllModules();
+      const results = allModules.filter((m: any) => matchesQuery(m, 'gestao');
+      expect(results.length).toBeGreaterThan(0);
+      
+      const foundWithAccent = results.some((m: any) => (m.name || m.label || '').includes('Gestão'));
+      expect(foundWithAccent).toBe(true);
+    });
+
+    it('5. Busca insensível a acentos: "contabil" deve encontrar "Contabilidade"', () => {
+      const allModules = getAllModules();
+      const results = allModules.filter((m: any) => matchesQuery(m, 'contabil'));
+      expect(results.length).toBeGreaterThan(0);
+      
+      const foundWithAccent = results.some((m: any) => (m.name || m.label || '').includes('Contab'));
+      expect(foundWithAccent).toBe(true);
+    });
+
+    it('6. Manipulação de lista de favoritos vazia ([]) deve ser tratada sem erros', () => {
+      const emptyFavorites: string[] = [];
+      expect(emptyFavorites.length).toBe(0);
+      const allModules = getAllModules();
+      const favModules = allModules.filter((m: any) => emptyFavorites.includes(m.id));
+      expect(favModules.length).toBe(0);
+    });
+
+    it('7. Execução consecutiva de Expandir Todos seguido de Recolher Todos deve ser idempotente', () => {
+      const categories = getDepartmentCategories();
+      let state: Record<string, boolean> = {};
+      
+      // Expand all
+      categories.forEach((c: any) => { state[c.id] = false; });
+      expect(Object.values(state).every(v => v === false)).toBe(true);
+
+      // Collapse all
+      categories.forEach((c: any) => { state[c.id] = true;});
+      expect(Object.values(state).every(v => v === true)).toBe(true);
+
+      // Expand all again
+      categories.forEach((c: any) => { state[c.id] = false; });
+      expect(Object.values(state).every(v => v === false)).toBe(true);
+    });
+
+    it('8. Busca ativa enquanto uma aba de filtro está selecionada deve restringir o escopo ao departamento da aba', () => {
+      const categories = getDepartmentCategories();
+      const dpCat = filterDepartmentsByTab(categories, 'dp');
+      const dpModules = dpCat.flatMap((c: any) => c.modules || c.items || []);
+
+      // Buscar "Auditoria" dentro da aba DP
+      const query = 'Auditoria';
+      const resultsInDp = dpModules.filter((m: any) => matchesQuery(m, query));
+
+      // Todos os resultados encontrados devem ser estritamente do departamento 'dp'
+      resultsInDp.forEach((m: any) => {
+        expect(m.departmentId).toBe('dp');
+      });
+    });
+  });
+  describe('Tier 3: Cross-Feature Interaction', () => {
+    it('1. Rotinas fixadas (favoritas) devem poder ser acessadas diretamente mesmo se o departamento pai estiver colapsado', () => {
+      const collapsedState: Record<string, boolean> = {
+        gestao: true,
+        dp: true,
+        fiscal: true,
+        contabil: true,
+        setoriais: true
+      };
+
+      const favorites = ['payroll', 'office_monophasic_tax'];
+      const allModules = getAllModules();
+      const favModules = allModules.filter((m: any) => favorites.includes(m.id));
+
+      expect(favModules.length).toBe(2);
+      expect(favModules[0].id).toBe('payroll');
+      expect(collapsedState[favModules[0].departmentId]).toBe(true);
+      expect(favModules[1].id).toBe('office_monophasic_tax');
+      expect(collapsedState[favModules[1].departmentId]).toBe(true);
+    });
+
+    it('2. Termo de busca correspondente a múltiplos departamentos deve localizar módulos mesmo se os acordñes estiverem colapsados', () => {
+      const allModules = getAllModules();
+      const query = 'OCR';
+      const matches = allModules.filter((m: any) => matchesQuery(m, query));
+      
+      expect(matches.length).toBeGreaterThan(1);
+      const depts = new Set(matches.map((m: any) => m.departmentId));
+      expect(depts.size).toBeGreaterThanOrEqual(1);
+    });
+
+    it('3. Troca de aba de filtro rápido com busca ativa deve recalcular os módulos visíveis imediatamente', () => {
+      const categories = getDepartmentCategories();
+      const query = 'Tax';
+
+
+      const allDepts = filterDepartmentsByTab(categories, 'todos');
+      const allMods = allDepts.flatMap((c: any) => c.modules || c.items || []);
+      const countInTodos = allMods.filter((m: any) => matchesQuery(m, query)).length;
+
+      const fiscalDepts = filterDepartmentsByTab(categories, 'fiscal');
+      const fiscalMods = fiscalDepts.flatMap((c: any) => c.modules || c.items || []);
+      const countInFiscal = fiscalMods.filter((m: any) => matchesQuery(m, query)).length;
+
+      const dpDepts = filterDepartmentsByTab(categories, 'dp');
+      const dpMods = dpDepts.flatMap((c: any) => c.modules || c.items || []);
+      const countInDp = dpMods.filter((m: any) => matchesQuery(m, query)).length;
+
+      expect(countInTodos).toBeGreaterThanOrEqual(countInFiscal);
+      expect(countInFiscal).toBeGreaterThanOrEqual(countInDp);
+    });
+
+    it('4. Limpar o termo de busca deve restaurar a visualização completa da aba ativa', () => {
+      const categories = getDepartmentCategories();
+      const coreDepts = filterDepartmentsByTab(categories, 'core');
+      const coreMods = coreDepts.flatMap((c: any) => c.modules || c.items || []);
+      const totalCoreCount = coreMods.length;
+
+      const query = 'TRCT';
+      const searchResults = coreMods.filter((m: any) => matchesQuery(m, query));
+      expect(searchResults.length).toBeLessThan(totalCoreCount);
+
+      const restoredResults = coreMods.filter((m: any) => matchesQuery(m, ''));
+      expect(restoredResults.length).toBe(totalCoreCount);
+    });
+
+    it('5. Toggling de favorito em um item filtrado pela busca não afeta os resultados de busca', () => {
+      const allModules = getAllModules();
+      const query = 'Rescisão';
+      const resultsBefore = allModules.filter((m: any) => matchesQuery(m, query));
+
+      let favorites = ['office_multi_client_grid'];
+      const targetId = 'office_labor_termination';
+
+      favorites = favorites.includes(targetId)
+        ? favorites.filter((id) => id !== targetId)
+        : [...favorites, targetId];
+
+      const resultsAfter = allModules.filter((m: any) => matchesQuery(m, query));
+      expect(resultsBefore.length).toBe(resultsAfter.length);
+      expect(favorites).toContain(targetId);
+    });
+  });
+
+  // =========================================================================
+  // TIER 4 — REAL-WORLD WORKLOAD SCENARIOS
+  // =========================================================================
+
+  describe('Tier 4: Fluxos Operacionais Reais de Usuário (End-to-End)', () => {
+    it('Cenário 1: Fluxo de Fechamento Contábil & Fiscal Mensal pelo Contador Chefe', () => {
+      let currentModuleId = 'office_multi_client_grid';
+      let selectedTab = 'todos';
+      let searchQuery = '';
+      let favorites = ['office_multi_client_grid', 'payroll', 'accounting'];
+      let collapsedState: Record<string, boolean> = {
+        gestao: false,
+        dp: false,
+        fiscal: false,
+        contabil: false,
+        setoriais: true
+      };
+
+      expect(currentModuleId).toBe('office_multi_client_grid');
+
+      selectedTab = 'fiscal';
+      const categories = getDepartmentCategories();
+      const fiscalDepts = filterDepartmentsByTab(categories, selectedTab);
+      expect(fiscalDepts.length).toBe(1);
+      expect(fiscalDepts[0].id).toBe('fiscal');
+
+      searchQuery = 'Monofasico';
+      const fiscalMods = fiscalDepts.flatMap((c: any) => c.modules || c.items || []);
+      const matchedFiscal = fiscalMods.filter((m: any) => matchesQuery(m, searchQuery));
+      expect(matchedFiscal.length).toBeGreaterThanOrEqual(1);
+
+      currentModuleId = matchedFiscal[0].id;
+      expect(currentModuleId).toBe('office_monophasic_tax');
+
+      if (!favorites.includes(currentModuleId)) {
+        favorites = [...favorites, currentModuleId];
+      }
+      expect(favorites).toContain('office_monophasic_tax');
+
+      searchQuery = '';
+      selectedTab = 'contabil';
+      const contabilDepts = filterDepartmentsByTab(categories, selectedTab);
+      expect(contabilDepts[0].id).toBe('contabil');
+
+      currentModuleId = 'office_annual_closing_are';
+      expect(currentModuleId).toBe('office_annual_closing_are');
+
+      categories.forEach((c: any) => { collapsedState[c.id] = true; });
+      expect(Object.values(collapsedState).every(v => v === true)).toBe(true);
+
+      const payrollFav = favorites.find(id => id === 'payroll');
+      expect(payrollFav).toBeDefined();
+      currentModuleId = payrollFav!;
+      expect(currentModuleId).toBe('payroll');
+    });
+
+    it('Cenário 2: Fluxo do Departamento Pessoal e Rescisão Trabalhista com eSocial', () => {
+      let currentModuleId = 'dashboard';
+      let selectedTab = 'todos';
+      let favorites = ['office_multi_client_grid', 'payroll'];
+
+      selectedTab = 'dp';
+      const categories = getDepartmentCategories();
+      const dpDepts = filterDepartmentsByTab(categories, selectedTab);
+      const dpModules = dpDepts.flatMap((c: any) => c.modules || c.items || []);
+
+      expect(dpModules.length).toBe(16);
+
+      const trctResults = dpModules.filter((m: any) => matchesQuery(m, 'TRCT'));
+      expect(trctResults.length).toBe(1);
+      expect(trctResults[0].id).toBe('office_labor_termination');
+
+      currentModuleId = trctResults[0].id;
+      expect(currentModuleId).toBe('office_labor_termination');
+
+      favorites = [...favorites, currentModuleId];
+      expect(favorites).toContain('office_labor_termination');
+
+      const esocialModule = dpModules.find((m: any) => m.id === 'office_payroll_esocial_audit');
+      expect(esocialModule).toBeDefined();
+      currentModuleId = esocialModule.id;
+      expect(currentModuleId).toBe('office_payroll_esocial_audit');
+    });
+
+    it('Cenário 3: Fluxo de Auditoria e Exploração de Módulos Setoriais Especializados', () => {
+      let selectedTab = 'todos';
+      let searchQuery = '';
+      let collapsedState: Record<string, boolean> = {
+        gestao: false,
+        dp: false,
+        fiscal: false,
+        contabil: false,
+        setoriais: true
+      };
+
+      const categories = getDepartmentCategories();
+      const allModules = getAllModules();
+
+      const setoriaisCat = categories.find((c: any) => c.id === 'setoriais');
+      expect((setoriaisCat.modules || setoriaisCat.items || []).length).toBe(99);
+
+      searchQuery = 'DREX';
+      const drexResults = allModules.filter((m: any) => matchesQuery(m, searchQuery));
+      expect(drexResults.length).toBeGreaterThanOrEqual(1);
+      expect(drexResults[0].id).toBe('drex_cbdc_tpft');
+      expect(drexResults[0].departmentId).toBe('setoriais');
+
+      if (drexResults.length > 0 && searchQuery) {
+        collapsedState.setoriais = false;
+      }
+      expect(collapsedState.setoriais).toBe(false);
+
+      searchQuery = 'Agro';
+      const agroResults = allModules.filter((m: any) => matchesQuery(m, searchQuery));
+      expect(agroResults.length).toBeGreaterThanOrEqual(4);
+
+      searchQuery = '';
+      collapsedState.setoriais = true;
+      expect(collapsedState.setoriais).toBe(true);
+    });
+  });
+});

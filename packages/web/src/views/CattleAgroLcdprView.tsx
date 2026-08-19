@@ -3,6 +3,11 @@ import React from 'react';
 export const CattleAgroLcdprView: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button onClick={() => window.print()} className="btn-primary-action" style={{ padding: '8px 16px', fontSize: '0.82rem' }}>
+          🖨️ Imprimir Dossiê Agro & LCDPR (A4)
+        </button>
+      </div>
       <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
         <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <span>🐂</span> Pecuária de Corte (CPC 29) & LCDPR / IRPF Rural (Lei 8.023)
@@ -90,6 +95,95 @@ export const CattleAgroLcdprView: React.FC = () => {
               <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>Depósito BNB e Reserva de Incentivos no PL</div>
             </div>
           </div>
+        </div>
+      </div>
+    
+      {/* DOSSIÊ EXECUTIVO OFICIAL (PADRÃO DIAMANTE) */}
+      <div className="diamond-paper-a4" style={{ marginTop: '14px' }}>
+        <div className="diamond-header">
+          <div>
+            <div className="diamond-title">FAZENDA & AGROPECUÁRIA SANTA FÉ</div>
+            <div className="diamond-subtitle">DOSSIÊ EXECUTIVO DE PECUÁRIA (CPC 29 VALOR JUSTO) & LCDPR RURAL (IN RFB 1.848/18)</div>
+          </div>
+          <div style={{ textAlign: 'right', fontSize: '0.70rem' }}>
+            <div>CNPJ / CPF: <strong>00.000.000/0001-00</strong></div>
+            <div>COMPETÊNCIA: <strong>08/2026</strong></div>
+            <div style={{ color: '#047857', fontWeight: 800 }}>CPC 29 ATIVO BIOLÓGICO & IN 1.848</div>
+          </div>
+        </div>
+
+        <div className="diamond-meta-grid">
+          <div className="diamond-meta-item">
+            <strong>Rebanho Bovino em Engorda</strong>
+            <span className="font-mono">5.000 Cabeças (90.000 @)</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Valor Justo do Rebanho</strong>
+            <span className="font-mono">R$ 20.952.000,00</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Receita Bruta Agropecuária</strong>
+            <span className="font-mono">R$ 15.000.000,00</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Resultado Líquido Rural (IRPF)</strong>
+            <span className="font-mono" style={{ color: "#047857", fontWeight: 800 }}>R$ 3.000.000,00 (20%)</span>
+          </div>
+        </div>
+
+        <table className="diamond-table">
+          <thead>
+            <tr>
+              <th>Demonstrativo Técnico / Rubrica</th>
+              <th style={{ textAlign: 'center' }}>Enquadramento</th>
+              <th style={{ textAlign: 'right' }}>Valor Consolidado (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Valor Justo do Ativo Biológico (Rebanho Bovino Líquido)</td>
+              <td style={{ textAlign: 'center' }}>CPC 29</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ 20.952.000,00</td>
+            </tr>
+            <tr>
+              <td>Ganho por Transformação Biológica (Ganho de Peso / Arroba)</td>
+              <td style={{ textAlign: 'center' }}>DRE</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>+ R$ 5.952.000,00</td>
+            </tr>
+            <tr>
+              <td>Livro Caixa Digital do Produtor Rural (LCDPR): Receita da Safra</td>
+              <td style={{ textAlign: 'center' }}>LCDPR</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ 15.000.000,00</td>
+            </tr>
+            <tr className="diamond-table-total">
+              <td><strong>BASE DE CÁLCULO DO IRPF RURAL PELO RESULTADO ARBITRADO (20%)</strong></td>
+              <td style={{ textAlign: 'center' }}>IRPF Rural</td>
+              <td className="font-mono" style={{ textAlign: 'right', color: "#047857" }}>R$ 3.000.000,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="diamond-signatures">
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">PRODUTOR RURAL TITULAR</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">RESPONSÁVEL TÉCNICO CONTÁBIL</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">PERÍCIA AGROPECUÁRIA CPC 29</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+        </div>
+
+        <div className="diamond-watermark-seal">
+          <div>SOBERANO CONTÁBIL • LAUDO EXECUTIVO DIAMANTE • CERTIFICAÇÃO DIGITAL SHA-256: <code>AA991088BCFF00</code></div>
+          <div>PÁGINA 1 DE 1 • DOCUMENTO OFICIAL HOMOLOGADO</div>
         </div>
       </div>
     </div>

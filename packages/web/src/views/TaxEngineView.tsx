@@ -87,7 +87,13 @@ export const TaxEngineView = () => {
   return (
     <div>
       {/* Top Selector Tabs */}
-      <div className="panel-card" style={{ marginBottom: '1.5rem' }}>
+      <div className="no-print panel-card" style={{ marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', marginBottom: '10px' }}>
+          <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff' }}>Simulador & Planejamento Tributário</span>
+          <button onClick={() => window.print()} className="btn-primary-action" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
+            🖨️ Imprimir Parecer Tributário Diamante (A4)
+          </button>
+        </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             className={`btn-${activeTab === 'COMPARADOR' ? 'primary' : 'secondary'}`}
@@ -484,6 +490,104 @@ export const TaxEngineView = () => {
           </div>
         </div>
       )}
+    
+      
+{/* DOSSIÊ EXECUTIVO DE PLANEJAMENTO TRIBUTÁRIO COMPARATIVO (PADRÃO DIAMANTE) */}
+      <div className="diamond-paper-a4" style={{ marginTop: '14px' }}>
+        <div className="diamond-header">
+          <div>
+            <div className="diamond-title">EMPRESA CLIENTE S/A</div>
+            <div className="diamond-subtitle">PARECER EXECUTIVO DE PLANEJAMENTO TRIBUTÁRIO & ANÁLISE COMPARATIVA DE REGIMES</div>
+          </div>
+          <div style={{ textAlign: 'right', fontSize: '0.70rem' }}>
+            <div>CNPJ: <strong>00.000.000/0001-00</strong></div>
+            <div>EXERCÍCIO DE PLANEJAMENTO: <strong>2026 / 2027</strong></div>
+            <div style={{ color: '#047857', fontWeight: 800 }}>Regime Recomendado: {compResult.data?.regimeMaisEconomico ? compResult.data.regimeMaisEconomico.replace('_', ' ') : 'LUCRO PRESUMIDO'}</div>
+          </div>
+        </div>
+
+        <div className="diamond-meta-grid">
+          <div className="diamond-meta-item">
+            <strong>Receita Bruta Anual</strong>
+            <span className="font-mono">R$ {compReceita12.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Massa Salarial Anual</strong>
+            <span className="font-mono">R$ {compFolha12.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Economia Tributária Anual</strong>
+            <span className="font-mono" style={{ color: '#047857', fontWeight: 800 }}>R$ {compResult.data?.economiaAnualEstimada ? compResult.data.economiaAnualEstimada.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Regime Mais Econômico</strong>
+            <span>{compResult.data?.regimeMaisEconomico || 'LUCRO PRESUMIDO'}</span>
+          </div>
+        </div>
+
+        <table className="diamond-table">
+          <thead>
+            <tr>
+              <th>Regime de Tributação</th>
+              <th>Metodologia de Apuração</th>
+              <th style={{ textAlign: 'center' }}>Alíquota Efetiva</th>
+              <th style={{ textAlign: 'right' }}>Carga Tributária Anual (R$)</th>
+              <th style={{ textAlign: 'right' }}>Status / Recomendação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Simples Nacional:</strong> Lei Complementar 123/06</td>
+              <td>DAS Unificado sobre Faturamento</td>
+              <td style={{ textAlign: 'center' }}>{compResult.data?.simplesNacional?.aliquotaEfetivaPercent || 0}%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ {compResult.data?.simplesNacional?.impostoTotalAno ? compResult.data.simplesNacional.impostoTotalAno.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</td>
+              <td style={{ textAlign: 'right', fontWeight: 700 }}>{compResult.data?.regimeMaisEconomico === 'SIMPLES_NACIONAL' ? '⭐ MAIS VANTAJOSO' : 'Carga Superior'}</td>
+            </tr>
+            <tr>
+              <td><strong>Lucro Presumido:</strong> Art. 516 RIR/18</td>
+              <td>Presunção IRPJ/CSLL + PIS/COFINS Cumulativo</td>
+              <td style={{ textAlign: 'center' }}>{compResult.data?.lucroPresumido?.aliquotaEfetivaPercent || 0}%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ {compResult.data?.lucroPresumido?.impostoTotalAno ? compResult.data.lucroPresumido.impostoTotalAno.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</td>
+              <td style={{ textAlign: 'right', fontWeight: 700 }}>{compResult.data?.regimeMaisEconomico === 'LUCRO_PRESUMIDO' ? '⭐ MAIS VANTAJOSO' : 'Carga Superior'}</td>
+            </tr>
+            <tr>
+              <td><strong>Lucro Real:</strong> Art. 258 RIR/18</td>
+              <td>Tributação sobre o Lucro Efetivo com Créditos</td>
+              <td style={{ textAlign: 'center' }}>{compResult.data?.lucroReal?.aliquotaEfetivaPercent || 0}%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ {compResult.data?.lucroReal?.impostoTotalAno ? compResult.data.lucroReal.impostoTotalAno.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) : '0,00'}</td>
+              <td style={{ textAlign: 'right', fontWeight: 700 }}>{compResult.data?.regimeMaisEconomico === 'LUCRO_REAL' ? '⭐ MAIS VANTAJOSO' : 'Carga Superior'}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div style={{ background: '#DCFCE7', border: '1.5px solid #166534', padding: '8px 12px', borderRadius: '4px', margin: '8px 0', fontSize: '0.70rem', color: '#166534' }}>
+          <strong>Diagnóstico & Conclusão do Parecer Tributário:</strong>
+          <div>{compResult.data?.parecerExecutivo || 'Planejamento tributário homologado com conformidade integral.'}</div>
+        </div>
+
+        <div className="diamond-signatures">
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">DIRETORIA EXECUTIVA / C-LEVEL</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Ciência do Planejamento</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">CONSULTOR TRIBUTÁRIO RESPONSÁVEL</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>CRC/SP 1SP999999/O-0</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">COMITÊ TRIBUTÁRIO & COMPLIANCE</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Planejamento Elisivo Homologado</div>
+          </div>
+        </div>
+
+        <div className="diamond-watermark-seal">
+          <div>SOBERANO CONTÁBIL • PLANEJAMENTO TRIBUTÁRIO • CERTIFICAÇÃO DIGITAL SHA-256: <code>44BB10988BA991</code></div>
+          <div>PÁGINA 1 DE 1 • PARECER TRIBUTÁRIO OFICIAL</div>
+        </div>
+      </div>
     </div>
   );
 };

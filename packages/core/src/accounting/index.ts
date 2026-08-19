@@ -107,3 +107,18 @@ export * from './actuarial/defined-benefit-pension-plans-cpc33.js';
 export * from './financial-instruments/drex-cbdc-tokenized-tpft-settlement-engine.js';
 export * from './financial-instruments/smart-contracts-atomic-dvp-accounting-engine.js';
 export * from './financial-instruments/crypto-vasp-regulatory-compliance-engine.js';
+export * from './revenue/hotel-pool-revenue-recognition-cpc47-engine.js';
+
+export * from './analysis/financial-ratios-engine.js';
+export * from './analysis/cfo-decision-copilot.js';
+export * from './analysis/financial-simulator-engine.js';
+
+export * from './ledger/general-journal-engine.js';
+export * from './integration/accounting-integration-engine.js';
+export * from './chart-of-accounts/referential-mapping.js';
+export * from './reports/trial-balance-engine.js';
+export * from './reports/official-books-engine.js';
+export * from './closing/are-closing-engine.js';
+export * from './statements/full-ifrs-statements-engine.js';
+export * from './reconciliation/smart-ofx-reconciler.js';
+export * from './reports/sped-ecd-generator.js';

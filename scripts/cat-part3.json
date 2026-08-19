@@ -1,0 +1,602 @@
+[
+  {
+    "category": "Societário, Legalização & Advisory",
+    "icon": "🏛️",
+    "items": [
+      {
+        "id": "corporate_legalization_cnd",
+        "label": "Legalização & Gestão de CNDs",
+        "icon": "📜",
+        "file": "CorporateLegalizationCndView"
+      },
+      {
+        "id": "office_redesim_viability",
+        "label": "Viabilidade Redesim & Licenças",
+        "icon": "🏢",
+        "file": "OfficeRedesimViabilityLicensingView"
+      },
+      {
+        "id": "office_family_holding",
+        "label": "Holding Familiar & Sucessão",
+        "icon": "🏰",
+        "file": "OfficeFamilyHoldingSuccessionView"
+      },
+      {
+        "id": "office_strategic_valuation",
+        "label": "Valuation & Advisory Estratégico",
+        "icon": "🎯",
+        "file": "OfficeStrategicAdvisoryValuationView"
+      },
+      {
+        "id": "office_corporate_governance",
+        "label": "Governança & Atas Digitais",
+        "icon": "⚖️",
+        "file": "OfficeCorporateGovernanceAssemblyView"
+      },
+      {
+        "id": "office_contracts_transfer",
+        "label": "Contratos & Transferência CFC",
+        "icon": "📝",
+        "file": "OfficeContractsResponsibilityTransferView"
+      },
+      {
+        "id": "office_cfc_transfer",
+        "label": "Governança & Transferência CFC",
+        "icon": "🤝",
+        "file": "OfficeCfcResponsibilityTransferView"
+      },
+      {
+        "id": "office_client_onboarding",
+        "label": "Onboarding & Migração Clientes",
+        "icon": "🚀",
+        "file": "OfficeClientOnboardingMigrationView"
+      },
+      {
+        "id": "financial_bpo_office",
+        "label": "BPO Financeiro & Gestão de Caixa",
+        "icon": "💼",
+        "file": "FinancialBpoOfficeView"
+      },
+      {
+        "id": "office_fees_billing",
+        "label": "Honorários & NFS-e Escritório",
+        "icon": "🧾",
+        "file": "OfficeFeesBillingDunningView"
+      },
+      {
+        "id": "office_fees_dunning",
+        "label": "Honorários & Cobrança CFC",
+        "icon": "⚖️",
+        "file": "OfficeFeesCollectionDunningView"
+      }
+    ]
+  },
+  {
+    "category": "Segurança, HSM & Conformidade",
+    "icon": "🛡️",
+    "items": [
+      {
+        "id": "security",
+        "label": "Segurança & Ledger ACID",
+        "icon": "🛡️",
+        "file": "SecurityLedgerView"
+      },
+      {
+        "id": "office_aml_coaf",
+        "label": "Prevenção PLD & COAF / CFC",
+        "icon": "🚨",
+        "file": "OfficeAmlCoafComplianceView"
+      },
+      {
+        "id": "office_digital_certificates",
+        "label": "Certificados Digitais & Assinador",
+        "icon": "🔐",
+        "file": "OfficeDigitalCertificatesSignerView"
+      },
+      {
+        "id": "cloud_hsm_pfx_vault",
+        "label": "Cloud HSM & Cofre PFX A1",
+        "icon": "🔒",
+        "file": "CloudHsmPfxVaultView"
+      },
+      {
+        "id": "gov_webservices_prod",
+        "label": "WebServices Gov em Produção",
+        "icon": "🔌",
+        "file": "GovWebservicesProductionView"
+      },
+      {
+        "id": "sefaz_k8s_prod",
+        "label": "SEFAZ mTLS & Cluster K8s",
+        "icon": "☸️",
+        "file": "SefazDirectTransmissionK8sView"
+      },
+      {
+        "id": "corporate_sso_govbr",
+        "label": "SSO Azure & Gov.br FIDO2",
+        "icon": "🔑",
+        "file": "CorporateSsoGovbrMfaView"
+      },
+      {
+        "id": "postgres_multitenant_rls",
+        "label": "PostgreSQL Multitenant & RLS",
+        "icon": "🗄️",
+        "file": "PostgresMultiTenantRlsView"
+      },
+      {
+        "id": "postgres_otel_prometheus",
+        "label": "PostgreSQL & OpenTelemetry",
+        "icon": "📊",
+        "file": "PostgresPgvectorOtelPrometheusView"
+      },
+      {
+        "id": "pva_compliance_soc2",
+        "label": "PVA SPED & SOC 2 / ISO 27001",
+        "icon": "🛡️",
+        "file": "PvaComplianceSoc2SecurityView"
+      },
+      {
+        "id": "soc2_drp_lgpd",
+        "label": "Auditoria SOC 2, DRP & LGPD",
+        "icon": "📋",
+        "file": "Soc2IsoDrpLgpdAuditView"
+      },
+      {
+        "id": "kms_grants",
+        "label": "KMS, Partes Relacionadas & Grants",
+        "icon": "🔑",
+        "file": "KmsPartiesGrantsView"
+      }
+    ]
+  },
+  {
+    "category": "Setoriais Avançados, Mercado & Agro",
+    "icon": "🌐",
+    "items": [
+      {
+        "id": "agri_derivatives",
+        "label": "Agro & Derivativos Climáticos",
+        "icon": "🌾",
+        "file": "AgriDerivativesView"
+      },
+      {
+        "id": "cattle_agro_lcdpr",
+        "label": "Pecuária CPC 29 & LCDPR Rural",
+        "icon": "🐄",
+        "file": "CattleAgroLcdprView"
+      },
+      {
+        "id": "bearer_plants_agro",
+        "label": "Plantas Portadoras & Agro",
+        "icon": "🌱",
+        "file": "BearerPlantsAgroView"
+      },
+      {
+        "id": "biological_fco_tax",
+        "label": "Valor Justo CPC 29 & Subvenção",
+        "icon": "🌿",
+        "file": "BiologicalFairValueFcoTaxView"
+      },
+      {
+        "id": "agro_cpr_psr",
+        "label": "CPR Dólar & Seguro Rural PSR",
+        "icon": "🌾",
+        "file": "AgroCprForeignInsurancePsrView"
+      },
+      {
+        "id": "forestry_biological_debt",
+        "label": "Florestas FCD & Conversão Dívidas",
+        "icon": "🌲",
+        "file": "ForestryBiologicalDebtView"
+      },
+      {
+        "id": "earnout_sugarcane",
+        "label": "Earn-out em M&A & Cana/Etanol",
+        "icon": "🎋",
+        "file": "EarnoutSugarcaneView"
+      },
+      {
+        "id": "carbon_cbio",
+        "label": "Créditos Carbono & CBIOs RenovaBio",
+        "icon": "♻️",
+        "file": "CarbonCbioView"
+      },
+      {
+        "id": "sbce_carbon_redd",
+        "label": "Mercado Carbono SBCE & REDD+",
+        "icon": "🌳",
+        "file": "SbceCarbonMarketReddView"
+      },
+      {
+        "id": "methane_carbon_port_tax",
+        "label": "Metano & Praticagem Portuária",
+        "icon": "🚢",
+        "file": "MethaneCarbonPortTaxView"
+      },
+      {
+        "id": "zfm40_suframa_pin",
+        "label": "ZFM 4.0 & Automação PIN",
+        "icon": "📦",
+        "file": "Zfm40SuframaPinAutomationView"
+      },
+      {
+        "id": "carveout_zfm_tax",
+        "label": "Carve-Out CPC 18 & ZFM ICMS",
+        "icon": "🏭",
+        "file": "CarveoutZfmTaxView"
+      },
+      {
+        "id": "segments_amazon_alc",
+        "label": "Segmentos CPC 22 & Amazônia ALC",
+        "icon": "🌴",
+        "file": "SegmentsAmazonAlcTaxView"
+      },
+      {
+        "id": "distribution_alc",
+        "label": "Distribuição Sócios & ALCs",
+        "icon": "📦",
+        "file": "DistributionAlcView"
+      },
+      {
+        "id": "drex_cbdc_tpft",
+        "label": "DREX Real Digital & TPFTs",
+        "icon": "🪙",
+        "file": "DrexCbdcTokenizedTpftView"
+      },
+      {
+        "id": "rwa_tokens_ibs_cbs",
+        "label": "Tokens RWA & Reforma IBS/CBS",
+        "icon": "🪙",
+        "file": "RwaTokensIbsCbsView"
+      },
+      {
+        "id": "crypto_vasp_in1888",
+        "label": "Marco Cripto VASP & IN 1888",
+        "icon": "₿",
+        "file": "CryptoVaspIn1888ComplianceView"
+      },
+      {
+        "id": "borrowing_crypto",
+        "label": "Empréstimos Cripto & Custódia",
+        "icon": "🔐",
+        "file": "BorrowingCryptoView"
+      },
+      {
+        "id": "crypto_natural_gas",
+        "label": "Criptoativos & Gás Natural",
+        "icon": "⛽",
+        "file": "CryptoNaturalGasView"
+      },
+      {
+        "id": "ccee_energy_tp",
+        "label": "Mercado Livre CCEE & TP OCDE",
+        "icon": "⚡",
+        "file": "CceeEnergyTransferPricingView"
+      },
+      {
+        "id": "bets_cooperatives_tax",
+        "label": "Apostas / Bets & Cooperativas",
+        "icon": "🎲",
+        "file": "BetsCooperativesTaxView"
+      },
+      {
+        "id": "medical_cooperative_tax",
+        "label": "Cooperativas Médicas & PIS",
+        "icon": "🏥",
+        "file": "MedicalCooperativeTaxView"
+      },
+      {
+        "id": "port_tup_storage_tax",
+        "label": "Portos TUP & Armazenagem",
+        "icon": "⚓",
+        "file": "PortTupStorageIcmsIssView"
+      },
+      {
+        "id": "shopping_mall_fii_tax",
+        "label": "Shopping Centers & FIIs",
+        "icon": "🏬",
+        "file": "ShoppingMallFiiTaxView"
+      },
+      {
+        "id": "fractional_multipropriedade_ret",
+        "label": "Multipropriedade & RET 4%",
+        "icon": "🏖️",
+        "file": "FractionalOwnershipMultipropriedadeRetView"
+      },
+      {
+        "id": "naval_shipbuilding",
+        "label": "Construção Naval & Estaleiros",
+        "icon": "🚢",
+        "file": "NavalShipbuildingView"
+      },
+      {
+        "id": "resurfacing_cinema",
+        "label": "Recapeamento & Cinema RECINE",
+        "icon": "🎬",
+        "file": "ResurfacingCinemaView"
+      },
+      {
+        "id": "concession_hospital",
+        "label": "Concessões & Equiparação Hosp.",
+        "icon": "🏥",
+        "file": "ConcessionHospitalView"
+      },
+      {
+        "id": "hybrid_concession_vehicles",
+        "label": "Concessões & Veículos Usados",
+        "icon": "🚗",
+        "file": "HybridConcessionVehiclesView"
+      },
+      {
+        "id": "common_control_oil",
+        "label": "Controle Comum & Royalties ANP",
+        "icon": "🛢️",
+        "file": "CommonControlOilView"
+      },
+      {
+        "id": "telemetry_repetro",
+        "label": "Telemetria & Regime REPETRO",
+        "icon": "📡",
+        "file": "TelemetryRepetroView"
+      },
+      {
+        "id": "infrastructure_debentures",
+        "label": "Debêntures de Infraestrutura",
+        "icon": "🏛️",
+        "file": "InfrastructureDebenturesTaxView"
+      },
+      {
+        "id": "hybrid_perpetual_reidi_tax",
+        "label": "Títulos Híbridos & REIDI",
+        "icon": "⚡",
+        "file": "HybridPerpetualReidiTaxView"
+      },
+      {
+        "id": "fidc_cpr_agro",
+        "label": "FIDCs CPC 48 & CPR Agro Verde",
+        "icon": "📜",
+        "file": "FidcSecuritizationCprAgroView"
+      },
+      {
+        "id": "software_oea_customs",
+        "label": "Softwares CPC 04 & OEA Receita",
+        "icon": "💻",
+        "file": "SoftwareIntangiblesOeaCustomsView"
+      },
+      {
+        "id": "drawback_aap",
+        "label": "Drawback & AAP / OCI",
+        "icon": "🚢",
+        "file": "DrawbackAapView"
+      },
+      {
+        "id": "intercompany_drawback",
+        "label": "Mútuos CPC 05 & Drawback",
+        "icon": "🚢",
+        "file": "IntercompanyLoansDrawbackExemptionView"
+      },
+      {
+        "id": "borrowing_lei_do_bem",
+        "label": "Juros CPC 20 & Lei do Bem P&D",
+        "icon": "💡",
+        "file": "BorrowingCostsLeiDoBemView"
+      },
+      {
+        "id": "warranty_difal_fcp",
+        "label": "Garantias Estendidas & DIFAL FCP",
+        "icon": "🛡️",
+        "file": "ExtendedWarrantyDifalFcpView"
+      },
+      {
+        "id": "ndf_hedge_split_payment",
+        "label": "NDF Hedge & Split Payment",
+        "icon": "🛡️",
+        "file": "NdfHedgeSplitPaymentIbsView"
+      },
+      {
+        "id": "streaming_lease_ifrs",
+        "label": "Streaming Digital & IFRS 16",
+        "icon": "🎬",
+        "file": "StreamingLeaseIfrsView"
+      },
+      {
+        "id": "sudene_maintenance_overhaul",
+        "label": "Paradas CPC 27 & SUDENE",
+        "icon": "🏭",
+        "file": "SudeneMaintenanceOverhaulView"
+      },
+      {
+        "id": "weather_ipi_export",
+        "label": "Derivativos Climáticos & IPI",
+        "icon": "🌦️",
+        "file": "WeatherIpiExportView"
+      },
+      {
+        "id": "actuarial_pharma",
+        "label": "Previdência & Farmacêutico",
+        "icon": "💊",
+        "file": "ActuarialPharmaView"
+      },
+      {
+        "id": "perpetual_autoparts",
+        "label": "Perpétuos & Autopeças",
+        "icon": "⚙️",
+        "file": "PerpetualAutoPartsView"
+      },
+      {
+        "id": "uncertainty_beverages",
+        "label": "Incertezas & Bebidas Frias",
+        "icon": "🍹",
+        "file": "UncertaintyBeveragesView"
+      },
+      {
+        "id": "onerous_cosmetics",
+        "label": "Onerosos & Cosméticos",
+        "icon": "💄",
+        "file": "OnerousCosmeticsView"
+      },
+      {
+        "id": "compound_recycling",
+        "label": "Compostos & Reciclagem",
+        "icon": "♻️",
+        "file": "CompoundRecyclingView"
+      },
+      {
+        "id": "revaluation_biodiesel",
+        "label": "Custo Atribuído & Biodiesel",
+        "icon": "🛢️",
+        "file": "RevaluationBiodieselView"
+      },
+      {
+        "id": "regulatory_ev_mover",
+        "label": "Regulatórios & Programa MOVER",
+        "icon": "🚗",
+        "file": "RegulatoryEvMoverView"
+      },
+      {
+        "id": "embedded_freight",
+        "label": "Derivativos & Fretes Embutidos",
+        "icon": "🚛",
+        "file": "EmbeddedFreightView"
+      },
+      {
+        "id": "tax_loss_saas",
+        "label": "Prejuízos Fiscais & SaaS",
+        "icon": "💻",
+        "file": "TaxLossSaasView"
+      },
+      {
+        "id": "lessor_construction",
+        "label": "Arrendador & Obras Construção",
+        "icon": "🏗️",
+        "file": "LessorConstructionView"
+      },
+      {
+        "id": "liquidation_afrmm",
+        "label": "Liquidação & AFRMM Marinha",
+        "icon": "⚓",
+        "file": "LiquidationAfrmmView"
+      },
+      {
+        "id": "insurance_telecom",
+        "label": "Seguros BBA & Telecomunicações",
+        "icon": "📡",
+        "file": "InsuranceTelecomView"
+      },
+      {
+        "id": "grants_cide",
+        "label": "Subvenções & CIDE-Combustíveis",
+        "icon": "⛽",
+        "file": "GrantsCideView"
+      },
+      {
+        "id": "poc_leasing",
+        "label": "Contratos POC & Locação Imóveis",
+        "icon": "🏢",
+        "file": "PocLeasingView"
+      },
+      {
+        "id": "phantom_swap",
+        "label": "Phantom Shares & Swaps Permuta",
+        "icon": "🔄",
+        "file": "PhantomSwapView"
+      },
+      {
+        "id": "guarantee_fuels",
+        "label": "Garantias & Combustíveis",
+        "icon": "⛽",
+        "file": "GuaranteeFuelsView"
+      },
+      {
+        "id": "loans_cooperative",
+        "label": "Mútuos Subsidiados & Coop.",
+        "icon": "🤝",
+        "file": "LoansCooperativeView"
+      },
+      {
+        "id": "insurance_fii",
+        "label": "Seguros, FIIs & Criptoativos",
+        "icon": "🏬",
+        "file": "InsuranceFiiView"
+      },
+      {
+        "id": "separate_offshore",
+        "label": "Demonstrações Separadas & Offshores",
+        "icon": "🏝️",
+        "file": "SeparateOffshoreView"
+      },
+      {
+        "id": "benefits_ret",
+        "label": "Benefícios Pós-Emprego & RET",
+        "icon": "🏢",
+        "file": "BenefitsRetView"
+      },
+      {
+        "id": "discontinued_future",
+        "label": "Operações Descontinuadas",
+        "icon": "📦",
+        "file": "DiscontinuedFutureDeliveryView"
+      },
+      {
+        "id": "policies_triangular",
+        "label": "Políticas & Venda Triangular",
+        "icon": "📐",
+        "file": "PoliciesTriangularView"
+      },
+      {
+        "id": "mineral_trading",
+        "label": "Recursos Minerais & Tradings",
+        "icon": "⛏️",
+        "file": "MineralTradingView"
+      },
+      {
+        "id": "goodwill_toll",
+        "label": "Goodwill & Industrialização",
+        "icon": "🏭",
+        "file": "GoodwillTollView"
+      },
+      {
+        "id": "investment_warehouse",
+        "label": "Propriedades para Investimento",
+        "icon": "🏬",
+        "file": "InvestmentWarehouseView"
+      },
+      {
+        "id": "intangibles_returns",
+        "label": "Intangíveis & Devoluções",
+        "icon": "💡",
+        "file": "IntangiblesReturnsView"
+      },
+      {
+        "id": "aro_bonification",
+        "label": "Desmantelamento (ARO)",
+        "icon": "🏗️",
+        "file": "AroBonificationView"
+      },
+      {
+        "id": "queue_esg",
+        "label": "Filas & Mobilidade Urbana ESG",
+        "icon": "⚡",
+        "file": "QueueEsgEventsView"
+      },
+      {
+        "id": "interim_mover",
+        "label": "Demonstrações Intermediárias",
+        "icon": "🚗",
+        "file": "InterimMoverView"
+      },
+      {
+        "id": "capital_markets",
+        "label": "Mercado de Capitais & ZPEs",
+        "icon": "🏛️",
+        "file": "CapitalMarketsZpeView"
+      },
+      {
+        "id": "consolidation_consignment",
+        "label": "Consolidação & Consignação",
+        "icon": "📦",
+        "file": "ConsolidationConsignmentView"
+      }
+    ]
+  }
+]

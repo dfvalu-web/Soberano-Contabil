@@ -36,7 +36,7 @@ export const BiologicalFairValueFcoTaxView: React.FC = () => {
               <span style={{ fontWeight: 600, color: '#10b981' }}>+ R$ 2.090.000,00</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Efeito Preço (@ R$ 220 -> R$ 240):</span>
+              <span style={{ color: 'var(--text-secondary)' }}>Efeito Preço (@ R$ 220 para R$ 240):</span>
               <span style={{ fontWeight: 700, color: '#10b981' }}>+ R$ 646.000,00 (Total: R$ 2,736M)</span>
             </div>
           </div>

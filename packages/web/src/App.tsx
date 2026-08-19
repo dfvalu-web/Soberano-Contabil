@@ -1,105 +1,919 @@
-import { useState, useTransition } from 'react';
+import { OfficeIntangiblesAmortizationView } from './views/OfficeIntangiblesAmortizationView.js';
+
+import { OfficeProductsServicesStockView } from './views/OfficeProductsServicesStockView.js';
+import { OfficeInvoiceBillingIssuerView } from './views/OfficeInvoiceBillingIssuerView.js';
+import { OfficeFixedAssetsCiapView } from './views/OfficeFixedAssetsCiapView.js';
+﻿import { CnaeSectorBanner } from './components/CnaeSectorBanner.js';
+import { officeStore } from './state/office-store.js';
+import { SidebarNavigation } from './components/SidebarNavigation';
+import { DEPARTMENT_CATEGORIES as CATEGORIES, getModuleById, ALL_MODULES } from './config/navigation-modules';
+import { getRecommendedModulesForTenant } from './config/cnae-sector-matcher';
+import { QuickFilterTab } from './components/SidebarNavigation';
+import React, { useState, useMemo, useEffect } from 'react';
+import { OfficeMultiClientClosingGridView } from './views/OfficeMultiClientClosingGridView.js';
+import { OfficeUniversalDropzoneOcrView } from './views/OfficeUniversalDropzoneOcrView.js';
+import { OfficeBatchDispatchBundleView } from './views/OfficeBatchDispatchBundleView.js';
 import { DashboardView } from './views/DashboardView.js';
+import { AccountingOfficeHubView } from './views/AccountingOfficeHubView.js';
+import { OfficeDailyOperationsHubView } from './views/OfficeDailyOperationsHubView.js';
+import { OfficeMonthlyClosingChecklistView } from './views/OfficeMonthlyClosingChecklistView.js';
+import { OfficeTasksProductivitySlaView } from './views/OfficeTasksProductivitySlaView.js';
+import { OfficeClientProfitabilityBiView } from './views/OfficeClientProfitabilityBiView.js';
+import { ClientPortalOfficeView } from './views/ClientPortalOfficeView.js';
+import { OfficeMonophasicTaxSegregationView } from './views/OfficeMonophasicTaxSegregationView.js';
+import { OfficeCardPixCrossAuditView } from './views/OfficeCardPixCrossAuditView.js';
+import { OfficeReturnsTaxAdjustmentView } from './views/OfficeReturnsTaxAdjustmentView.js';
+import { OfficeInventoryBlockHKTaxAdjustmentView } from './views/OfficeInventoryBlockHKTaxAdjustmentView.js';
+import { OfficeDdaBankingNfeMatchingView } from './views/OfficeDdaBankingNfeMatchingView.js';
+import { OfficeInboundDfeBookkeepingView } from './views/OfficeInboundDfeBookkeepingView.js';
+import { OfficeStateAncillaryDeclarationsView } from './views/OfficeStateAncillaryDeclarationsView.js';
+import { ExtendedWarrantyDifalFcpView } from './views/ExtendedWarrantyDifalFcpView.js';
+import { OfficeCiapSpedBlockGView } from './views/OfficeCiapSpedBlockGView.js';
+import { OfficeFixedAssetsCiapBlocoGView } from './views/OfficeFixedAssetsCiapBlocoGView.js';
+import { OfficeAnnualClosingAreView } from './views/OfficeAnnualClosingAreView.js';
+import { OfficeTaxCreditRecoveryView } from './views/OfficeTaxCreditRecoveryView.js';
+import { OfficeTaxReformTransitionView } from './views/OfficeTaxReformTransitionView.js';
+import { OfficeTaxArrearsRecalculatorView } from './views/OfficeTaxArrearsRecalculatorView.js';
+import { OfficePerDcompNegativeBalanceView } from './views/OfficePerDcompNegativeBalanceView.js';
+import { OfficeOptimalProlaboreDividendsView } from './views/OfficeOptimalProlaboreDividendsView.js';
+import { OfficeFederalTaxWithholdingView } from './views/OfficeFederalTaxWithholdingView.js';
+import { OfficeIssqnWithholdingCpomView } from './views/OfficeIssqnWithholdingCpomView.js';
+import { OfficeReinfR4000DctfwebCrossAuditView } from './views/OfficeReinfR4000DctfwebCrossAuditView.js';
+import { OfficeTaxWithholdingsReinfView } from './views/OfficeTaxWithholdingsReinfView.js';
+import { OfficeCarneLeaoCashBookIrpfView } from './views/OfficeCarneLeaoCashBookIrpfView.js';
 import { TaxEngineView } from './views/TaxEngineView.js';
-import { AccountingView } from './views/AccountingView.js';
+import { FinancialBpoOfficeView } from './views/FinancialBpoOfficeView.js';
+import { PayrollOperationalView } from './views/PayrollOperationalView.js';
+import { OfficeRhExecutiveReportsDiamondView } from './views/OfficeRhExecutiveReportsDiamondView.js';
+import { OfficeLaborTerminationTrctView } from './views/OfficeLaborTerminationTrctView.js';
+import { OfficeAbsenceDsrVacationPenaltyView } from './views/OfficeAbsenceDsrVacationPenaltyView.js';
+import { OfficeHazardousWorkAdditionalView } from './views/OfficeHazardousWorkAdditionalView.js';
+import { OfficeFlexibleBenefitsPatView } from './views/OfficeFlexibleBenefitsPatView.js';
+import { OfficeCprbPayrollReliefView } from './views/OfficeCprbPayrollReliefView.js';
+import { OfficeAlimonyChildSupportPayrollView } from './views/OfficeAlimonyChildSupportPayrollView.js';
+import { OfficeOvertimeNightDsrView } from './views/OfficeOvertimeNightDsrView.js';
+import { OfficePayrollEsocialAuditView } from './views/OfficePayrollEsocialAuditView.js';
+import { OfficeSstEsocialPppView } from './views/OfficeSstEsocialPppView.js';
+import { OfficeVacationLeavesTimeTrackingView } from './views/OfficeVacationLeavesTimeTrackingView.js';
+import { OfficePayrollProvisionsTerminationView } from './views/OfficePayrollProvisionsTerminationView.js';
+import { OfficeAccountingIfrsLedgerView } from './views/OfficeAccountingIfrsLedgerView.js';
+import { OfficeCfoVirtualFinancialDecisionView } from './views/OfficeCfoVirtualFinancialDecisionView.js';
+import { OfficeAnnualAccountingClosingView } from './views/OfficeAnnualAccountingClosingView.js';
+import { OfficeEquityMethodCpc18View } from './views/OfficeEquityMethodCpc18View.js';
+import { OfficeEcdEcfJuntaRegistryView } from './views/OfficeEcdEcfJuntaRegistryView.js';
 import { SpedView } from './views/SpedView.js';
-import { PayrollView } from './views/PayrollView.js';
+import { OfficeSpedBatchPrevalidatorView } from './views/OfficeSpedBatchPrevalidatorView.js';
 import { DfeAuditView } from './views/DfeAuditView.js';
+import { DfcMergerBackupView } from './views/DfcMergerBackupView.js';
+import { DvaWealthJcpTaxView } from './views/DvaWealthJcpTaxView.js';
+import { CorporateLegalizationCndView } from './views/CorporateLegalizationCndView.js';
+import { OfficeRedesimViabilityLicensingView } from './views/OfficeRedesimViabilityLicensingView.js';
+import { OfficeFamilyHoldingSuccessionView } from './views/OfficeFamilyHoldingSuccessionView.js';
+import { OfficeStrategicAdvisoryValuationView } from './views/OfficeStrategicAdvisoryValuationView.js';
+import { OfficeCorporateGovernanceAssemblyView } from './views/OfficeCorporateGovernanceAssemblyView.js';
+import { OfficeFeesBillingDunningView } from './views/OfficeFeesBillingDunningView.js';
+import { OfficeClientOnboardingMigrationView } from './views/OfficeClientOnboardingMigrationView.js';
+import { OfficeElectronicAttorneyDjeView } from './views/OfficeElectronicAttorneyDjeView.js';
 import { SecurityLedgerView } from './views/SecurityLedgerView.js';
+import { OfficeDigitalCertificatesSignerView } from './views/OfficeDigitalCertificatesSignerView.js';
+import { CloudHsmPfxVaultView } from './views/CloudHsmPfxVaultView.js';
+import { OfficeAmlCoafComplianceView } from './views/OfficeAmlCoafComplianceView.js';
+import { GovWebservicesProductionView } from './views/GovWebservicesProductionView.js';
+import { SefazDirectTransmissionK8sView } from './views/SefazDirectTransmissionK8sView.js';
+import { AgriDerivativesView } from './views/AgriDerivativesView.js';
+import { CattleAgroLcdprView } from './views/CattleAgroLcdprView.js';
+import { BearerPlantsAgroView } from './views/BearerPlantsAgroView.js';
+import { BiologicalFairValueFcoTaxView } from './views/BiologicalFairValueFcoTaxView.js';
+import { AgroCprForeignInsurancePsrView } from './views/AgroCprForeignInsurancePsrView.js';
+import { ForestryBiologicalDebtView } from './views/ForestryBiologicalDebtView.js';
+import { EarnoutSugarcaneView } from './views/EarnoutSugarcaneView.js';
+import { CarbonCbioView } from './views/CarbonCbioView.js';
+import { SbceCarbonMarketReddView } from './views/SbceCarbonMarketReddView.js';
+import { MethaneCarbonPortTaxView } from './views/MethaneCarbonPortTaxView.js';
+import { Zfm40SuframaPinAutomationView } from './views/Zfm40SuframaPinAutomationView.js';
+import { CarveoutZfmTaxView } from './views/CarveoutZfmTaxView.js';
+import { SegmentsAmazonAlcTaxView } from './views/SegmentsAmazonAlcTaxView.js';
+import { DistributionAlcView } from './views/DistributionAlcView.js';
+import { DrexCbdcTokenizedTpftView } from './views/DrexCbdcTokenizedTpftView.js';
+import { RwaTokensIbsCbsView } from './views/RwaTokensIbsCbsView.js';
+import { CryptoVaspIn1888ComplianceView } from './views/CryptoVaspIn1888ComplianceView.js';
+import { BorrowingCryptoView } from './views/BorrowingCryptoView.js';
+import { CryptoNaturalGasView } from './views/CryptoNaturalGasView.js';
+import { CceeEnergyTransferPricingView } from './views/CceeEnergyTransferPricingView.js';
+import { BetsCooperativesTaxView } from './views/BetsCooperativesTaxView.js';
+import { MedicalCooperativeTaxView } from './views/MedicalCooperativeTaxView.js';
+import { PortTupStorageIcmsIssView } from './views/PortTupStorageIcmsIssView.js';
+import { ShoppingMallFiiTaxView } from './views/ShoppingMallFiiTaxView.js';
+import { FractionalOwnershipMultipropriedadeRetView } from './views/FractionalOwnershipMultipropriedadeRetView.js';
+import { NavalShipbuildingView } from './views/NavalShipbuildingView.js';
+import { ResurfacingCinemaView } from './views/ResurfacingCinemaView.js';
+import { ConcessionHospitalView } from './views/ConcessionHospitalView.js';
+import { HybridConcessionVehiclesView } from './views/HybridConcessionVehiclesView.js';
+import { CommonControlOilView } from './views/CommonControlOilView.js';
+import { TelemetryRepetroView } from './views/TelemetryRepetroView.js';
+import { InfrastructureDebenturesTaxView } from './views/InfrastructureDebenturesTaxView.js';
+import { HybridPerpetualReidiTaxView } from './views/HybridPerpetualReidiTaxView.js';
+import { FidcSecuritizationCprAgroView } from './views/FidcSecuritizationCprAgroView.js';
+import { SoftwareIntangiblesOeaCustomsView } from './views/SoftwareIntangiblesOeaCustomsView.js';
+import { DrawbackAapView } from './views/DrawbackAapView.js';
+import { IntercompanyLoansDrawbackExemptionView } from './views/IntercompanyLoansDrawbackExemptionView.js';
+import { BorrowingCostsLeiDoBemView } from './views/BorrowingCostsLeiDoBemView.js';
+import { NdfHedgeSplitPaymentIbsView } from './views/NdfHedgeSplitPaymentIbsView.js';
+import { StreamingLeaseIfrsView } from './views/StreamingLeaseIfrsView.js';
+import { SudeneMaintenanceOverhaulView } from './views/SudeneMaintenanceOverhaulView.js';
+import { WeatherIpiExportView } from './views/WeatherIpiExportView.js';
+import { ActuarialPharmaView } from './views/ActuarialPharmaView.js';
+import { PerpetualAutoPartsView } from './views/PerpetualAutoPartsView.js';
+import { UncertaintyBeveragesView } from './views/UncertaintyBeveragesView.js';
+import { OnerousCosmeticsView } from './views/OnerousCosmeticsView.js';
+import { CompoundRecyclingView } from './views/CompoundRecyclingView.js';
+import { RevaluationBiodieselView } from './views/RevaluationBiodieselView.js';
+import { RegulatoryEvMoverView } from './views/RegulatoryEvMoverView.js';
+import { EmbeddedFreightView } from './views/EmbeddedFreightView.js';
+import { TaxLossSaasView } from './views/TaxLossSaasView.js';
+import { LessorConstructionView } from './views/LessorConstructionView.js';
+import { LiquidationAfrmmView } from './views/LiquidationAfrmmView.js';
+import { InsuranceTelecomView } from './views/InsuranceTelecomView.js';
+import { GrantsCideView } from './views/GrantsCideView.js';
+import { PocLeasingView } from './views/PocLeasingView.js';
+import { PhantomSwapView } from './views/PhantomSwapView.js';
+import { GuaranteeFuelsView } from './views/GuaranteeFuelsView.js';
+import { LoansCooperativeView } from './views/LoansCooperativeView.js';
+import { InsuranceFiiView } from './views/InsuranceFiiView.js';
+import { SeparateOffshoreView } from './views/SeparateOffshoreView.js';
+import { BenefitsRetView } from './views/BenefitsRetView.js';
+import { DiscontinuedFutureDeliveryView } from './views/DiscontinuedFutureDeliveryView.js';
+import { PoliciesTriangularView } from './views/PoliciesTriangularView.js';
+import { MineralTradingView } from './views/MineralTradingView.js';
+import { GoodwillTollView } from './views/GoodwillTollView.js';
+import { InvestmentWarehouseView } from './views/InvestmentWarehouseView.js';
+import { IntangiblesReturnsView } from './views/IntangiblesReturnsView.js';
+import { AroBonificationView } from './views/AroBonificationView.js';
+import { QueueEsgEventsView } from './views/QueueEsgEventsView.js';
+import { InterimMoverView } from './views/InterimMoverView.js';
+import { CapitalMarketsZpeView } from './views/CapitalMarketsZpeView.js';
+import { ConsolidationConsignmentView } from './views/ConsolidationConsignmentView.js';
+import { BepsGlobeQdmttTaxTreatyView } from './views/BepsGlobeQdmttTaxTreatyView.js';
+import { ControlTowerOcrLedgerView } from './views/ControlTowerOcrLedgerView.js';
+import { CorporateSsoGovbrMfaView } from './views/CorporateSsoGovbrMfaView.js';
+import { CrossBorderMaSafeHarborView } from './views/CrossBorderMaSafeHarborView.js';
+import { DfcCompoundingView } from './views/DfcCompoundingView.js';
+import { DistributedQueueWhatsappAlertsView } from './views/DistributedQueueWhatsappAlertsView.js';
+import { EnterpriseProductionCommandCenterView } from './views/EnterpriseProductionCommandCenterView.js';
+import { EsgIfrsGlobeTaxView } from './views/EsgIfrsGlobeTaxView.js';
 import { ExecutiveReportsView } from './views/ExecutiveReportsView.js';
-import { LayoutDashboard, Calculator, BookOpen, FileCode, Users, Zap, Building2, ShieldCheck, Award } from 'lucide-react';
+import { FirstTimeIfrsReiqTaxView } from './views/FirstTimeIfrsReiqTaxView.js';
+import { FirstTimeInsurancePaaView } from './views/FirstTimeInsurancePaaView.js';
+import { ForeignCurrencyAgroPisCofinsView } from './views/ForeignCurrencyAgroPisCofinsView.js';
+import { ForensicAiView } from './views/ForensicAiView.js';
+import { HyperinflationIofView } from './views/HyperinflationIofView.js';
+import { InterimReportingRecofSpedView } from './views/InterimReportingRecofSpedView.js';
+import { KmsPartiesGrantsView } from './views/KmsPartiesGrantsView.js';
+import { OfficeAnnualDossierAuditOpinionView } from './views/OfficeAnnualDossierAuditOpinionView.js';
+import { OfficeAnnualTaxPlanningView } from './views/OfficeAnnualTaxPlanningView.js';
+import { OfficeCfcResponsibilityTransferView } from './views/OfficeCfcResponsibilityTransferView.js';
+import { OfficeContractsResponsibilityTransferView } from './views/OfficeContractsResponsibilityTransferView.js';
+import { OfficeExecutiveBoardManagementReportsView } from './views/OfficeExecutiveBoardManagementReportsView.js';
+import { OfficeFeesCollectionDunningView } from './views/OfficeFeesCollectionDunningView.js';
+import { OfficeFinancialInvestmentTaxView } from './views/OfficeFinancialInvestmentTaxView.js';
+import { OfficeFiscalDocumentOcrView } from './views/OfficeFiscalDocumentOcrView.js';
+import { OfficeInternshipApprenticeAuditView } from './views/OfficeInternshipApprenticeAuditView.js';
+import { OfficeJobTenureStabilityInssView } from './views/OfficeJobTenureStabilityInssView.js';
+import { OfficeSmartDropzoneTriageView } from './views/OfficeSmartDropzoneTriageView.js';
+import { OfficeStateOfTheArtDailyAutomationView } from './views/OfficeStateOfTheArtDailyAutomationView.js';
+import { OfficeTaxDiscrepanciesNotificationsView } from './views/OfficeTaxDiscrepanciesNotificationsView.js';
+import { OfficeTaxIncentivesDonationView } from './views/OfficeTaxIncentivesDonationView.js';
+import { OfficeTaxInstallmentsPgfnView } from './views/OfficeTaxInstallmentsPgfnView.js';
+import { OpenFinanceAuditCrossView } from './views/OpenFinanceAuditCrossView.js';
+import { PensionDefinedBenefitAdmissionActiveView } from './views/PensionDefinedBenefitAdmissionActiveView.js';
+import { PortWorkersFapPayrollView } from './views/PortWorkersFapPayrollView.js';
+import { PostgresMultiTenantRlsView } from './views/PostgresMultiTenantRlsView.js';
+import { PostgresPgvectorOtelPrometheusView } from './views/PostgresPgvectorOtelPrometheusView.js';
+import { PvaComplianceSoc2SecurityView } from './views/PvaComplianceSoc2SecurityView.js';
+import { Soc2IsoDrpLgpdAuditView } from './views/Soc2IsoDrpLgpdAuditView.js';
+import { StockOptionsSpedExportView } from './views/StockOptionsSpedExportView.js';
+import { TreasuryDemonstrationView } from './views/TreasuryDemonstrationView.js';
 
-export type AppView = 'DASHBOARD' | 'TAX' | 'ACCOUNTING' | 'SPED' | 'PAYROLL' | 'DFE_AUDIT' | 'SECURITY' | 'REPORTS';
+// Navigation categories and types imported from ./config/navigation-modules
 
-export const App = () => {
-  const [currentView, setCurrentView] = useState<AppView>('DASHBOARD');
-  const [, startTransition] = useTransition();
+export const App: React.FC = () => {
+  const [currentModuleId, setCurrentModuleId] = useState<string>('office_multi_client_grid');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeFilterTab, setActiveFilterTab] = useState<QuickFilterTab>('todos');
 
-  const handleNav = (view: AppView) => {
-    startTransition(() => {
-      setCurrentView(view);
-    });
+  // Compute active tab dynamically based on currentModuleId
+  const activeDepartmentTab = useMemo<QuickFilterTab>(() => {
+    const mod = getModuleById(currentModuleId);
+    if (mod) {
+      if (mod.departmentId === 'gestao') return 'core';
+      if (mod.departmentId === 'dp') return 'dp';
+      if (mod.departmentId === 'fiscal') return 'fiscal';
+      if (mod.departmentId === 'contabil') return 'contabil';
+      if (mod.departmentId === 'setoriais') return 'setoriais';
+    }
+    return activeFilterTab;
+  }, [currentModuleId, activeFilterTab]);
+
+  const handleSelectTopCategory = (tabId: QuickFilterTab) => {
+    setActiveFilterTab(tabId);
+    if (tabId === 'core') {
+      setCurrentModuleId('office_multi_client_grid');
+    } else if (tabId === 'dp') {
+      setCurrentModuleId('payroll');
+    } else if (tabId === 'fiscal') {
+      setCurrentModuleId('office_monophasic_tax');
+    } else if (tabId === 'contabil') {
+      setCurrentModuleId('accounting');
+    } else if (tabId === 'setoriais') {
+      setCurrentModuleId('agri_derivatives');
+    } else if (tabId === 'cnae') {
+      const recs = getRecommendedModulesForTenant(currentTenantObj);
+      if (recs && recs.length > 0) {
+        setCurrentModuleId(recs[0].id);
+      }
+    }
   };
+  const [collapsedCategories, setCollapsedCategories] = useState<{ [key: string]: boolean }>({
+    'Módulos Setoriais & Especiais (Sob Demanda)': true
+  });
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
+  const [isRightDeckOpen, setIsRightDeckOpen] = useState<boolean>(true);
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [selectedTenant, setSelectedTenant] = useState<string>('Soberano Tech S/A');
+  const tenants = useMemo(() => officeStore.getTenants(), []);
+  const currentTenantObj = useMemo(() => {
+    return tenants.find(t => t.name === selectedTenant || t.id === selectedTenant) || tenants[0];
+  }, [tenants, selectedTenant]);
+  const [selectedCompetencia, setSelectedCompetencia] = useState<string>('08/2026');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const toggleCategory = (catName: string) => {
+    setCollapsedCategories(prev => ({
+      ...prev,
+      [catName]: !prev[catName]
+    }));
+  };
+
+  const expandAllCategories = () => {
+    setCollapsedCategories({});
+  };
+
+  const collapseAllCategories = () => {
+    const collapsed: { [key: string]: boolean } = {};
+    CATEGORIES.forEach(c => { collapsed[c.category] = true; });
+    setCollapsedCategories(collapsed);
+  };
+
+  const filteredCategories = useMemo(() => {
+    let list = CATEGORIES;
+
+    if (activeFilterTab === 'core') {
+      list = list.filter(cat => cat.isCore);
+    } else if (activeFilterTab !== 'todos') {
+      list = list.filter(cat => 
+        (cat.tag && cat.tag === activeFilterTab) ||
+        cat.category.toLowerCase().includes(activeFilterTab.toLowerCase())
+      );
+    }
+
+    if (!searchQuery.trim()) return list;
+    const query = searchQuery.toLowerCase();
+
+    return list.map(cat => {
+      const matchedItems = cat.items.filter(
+        item => item.label.toLowerCase().includes(query) || item.id.toLowerCase().includes(query) || cat.category.toLowerCase().includes(query)
+      );
+      return {
+        ...cat,
+        items: matchedItems
+      };
+    }).filter(cat => cat.items.length > 0);
+  }, [searchQuery, activeFilterTab]);
+
+  const totalVisibleModules = useMemo(() => {
+    return filteredCategories.reduce((acc, cat) => acc + cat.items.length, 0);
+  }, [filteredCategories]);
+
+  const activeModule = useMemo(() => {
+    for (const cat of CATEGORIES) {
+      const found = cat.items.find(i => i.id === currentModuleId);
+      if (found) return { ...found, category: cat.category };
+    }
+    return { id: 'office_multi_client_grid', label: 'Cockpit Multi-Empresa em Grade', icon: '🚦', file: 'OfficeMultiClientClosingGridView', category: 'Gestão & Produtividade do Escritório' };
+  }, [currentModuleId]);
 
   return (
     <div className="app-container">
-      <header className="top-navbar">
-        <div className="brand-badge">
-          <div className="brand-icon">S</div>
-          <div className="brand-info">
-            <h1>Soberano Contábil</h1>
-            <p>ERP Autônomo & Inteligência Fiscal</p>
+      {/* ========================================================================= */}
+      {/* 1. TOPBAR GLOBAL CORPORATIVA (HEADER PRINCIPAL)                          */}
+      {/* ========================================================================= */}
+      <header className="app-topbar-global">
+        {/* Esquerda: Logo + Botão Menu + Breadcrumb */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <button
+            onClick={() => setIsSidebarOpen(prev => !prev)}
+            style={{
+              background: 'var(--bg-surface-elevated)',
+              border: '1px solid var(--border-subtle)',
+              color: '#fff',
+              padding: '6px 10px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <span>☰</span> {isSidebarOpen ? 'Recolher' : 'Menu'}
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              background: 'linear-gradient(135deg, #10B981, #06B6D4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '1rem',
+              color: '#070B12',
+              boxShadow: '0 0 12px rgba(16, 185, 129, 0.35)'
+            }}>
+              S
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#fff', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                Soberano <span style={{ color: 'var(--emerald-400)' }}>ERP</span>
+                <span style={{
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  color: 'var(--emerald-400)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  padding: '1px 6px',
+                  borderRadius: '4px',
+                  fontSize: '0.62rem',
+                  fontWeight: 800
+                }}>
+                  MASTER
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', marginLeft: '8px' }}>
+            <span style={{ color: 'var(--text-muted)' }}>/</span>
+            <span style={{ color: 'var(--text-secondary)' }}>{activeModule.category}</span>
+            <span style={{ color: 'var(--text-muted)' }}>/</span>
+            <span style={{
+              color: '#fff',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'rgba(255, 255, 255, 0.05)',
+              padding: '3px 8px',
+              borderRadius: '6px',
+              border: '1px solid rgba(255, 255, 255, 0.08)'
+            }}>
+              <span>{activeModule.icon}</span> {activeModule.label}
+            </span>
           </div>
         </div>
 
-        <nav className="nav-tabs">
-          <button
-            className={`nav-tab-btn ${currentView === 'DASHBOARD' ? 'active' : ''}`}
-            onClick={() => handleNav('DASHBOARD')}
-          >
-            <LayoutDashboard size={16} /> Cockpit
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'TAX' ? 'active' : ''}`}
-            onClick={() => handleNav('TAX')}
-          >
-            <Calculator size={16} /> Tributário Híbrido
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'ACCOUNTING' ? 'active' : ''}`}
-            onClick={() => handleNav('ACCOUNTING')}
-          >
-            <BookOpen size={16} /> Contabilidade IFRS
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'SPED' ? 'active' : ''}`}
-            onClick={() => handleNav('SPED')}
-          >
-            <FileCode size={16} /> Suite SPED & PVA
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'PAYROLL' ? 'active' : ''}`}
-            onClick={() => handleNav('PAYROLL')}
-          >
-            <Users size={16} /> Folha & eSocial
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'DFE_AUDIT' ? 'active' : ''}`}
-            onClick={() => handleNav('DFE_AUDIT')}
-          >
-            <Zap size={16} /> DF-e & Auditoria
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'SECURITY' ? 'active' : ''}`}
-            onClick={() => handleNav('SECURITY')}
-          >
-            <ShieldCheck size={16} /> Segurança & Ledger
-          </button>
-          <button
-            className={`nav-tab-btn ${currentView === 'REPORTS' ? 'active' : ''}`}
-            onClick={() => handleNav('REPORTS')}
-          >
-            <Award size={16} /> Dossiê Executivo
-          </button>
-        </nav>
+        {/* Centro: Competência + Status Conexões Gov */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          {/* Seletor de Competência */}
+          <div style={{
+            background: 'var(--bg-surface-elevated)',
+            border: '1px solid var(--border-subtle)',
+            borderRadius: '6px',
+            padding: '4px 10px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.75rem'
+          }}>
+            <span style={{ color: 'var(--text-muted)' }}>📅 Mês:</span>
+            <select
+              value={selectedCompetencia}
+              onChange={(e) => setSelectedCompetencia(e.target.value)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--emerald-400)',
+                fontWeight: 800,
+                fontSize: '0.78rem',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="08/2026" style={{ background: '#111726', color: '#fff' }}>Agosto / 2026 (Aberto)</option>
+              <option value="07/2026" style={{ background: '#111726', color: '#fff' }}>Julho / 2026 (Fechado)</option>
+              <option value="06/2026" style={{ background: '#111726', color: '#fff' }}>Junho / 2026 (Fechado)</option>
+              <option value="2026" style={{ background: '#111726', color: '#fff' }}>Exercício 2026 Completo</option>
+            </select>
+          </div>
 
-        <div className="tenant-selector">
-          <Building2 size={16} color="var(--emerald-400)" />
-          <span style={{ fontWeight: 600, color: '#fff' }}>Soberano Tech S/A</span>
-          <span className="badge badge-emerald" style={{ fontSize: '0.7rem' }}>Lucro Real</span>
+          {/* Status Gov Live */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.7rem' }}>
+            <span style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              background: 'rgba(16, 185, 129, 0.1)',
+              color: 'var(--emerald-400)',
+              padding: '3px 8px',
+              borderRadius: '4px',
+              border: '1px solid rgba(16, 185, 129, 0.25)',
+              fontWeight: 700
+            }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981' }}></span>
+              SEFAZ Online
+            </span>
+            <span style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              background: 'rgba(6, 182, 212, 0.1)',
+              color: 'var(--cyan-400)',
+              padding: '3px 8px',
+              borderRadius: '4px',
+              border: '1px solid rgba(6, 182, 212, 0.25)',
+              fontWeight: 700
+            }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#06B6D4' }}></span>
+              eSocial Conectado
+            </span>
+          </div>
+        </div>
+
+        {/* Direita: Empresa Ativa + 1-Click Fechamento + Toggle Copiloto Deck */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Seletor de Tenant */}
+          <div style={{
+            background: 'var(--bg-surface-elevated)',
+            border: '1px solid var(--border-medium)',
+            borderRadius: '8px',
+            padding: '4px 10px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <span style={{ fontSize: '0.9rem' }}>🏢</span>
+            <div>
+              <select
+                value={selectedTenant}
+                onChange={(e) => setSelectedTenant(e.target.value)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#fff',
+                  fontWeight: 700,
+                  fontSize: '0.78rem',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <option value="Soberano Tech S/A" style={{ background: '#111726', color: '#fff' }}>Soberano Tech S/A (Lucro Real)</option>
+                <option value="Drogaria Alvorada Ltda" style={{ background: '#111726', color: '#fff' }}>Drogaria Alvorada Ltda (Comércio • Simples)</option>
+                <option value="Indústria MetalÃºrgica Alpha S/A" style={{ background: '#111726', color: '#fff' }}>Indústria MetalÃºrgica Alpha (Lucro Real)</option>
+                <option value="ClÃ­nica MÃ©dica & Serviços Ltda" style={{ background: '#111726', color: '#fff' }}>ClÃ­nica MÃ©dica & Serviços (Presumido)</option>
+              </select>
+            </div>
+            <span style={{
+              background: 'rgba(16, 185, 129, 0.15)',
+              color: 'var(--emerald-400)',
+              padding: '2px 6px',
+              borderRadius: '4px',
+              fontSize: '0.65rem',
+              fontWeight: 800
+            }}>
+              CND OK
+            </span>
+          </div>
+
+          {/* Botão 1-Click */}
+          <button
+            onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
+            className="btn-primary-action"
+          >
+            <span>🚀</span> 1-Click Fechamento
+          </button>
+
+          {/* Toggle Painel Direito */}
+          <button
+            onClick={() => setIsRightDeckOpen(prev => !prev)}
+            style={{
+              background: isRightDeckOpen ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.1))' : 'var(--bg-surface-elevated)',
+              border: isRightDeckOpen ? '1px solid var(--emerald-500)' : '1px solid var(--border-subtle)',
+              color: isRightDeckOpen ? 'var(--emerald-400)' : '#fff',
+              padding: '6px 12px',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <span>🤖</span> {isRightDeckOpen ? 'Ocultar Copiloto' : 'Copiloto & Ações'}
+          </button>
         </div>
       </header>
 
-      <main className="main-content">
-        {currentView === 'DASHBOARD' && <DashboardView />}
-        {currentView === 'TAX' && <TaxEngineView />}
-        {currentView === 'ACCOUNTING' && <AccountingView />}
-        {currentView === 'SPED' && <SpedView />}
-        {currentView === 'PAYROLL' && <PayrollView />}
-        {currentView === 'DFE_AUDIT' && <DfeAuditView />}
-        {currentView === 'SECURITY' && <SecurityLedgerView />}
-        {currentView === 'REPORTS' && <ExecutiveReportsView />}
-      </main>
+      {/* ========================================================================= */}
+      {/* CORPO PRINCIPAL COM 3 COLUNAS (SIDEBAR + WORKSPACE + RIGHT DECK)          */}
+      {/* ========================================================================= */}
+      <div className="app-body-layout">
+        {/* ======================================================================= */}
+        {/* 2. SIDEBAR ESQUERDA (NAVEGAÃ‡ÃƒO CATEGORIZADA CORE)                       */}
+        {/* ======================================================================= */}
+        <SidebarNavigation
+          currentModuleId={currentModuleId}
+          onSelectModule={setCurrentModuleId}
+          tenant={currentTenantObj}
+          className={isSidebarOpen ? '' : 'collapsed'}
+        />
+
+        {/* ======================================================================= */}
+        {/* 3. WORKSPACE CENTRAL (CANVAS PRINCIPAL DO MÃ“DULO)                       */}
+        {/* ======================================================================= */}
+        <main className="app-center-workspace">
+          {/* Barra de Filtro Estratégico de Abas */}
+          <div className="category-filter-bar">
+            {[
+              { id: 'CORE', label: '💎 Core Escritório (68)', icon: '🏛️' },
+              { id: 'ESCRITORIO', label: '📊 GestÃ£o & Produtividade (10)', icon: '⚡' },
+              { id: 'COMERCIO', label: '🏪 Comércio & Varejo (8)', icon: '📦' },
+              { id: 'INDUSTRIA', label: '🏭 Indústria & Manufatura (7)', icon: '⚙️' },
+              { id: 'SERVICOS', label: '💼 Serviços & PJ (8)', icon: '💼' },
+              { id: 'DP', label: '👥 Folha DP & eSocial (12)', icon: '👥' },
+              { id: 'CONTABIL', label: '📚 Contabilidade & SPED (9)', icon: '📚' },
+              { id: 'SOCIETARIO', label: '🏛️ Societário & CNDs (8)', icon: '📜' },
+              { id: 'TODOS', label: '🌐 Todos os 181 Módulos', icon: '💎' }
+            ].map(tab => {
+              const isSelected = activeFilterTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    setSelectedCategoryTab(tab.id);
+                    if (tab.id === 'CORE' || tab.id === 'TODOS') setSearchQuery('');
+                  }}
+                  className={`category-filter-pill ${isSelected ? 'active' : ''}`}
+                >
+                  <span>{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Renderização do Módulo Ativo */}
+          <CnaeSectorBanner tenant={currentTenantObj} onSelectModule={setCurrentModuleId} currentModuleId={currentModuleId} />
+          <div className="view-card-container">
+          {currentModuleId === 'office_multi_client_grid' && <OfficeMultiClientClosingGridView />}
+          {currentModuleId === 'office_universal_dropzone_ocr' && <OfficeUniversalDropzoneOcrView />}
+          {currentModuleId === 'office_batch_dispatch_bundle' && <OfficeBatchDispatchBundleView />}
+          {currentModuleId === 'dashboard' && <DashboardView />}
+          {currentModuleId === 'accounting_office_hub' && <AccountingOfficeHubView />}
+          {currentModuleId === 'office_daily_operations' && <OfficeDailyOperationsHubView />}
+          {currentModuleId === 'office_monthly_closing' && <OfficeMonthlyClosingChecklistView />}
+          {currentModuleId === 'office_tasks_productivity' && <OfficeTasksProductivitySlaView />}
+          {currentModuleId === 'office_client_profitability_bi' && <OfficeClientProfitabilityBiView />}
+          {currentModuleId === 'client_portal_office' && <ClientPortalOfficeView />}
+          {currentModuleId === 'office_monophasic_tax' && <OfficeMonophasicTaxSegregationView />}
+          {currentModuleId === 'office_card_pix_crossaudit' && <OfficeCardPixCrossAuditView />}
+          {currentModuleId === 'office_returns_tax' && <OfficeReturnsTaxAdjustmentView />}
+          {currentModuleId === 'office_inventory_block_hk' && <OfficeInventoryBlockHKTaxAdjustmentView />}
+          {currentModuleId === 'office_dda_matching' && <OfficeDdaBankingNfeMatchingView />}
+          {currentModuleId === 'office_inbound_dfe' && <OfficeInboundDfeBookkeepingView />}
+          {currentModuleId === 'office_state_ancillary' && <OfficeStateAncillaryDeclarationsView />}
+          {currentModuleId === 'warranty_difal_fcp' && <ExtendedWarrantyDifalFcpView />}
+          {currentModuleId === 'office_ciap_block_g' && <OfficeCiapSpedBlockGView />}
+          
+          {currentModuleId === 'office_products_services_stock' && <OfficeProductsServicesStockView />}
+          {currentModuleId === 'office_invoice_billing_issuer' && <OfficeInvoiceBillingIssuerView />}
+          {(currentModuleId === 'office_fixed_assets_ciap' || currentModuleId === 'office_fixed_assets_cpc27') && <OfficeFixedAssetsCiapView />}
+          {currentModuleId === 'office_intangibles_amortization' && <OfficeIntangiblesAmortizationView />}
+
+          {currentModuleId === 'office_annual_closing_are' && <OfficeAnnualClosingAreView />}
+          {currentModuleId === 'office_tax_credit_recovery' && <OfficeTaxCreditRecoveryView />}
+          {currentModuleId === 'office_tax_reform_transition' && <OfficeTaxReformTransitionView />}
+          {currentModuleId === 'office_tax_arrears' && <OfficeTaxArrearsRecalculatorView />}
+          {currentModuleId === 'office_perdcomp_negative_balance' && <OfficePerDcompNegativeBalanceView />}
+          {currentModuleId === 'office_optimal_prolabore' && <OfficeOptimalProlaboreDividendsView />}
+          {currentModuleId === 'office_federal_tax_withholding' && <OfficeFederalTaxWithholdingView />}
+          {currentModuleId === 'office_issqn_withholding' && <OfficeIssqnWithholdingCpomView />}
+          {currentModuleId === 'office_reinf_r4000' && <OfficeReinfR4000DctfwebCrossAuditView />}
+          {currentModuleId === 'office_tax_withholdings' && <OfficeTaxWithholdingsReinfView />}
+          {currentModuleId === 'office_carne_leao_irpf' && <OfficeCarneLeaoCashBookIrpfView />}
+          {currentModuleId === 'tax' && <TaxEngineView />}
+          {currentModuleId === 'financial_bpo_office' && <FinancialBpoOfficeView />}
+          {currentModuleId === 'office_rh_executive_reports_diamond' && <OfficeRhExecutiveReportsDiamondView />}
+          {currentModuleId === 'payroll' && <PayrollOperationalView />}
+          {currentModuleId === 'office_labor_termination' && <OfficeLaborTerminationTrctView />}
+          {currentModuleId === 'office_absence_dsr_vacation' && <OfficeAbsenceDsrVacationPenaltyView />}
+          {currentModuleId === 'office_hazardous_work' && <OfficeHazardousWorkAdditionalView />}
+          {currentModuleId === 'office_flexible_benefits_pat' && <OfficeFlexibleBenefitsPatView />}
+          {currentModuleId === 'office_cprb_payroll_relief' && <OfficeCprbPayrollReliefView />}
+          {currentModuleId === 'office_alimony_child_support' && <OfficeAlimonyChildSupportPayrollView />}
+          {currentModuleId === 'office_overtime_night_dsr' && <OfficeOvertimeNightDsrView />}
+          {currentModuleId === 'office_payroll_esocial_audit' && <OfficePayrollEsocialAuditView />}
+          {currentModuleId === 'office_sst_esocial' && <OfficeSstEsocialPppView />}
+          {currentModuleId === 'office_vacation_leaves' && <OfficeVacationLeavesTimeTrackingView />}
+          {currentModuleId === 'office_payroll_provisions' && <OfficePayrollProvisionsTerminationView />}
+          {currentModuleId === 'accounting' && <OfficeAccountingIfrsLedgerView />}
+          {(currentModuleId === 'financial_statement_analysis_cfo' || currentModuleId === 'financial_analysis') && <OfficeCfoVirtualFinancialDecisionView />}
+          {currentModuleId === 'office_annual_closing' && <OfficeAnnualAccountingClosingView />}
+          {currentModuleId === 'office_equity_method_cpc18' && <OfficeEquityMethodCpc18View />}
+          {currentModuleId === 'office_ecd_ecf_junta' && <OfficeEcdEcfJuntaRegistryView />}
+          {currentModuleId === 'sped' && <SpedView />}
+          {currentModuleId === 'office_sped_batch_prevalidator' && <OfficeSpedBatchPrevalidatorView />}
+          {currentModuleId === 'dfe' && <DfeAuditView />}
+          {currentModuleId === 'dfc_merger' && <DfcMergerBackupView />}
+          {currentModuleId === 'dva_wealth_jcp' && <DvaWealthJcpTaxView />}
+          {currentModuleId === 'corporate_legalization_cnd' && <CorporateLegalizationCndView />}
+          {currentModuleId === 'office_redesim_viability' && <OfficeRedesimViabilityLicensingView />}
+          {currentModuleId === 'office_family_holding' && <OfficeFamilyHoldingSuccessionView />}
+          {currentModuleId === 'office_strategic_valuation' && <OfficeStrategicAdvisoryValuationView />}
+          {currentModuleId === 'office_corporate_governance' && <OfficeCorporateGovernanceAssemblyView />}
+          {currentModuleId === 'office_fees_billing' && <OfficeFeesBillingDunningView />}
+          {currentModuleId === 'office_client_onboarding' && <OfficeClientOnboardingMigrationView />}
+          {currentModuleId === 'office_electronic_attorney' && <OfficeElectronicAttorneyDjeView />}
+          {currentModuleId === 'security' && <SecurityLedgerView />}
+          {currentModuleId === 'office_digital_certificates' && <OfficeDigitalCertificatesSignerView />}
+          {currentModuleId === 'cloud_hsm_pfx_vault' && <CloudHsmPfxVaultView />}
+          {currentModuleId === 'office_aml_coaf' && <OfficeAmlCoafComplianceView />}
+          {currentModuleId === 'gov_webservices_prod' && <GovWebservicesProductionView />}
+          {currentModuleId === 'sefaz_k8s_prod' && <SefazDirectTransmissionK8sView />}
+          {currentModuleId === 'agri_derivatives' && <AgriDerivativesView />}
+          {currentModuleId === 'cattle_agro_lcdpr' && <CattleAgroLcdprView />}
+          {currentModuleId === 'bearer_plants_agro' && <BearerPlantsAgroView />}
+          {currentModuleId === 'biological_fco_tax' && <BiologicalFairValueFcoTaxView />}
+          {currentModuleId === 'agro_cpr_psr' && <AgroCprForeignInsurancePsrView />}
+          {currentModuleId === 'forestry_biological_debt' && <ForestryBiologicalDebtView />}
+          {currentModuleId === 'earnout_sugarcane' && <EarnoutSugarcaneView />}
+          {currentModuleId === 'carbon_cbio' && <CarbonCbioView />}
+          {currentModuleId === 'sbce_carbon_redd' && <SbceCarbonMarketReddView />}
+          {currentModuleId === 'methane_carbon_port_tax' && <MethaneCarbonPortTaxView />}
+          {currentModuleId === 'zfm40_suframa_pin' && <Zfm40SuframaPinAutomationView />}
+          {currentModuleId === 'carveout_zfm_tax' && <CarveoutZfmTaxView />}
+          {currentModuleId === 'segments_amazon_alc' && <SegmentsAmazonAlcTaxView />}
+          {currentModuleId === 'distribution_alc' && <DistributionAlcView />}
+          {currentModuleId === 'drex_cbdc_tpft' && <DrexCbdcTokenizedTpftView />}
+          {currentModuleId === 'rwa_tokens_ibs_cbs' && <RwaTokensIbsCbsView />}
+          {currentModuleId === 'crypto_vasp_in1888' && <CryptoVaspIn1888ComplianceView />}
+          {currentModuleId === 'borrowing_crypto' && <BorrowingCryptoView />}
+          {currentModuleId === 'crypto_natural_gas' && <CryptoNaturalGasView />}
+          {currentModuleId === 'ccee_energy_tp' && <CceeEnergyTransferPricingView />}
+          {currentModuleId === 'bets_cooperatives_tax' && <BetsCooperativesTaxView />}
+          {currentModuleId === 'medical_cooperative_tax' && <MedicalCooperativeTaxView />}
+          {currentModuleId === 'port_tup_storage_tax' && <PortTupStorageIcmsIssView />}
+          {currentModuleId === 'shopping_mall_fii_tax' && <ShoppingMallFiiTaxView />}
+          {currentModuleId === 'fractional_multipropriedade_ret' && <FractionalOwnershipMultipropriedadeRetView />}
+          {currentModuleId === 'naval_shipbuilding' && <NavalShipbuildingView />}
+          {currentModuleId === 'resurfacing_cinema' && <ResurfacingCinemaView />}
+          {currentModuleId === 'concession_hospital' && <ConcessionHospitalView />}
+          {currentModuleId === 'hybrid_concession_vehicles' && <HybridConcessionVehiclesView />}
+          {currentModuleId === 'common_control_oil' && <CommonControlOilView />}
+          {currentModuleId === 'telemetry_repetro' && <TelemetryRepetroView />}
+          {currentModuleId === 'infrastructure_debentures' && <InfrastructureDebenturesTaxView />}
+          {currentModuleId === 'hybrid_perpetual_reidi_tax' && <HybridPerpetualReidiTaxView />}
+          {currentModuleId === 'fidc_cpr_agro' && <FidcSecuritizationCprAgroView />}
+          {currentModuleId === 'software_oea_customs' && <SoftwareIntangiblesOeaCustomsView />}
+          {currentModuleId === 'drawback_aap' && <DrawbackAapView />}
+          {currentModuleId === 'intercompany_drawback' && <IntercompanyLoansDrawbackExemptionView />}
+          {currentModuleId === 'borrowing_lei_do_bem' && <BorrowingCostsLeiDoBemView />}
+          {currentModuleId === 'ndf_hedge_split_payment' && <NdfHedgeSplitPaymentIbsView />}
+          {currentModuleId === 'streaming_lease_ifrs' && <StreamingLeaseIfrsView />}
+          {currentModuleId === 'sudene_maintenance_overhaul' && <SudeneMaintenanceOverhaulView />}
+          {currentModuleId === 'weather_ipi_export' && <WeatherIpiExportView />}
+          {currentModuleId === 'actuarial_pharma' && <ActuarialPharmaView />}
+          {currentModuleId === 'perpetual_autoparts' && <PerpetualAutoPartsView />}
+          {currentModuleId === 'uncertainty_beverages' && <UncertaintyBeveragesView />}
+          {currentModuleId === 'onerous_cosmetics' && <OnerousCosmeticsView />}
+          {currentModuleId === 'compound_recycling' && <CompoundRecyclingView />}
+          {currentModuleId === 'revaluation_biodiesel' && <RevaluationBiodieselView />}
+          {currentModuleId === 'regulatory_ev_mover' && <RegulatoryEvMoverView />}
+          {currentModuleId === 'embedded_freight' && <EmbeddedFreightView />}
+          {currentModuleId === 'tax_loss_saas' && <TaxLossSaasView />}
+          {currentModuleId === 'lessor_construction' && <LessorConstructionView />}
+          {currentModuleId === 'liquidation_afrmm' && <LiquidationAfrmmView />}
+          {currentModuleId === 'insurance_telecom' && <InsuranceTelecomView />}
+          {currentModuleId === 'grants_cide' && <GrantsCideView />}
+          {currentModuleId === 'poc_leasing' && <PocLeasingView />}
+          {currentModuleId === 'phantom_swap' && <PhantomSwapView />}
+          {currentModuleId === 'guarantee_fuels' && <GuaranteeFuelsView />}
+          {currentModuleId === 'loans_cooperative' && <LoansCooperativeView />}
+          {currentModuleId === 'insurance_fii' && <InsuranceFiiView />}
+          {currentModuleId === 'separate_offshore' && <SeparateOffshoreView />}
+          {currentModuleId === 'benefits_ret' && <BenefitsRetView />}
+          {currentModuleId === 'discontinued_future' && <DiscontinuedFutureDeliveryView />}
+          {currentModuleId === 'policies_triangular' && <PoliciesTriangularView />}
+          {currentModuleId === 'mineral_trading' && <MineralTradingView />}
+          {currentModuleId === 'goodwill_toll' && <GoodwillTollView />}
+          {currentModuleId === 'investment_warehouse' && <InvestmentWarehouseView />}
+          {currentModuleId === 'intangibles_returns' && <IntangiblesReturnsView />}
+          {currentModuleId === 'aro_bonification' && <AroBonificationView />}
+          {currentModuleId === 'queue_esg' && <QueueEsgEventsView />}
+          {currentModuleId === 'interim_mover' && <InterimMoverView />}
+          {currentModuleId === 'capital_markets' && <CapitalMarketsZpeView />}
+          {currentModuleId === 'consolidation_consignment' && <ConsolidationConsignmentView />}
+          {currentModuleId === 'beps_globe_qdmtt_tax_treaty_view' && <BepsGlobeQdmttTaxTreatyView />}
+          {currentModuleId === 'control_tower_ocr_ledger_view' && <ControlTowerOcrLedgerView />}
+          {currentModuleId === 'corporate_sso_govbr_mfa_view' && <CorporateSsoGovbrMfaView />}
+          {currentModuleId === 'cross_border_ma_safe_harbor_view' && <CrossBorderMaSafeHarborView />}
+          {currentModuleId === 'dfc_compounding_view' && <DfcCompoundingView />}
+          {currentModuleId === 'distributed_queue_whatsapp_alerts_view' && <DistributedQueueWhatsappAlertsView />}
+          {currentModuleId === 'enterprise_production_command_center_view' && <EnterpriseProductionCommandCenterView />}
+          {currentModuleId === 'esg_ifrs_globe_tax_view' && <EsgIfrsGlobeTaxView />}
+          {currentModuleId === 'executive_reports_view' && <ExecutiveReportsView />}
+          {currentModuleId === 'first_time_ifrs_reiq_tax_view' && <FirstTimeIfrsReiqTaxView />}
+          {currentModuleId === 'first_time_insurance_paa_view' && <FirstTimeInsurancePaaView />}
+          {currentModuleId === 'foreign_currency_agro_pis_cofins_view' && <ForeignCurrencyAgroPisCofinsView />}
+          {currentModuleId === 'forensic_ai_view' && <ForensicAiView />}
+          {currentModuleId === 'hyperinflation_iof_view' && <HyperinflationIofView />}
+          {currentModuleId === 'interim_reporting_recof_sped_view' && <InterimReportingRecofSpedView />}
+          {currentModuleId === 'kms_parties_grants_view' && <KmsPartiesGrantsView />}
+          {currentModuleId === 'office_annual_dossier_audit_opinion_view' && <OfficeAnnualDossierAuditOpinionView />}
+          {currentModuleId === 'office_annual_tax_planning_view' && <OfficeAnnualTaxPlanningView />}
+          {currentModuleId === 'office_cfc_responsibility_transfer_view' && <OfficeCfcResponsibilityTransferView />}
+          {currentModuleId === 'office_contracts_responsibility_transfer_view' && <OfficeContractsResponsibilityTransferView />}
+          {currentModuleId === 'office_executive_board_management_reports_view' && <OfficeExecutiveBoardManagementReportsView />}
+          {currentModuleId === 'office_fees_collection_dunning_view' && <OfficeFeesCollectionDunningView />}
+          {currentModuleId === 'office_financial_investment_tax_view' && <OfficeFinancialInvestmentTaxView />}
+          {currentModuleId === 'office_fiscal_document_ocr_view' && <OfficeFiscalDocumentOcrView />}
+          {currentModuleId === 'office_internship_apprentice_audit_view' && <OfficeInternshipApprenticeAuditView />}
+          {currentModuleId === 'office_job_tenure_stability_inss_view' && <OfficeJobTenureStabilityInssView />}
+          {currentModuleId === 'office_smart_dropzone_triage_view' && <OfficeSmartDropzoneTriageView />}
+          {currentModuleId === 'office_state_of_the_art_daily_automation_view' && <OfficeStateOfTheArtDailyAutomationView />}
+          {currentModuleId === 'office_tax_discrepancies_notifications_view' && <OfficeTaxDiscrepanciesNotificationsView />}
+          {currentModuleId === 'office_tax_incentives_donation_view' && <OfficeTaxIncentivesDonationView />}
+          {currentModuleId === 'office_tax_installments_pgfn_view' && <OfficeTaxInstallmentsPgfnView />}
+          {currentModuleId === 'open_finance_audit_cross_view' && <OpenFinanceAuditCrossView />}
+          {currentModuleId === 'pension_defined_benefit_admission_active_view' && <PensionDefinedBenefitAdmissionActiveView />}
+          {currentModuleId === 'port_workers_fap_payroll_view' && <PortWorkersFapPayrollView />}
+          {currentModuleId === 'postgres_multi_tenant_rls_view' && <PostgresMultiTenantRlsView />}
+          {currentModuleId === 'postgres_pgvector_otel_prometheus_view' && <PostgresPgvectorOtelPrometheusView />}
+          {currentModuleId === 'pva_compliance_soc2_security_view' && <PvaComplianceSoc2SecurityView />}
+          {currentModuleId === 'soc2_iso_drp_lgpd_audit_view' && <Soc2IsoDrpLgpdAuditView />}
+          {currentModuleId === 'stock_options_sped_export_view' && <StockOptionsSpedExportView />}
+          {currentModuleId === 'treasury_demonstration_view' && <TreasuryDemonstrationView />}
+
+          </div>
+        </main>
+
+        {/* ======================================================================= */}
+        {/* 4. PAINEL LATERAL DIREITO (COPILOTO IA & COCKPIT DE AÃ‡Ã•ES IMEDIATAS)     */}
+        {/* ======================================================================= */}
+        <aside className={`app-right-deck ${isRightDeckOpen ? '' : 'collapsed'}`}>
+          {/* Header do Deck Direito */}
+          <div className="right-deck-header">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 800, fontSize: '0.82rem', color: '#fff' }}>
+              <span>🤖</span> Copiloto & Inteligência IA
+            </div>
+            <button
+              onClick={() => setIsRightDeckOpen(false)}
+              style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.85rem' }}
+              title="Fechar painel"
+            >
+              âœ•
+            </button>
+          </div>
+
+          {/* ConteÃºdo RolÃ¡vel do Deck Direito */}
+          <div className="right-deck-scroll">
+            {/* 1. Semáforo em Tempo Real da Empresa Ativa */}
+            <div className="deck-card">
+              <div className="deck-card-title">
+                <span>🚦 Semáforo de Fechamento</span>
+                <span style={{ color: 'var(--emerald-400)', fontSize: '0.7rem' }}>{selectedCompetencia}</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.76rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>👥 Folha DP / eSocial:</span>
+                  <span style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>🟢 100% Transmitida</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>âš–ï¸ Fiscal / DAS & DARFs:</span>
+                  <span style={{ color: 'var(--amber-400)', fontWeight: 700 }}>🟡 Calculado (Pendente Disparo)</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>📚 Contábil / ARE Balancete:</span>
+                  <span style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>🟢 D=C Zero Dif (ACID)</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ color: 'var(--text-secondary)' }}>📜 CNDs Fed/Est/Mun:</span>
+                  <span style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>🟢 Todas Válidas</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Dicas & Insights do Copiloto Contábil IA */}
+            <div className="deck-card" style={{ borderLeft: '3px solid #06B6D4' }}>
+              <div className="deck-card-title">
+                <span>💡 Diagnóstico Forense IA</span>
+                <span style={{ color: 'var(--cyan-400)' }}>Ativo</span>
+              </div>
+              <div style={{ fontSize: '0.76rem', color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                <p style={{ marginBottom: '6px' }}>
+                  📌 <strong>Oportunidade Tributária:</strong> Esta empresa possui produtos com NCM monofásico que podem reduzir o DAS em até <strong style={{ color: 'var(--emerald-400)' }}>34%</strong>.
+                </p>
+                <p>
+🛡️ <strong>Alerta Preventivo:</strong> Divergência zero detectada entre NF-e de entrada e extrato bancário DDA.
+                </p>
+              </div>
+              <button
+                onClick={() => setCurrentModuleId('office_monophasic_tax')}
+                style={{
+                  background: 'rgba(6, 182, 212, 0.15)',
+                  color: 'var(--cyan-400)',
+                  border: '1px solid rgba(6, 182, 212, 0.3)',
+                  padding: '6px 10px',
+                  borderRadius: '6px',
+                  fontSize: '0.74rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  marginTop: '4px'
+                }}
+              >
+🔍 Otimizar Tributos Agora
+              </button>
+            </div>
+
+            {/* 3. Ações Rápidas de 1-Click */}
+            <div className="deck-card">
+              <div className="deck-card-title">
+                <span>⚡ Ações Rápidas 1-Click</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <button
+                  onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
+                  className="btn-deck-action"
+                >
+                  <span>🚀 Disparo Lote WhatsApp/Pix</span>
+                  <span>➔</span>
+                </button>
+                <button
+                  onClick={() => setCurrentModuleId('office_universal_dropzone_ocr')}
+                  className="btn-deck-action"
+                >
+                  <span>📂 Arraste OCR Massivo</span>
+                  <span>➔</span>
+                </button>
+                <button
+                  onClick={() => setCurrentModuleId('office_sped_batch_prevalidator')}
+                  className="btn-deck-action"
+                >
+                  <span>🔍 Pré-Validar SPED em Lote</span>
+                  <span>➔</span>
+                </button>
+                <button
+                  onClick={() => setCurrentModuleId('office_annual_closing_are')}
+                  className="btn-deck-action"
+                >
+                  <span>🏛️ Encerramento ARE 1-Click</span>
+                  <span>➔</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 4. Protocolos Digitais & Trilha de Auditoria */}
+            <div className="deck-card">
+              <div className="deck-card-title">
+                <span>🔒 Protocolos Digitais (SHA-256)</span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.7rem' }}>
+                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '6px 8px', borderRadius: '4px' }}>
+                  <div style={{ color: '#fff', fontWeight: 600 }}>Fechamento Folha {selectedCompetencia}</div>
+                  <div className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '0.64rem' }}>HASH: 8f9b2a...3c41</div>
+                  <div style={{ color: 'var(--emerald-400)', fontSize: '0.65rem' }}>Assinado ICP-Brasil • 100% Válido</div>
+                </div>
+                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '6px 8px', borderRadius: '4px' }}>
+                  <div style={{ color: '#fff', fontWeight: 600 }}>Pacote Guias DAS Disparado</div>
+                  <div className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '0.64rem' }}>HASH: 4e71a0...99f2</div>
+                  <div style={{ color: 'var(--emerald-400)', fontSize: '0.65rem' }}>Entrega Comprovada WhatsApp</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   );
 };

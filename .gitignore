@@ -34,3 +34,5 @@ coverage/
 # Scripts temporarios
 scripts/gen-*.cjs
 scripts/update-*.cjs
+
+.vercel

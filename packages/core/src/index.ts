@@ -15,3 +15,10 @@ export * from './database/index.js';
 export * from './telemetry/index.js';
 export * from './compliance/index.js';
 export * from './orchestration/index.js';
+
+export * from './reports/cfo-executive-dossier.js';
+
+export * from './inventory/product-catalog-engine.js';
+export * from './dfe/issuer/invoice-billing-issuer-engine.js';
+export * from './accounting/fixed-assets/fixed-assets-cpc27-engine.js';
+export * from './accounting/intangibles/intangible-assets-cpc04-engine.js';

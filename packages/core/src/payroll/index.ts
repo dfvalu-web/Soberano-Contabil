@@ -9,3 +9,4 @@ export * from './terminations/termination-calculator.js';
 export * from './special-regimes/port-workers-ogmo-payroll-s1270.js';
 export * from './special-regimes/fap-establishment-rat-engine.js';
 export * from './special-regimes/stock-options-stj1226-tax-payroll.js';
+export * from './special-regimes/medical-cooperative-payroll-inss-engine.js';

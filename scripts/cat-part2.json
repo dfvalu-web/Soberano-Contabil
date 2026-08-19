@@ -1,0 +1,290 @@
+[
+  {
+    "category": "Fiscal, Tributário & Obrigações",
+    "icon": "⚖️",
+    "items": [
+      {
+        "id": "tax",
+        "label": "Simulador Tributário (3 Regimes)",
+        "icon": "🧮",
+        "file": "TaxEngineView"
+      },
+      {
+        "id": "office_monophasic_tax",
+        "label": "Monofásicos PIS/COFINS (Farmácias)",
+        "icon": "💊",
+        "file": "OfficeMonophasicTaxSegregationView"
+      },
+      {
+        "id": "office_federal_tax_withholding",
+        "label": "Retenções Federais (IRRF/CSRF)",
+        "icon": "🏛️",
+        "file": "OfficeFederalTaxWithholdingView"
+      },
+      {
+        "id": "office_reinf_r4000",
+        "label": "EFD-Reinf R-4000 & DCTFWeb",
+        "icon": "📋",
+        "file": "OfficeReinfR4000DctfwebCrossAuditView"
+      },
+      {
+        "id": "office_tax_withholdings",
+        "label": "Retenções na Fonte & EFD-Reinf",
+        "icon": "📑",
+        "file": "OfficeTaxWithholdingsReinfView"
+      },
+      {
+        "id": "office_carne_leao_irpf",
+        "label": "Carnê-Leão & Livro Caixa IRPF",
+        "icon": "🦁",
+        "file": "OfficeCarneLeaoCashBookIrpfView"
+      },
+      {
+        "id": "office_ciap_block_g",
+        "label": "CIAP Bloco G SPED (1/48 Avos)",
+        "icon": "🏗️",
+        "file": "OfficeCiapSpedBlockGView"
+      },
+      {
+        "id": "office_fixed_assets_ciap",
+        "label": "Ativo Imobilizado & CIAP Legado",
+        "icon": "🏭",
+        "file": "OfficeFixedAssetsCiapBlocoGView"
+      },
+      {
+        "id": "office_tax_incentives",
+        "label": "Incentivos Fiscais & Doações",
+        "icon": "🎁",
+        "file": "OfficeTaxIncentivesDonationView"
+      },
+      {
+        "id": "office_returns_tax",
+        "label": "Devoluções de Mercadorias",
+        "icon": "🔄",
+        "file": "OfficeReturnsTaxAdjustmentView"
+      },
+      {
+        "id": "office_issqn_withholding",
+        "label": "ISSQN Tomador & CPOM Municipal",
+        "icon": "🏙️",
+        "file": "OfficeIssqnWithholdingCpomView"
+      },
+      {
+        "id": "office_state_ancillary",
+        "label": "Obrigações Estaduais (GIA/DeSTDA)",
+        "icon": "🏛️",
+        "file": "OfficeStateAncillaryDeclarationsView"
+      },
+      {
+        "id": "office_financial_investment",
+        "label": "Aplicações Financeiras & IRRF",
+        "icon": "🏦",
+        "file": "OfficeFinancialInvestmentTaxView"
+      },
+      {
+        "id": "office_tax_reform_transition",
+        "label": "Reforma Tributária IBS/CBS",
+        "icon": "⚖️",
+        "file": "OfficeTaxReformTransitionView"
+      },
+      {
+        "id": "office_tax_credit_recovery",
+        "label": "Recuperação de Créditos",
+        "icon": "💎",
+        "file": "OfficeTaxCreditRecoveryView"
+      },
+      {
+        "id": "office_annual_tax_planning",
+        "label": "Planejamento Tributário 360º",
+        "icon": "🧭",
+        "file": "OfficeAnnualTaxPlanningView"
+      },
+      {
+        "id": "office_tax_discrepancies",
+        "label": "Malhas Fiscais & Disparo Guias",
+        "icon": "🚨",
+        "file": "OfficeTaxDiscrepanciesNotificationsView"
+      },
+      {
+        "id": "office_tax_arrears",
+        "label": "Recálculo de Guias em Atraso",
+        "icon": "⏱️",
+        "file": "OfficeTaxArrearsRecalculatorView"
+      },
+      {
+        "id": "office_tax_installments",
+        "label": "Parcelamentos Especiais & PGFN",
+        "icon": "📅",
+        "file": "OfficeTaxInstallmentsPgfnView"
+      },
+      {
+        "id": "office_perdcomp_negative_balance",
+        "label": "PER/DCOMP & Saldos Negativos",
+        "icon": "📑",
+        "file": "OfficePerDcompNegativeBalanceView"
+      },
+      {
+        "id": "beps_globe_tax_treaty",
+        "label": "BEPS GloBE Pilar 2 & Acordos",
+        "icon": "🌐",
+        "file": "BepsGlobeQdmttTaxTreatyView"
+      },
+      {
+        "id": "crossborder_ma_safeharbor",
+        "label": "M&A Cross-Border & Safe Harbors",
+        "icon": "🤝",
+        "file": "CrossBorderMaSafeHarborView"
+      }
+    ]
+  },
+  {
+    "category": "Contabilidade, IFRS & Demonstrações",
+    "icon": "📚",
+    "items": [
+      {
+        "id": "accounting",
+        "label": "Contabilidade IFRS & Razão Digital",
+        "icon": "📖",
+        "file": "AccountingView"
+      },
+      {
+        "id": "office_annual_closing_are",
+        "label": "Fechamento Anual 1-Click (ARE)",
+        "icon": "🏁",
+        "file": "OfficeAnnualClosingAreView"
+      },
+      {
+        "id": "office_annual_closing",
+        "label": "Fechamento Anual & Notas",
+        "icon": "📊",
+        "file": "OfficeAnnualAccountingClosingView"
+      },
+      {
+        "id": "office_equity_method_cpc18",
+        "label": "Equivalência Patrimonial (MEP)",
+        "icon": "🏢",
+        "file": "OfficeEquityMethodCpc18View"
+      },
+      {
+        "id": "office_ecd_ecf_junta",
+        "label": "ECD, ECF & Junta Comercial",
+        "icon": "🏛️",
+        "file": "OfficeEcdEcfJuntaRegistryView"
+      },
+      {
+        "id": "dfc_merger",
+        "label": "DFC Direto/Indireto & Combinações",
+        "icon": "🌊",
+        "file": "DfcMergerBackupView"
+      },
+      {
+        "id": "dfc_compounding",
+        "label": "DFC Indireto Farmacêutico",
+        "icon": "💊",
+        "file": "DfcCompoundingView"
+      },
+      {
+        "id": "dva_wealth_jcp",
+        "label": "DVA CPC 09 & JCP Fiscal",
+        "icon": "💎",
+        "file": "DvaWealthJcpTaxView"
+      },
+      {
+        "id": "first_time_ifrs_reiq",
+        "label": "Transição IFRS 1 & REIQ Química",
+        "icon": "🧪",
+        "file": "FirstTimeIfrsReiqTaxView"
+      },
+      {
+        "id": "first_time_insurance_paa",
+        "label": "Transição IFRS & Seguros PAA",
+        "icon": "🛡️",
+        "file": "FirstTimeInsurancePaaView"
+      },
+      {
+        "id": "treasury_demonstration",
+        "label": "Tesouraria & Demonstrações",
+        "icon": "🏦",
+        "file": "TreasuryDemonstrationView"
+      },
+      {
+        "id": "esg_ifrs_globe_tax",
+        "label": "IFRS S1/S2 ESG & Relato",
+        "icon": "🌱",
+        "file": "EsgIfrsGlobeTaxView"
+      },
+      {
+        "id": "hyperinflation_iof",
+        "label": "Hiperinflação CPC 42 & IOF",
+        "icon": "📈",
+        "file": "HyperinflationIofView"
+      },
+      {
+        "id": "currency_agro_pis_cofins",
+        "label": "Moeda Estrangeira CPC 02 & Agro",
+        "icon": "💵",
+        "file": "ForeignCurrencyAgroPisCofinsView"
+      }
+    ]
+  },
+  {
+    "category": "Suíte SPED, DF-e & Auditoria",
+    "icon": "📑",
+    "items": [
+      {
+        "id": "sped",
+        "label": "Suíte SPED & Validador PVA",
+        "icon": "📄",
+        "file": "SpedView"
+      },
+      {
+        "id": "office_sped_batch_prevalidator",
+        "label": "Pré-Validador SPED em Lote",
+        "icon": "🔍",
+        "file": "OfficeSpedBatchPrevalidatorView"
+      },
+      {
+        "id": "dfe",
+        "label": "Auditoria DF-e & Malhas Fiscais",
+        "icon": "⚡",
+        "file": "DfeAuditView"
+      },
+      {
+        "id": "office_inbound_dfe",
+        "label": "DF-e Entrada & Manifestação",
+        "icon": "📥",
+        "file": "OfficeInboundDfeBookkeepingView"
+      },
+      {
+        "id": "office_card_pix_crossaudit",
+        "label": "Cartões, PIX & Marketplace",
+        "icon": "💳",
+        "file": "OfficeCardPixCrossAuditView"
+      },
+      {
+        "id": "office_inventory_block_hk",
+        "label": "Estoques SPED Bloco H/K",
+        "icon": "📦",
+        "file": "OfficeInventoryBlockHKTaxAdjustmentView"
+      },
+      {
+        "id": "office_dda_matching",
+        "label": "DDA Bancário & Contas a Pagar",
+        "icon": "📑",
+        "file": "OfficeDdaBankingNfeMatchingView"
+      },
+      {
+        "id": "open_finance_audit_cross",
+        "label": "Open Finance & Auditoria",
+        "icon": "🏦",
+        "file": "OpenFinanceAuditCrossView"
+      },
+      {
+        "id": "interim_recof_sped",
+        "label": "ITR CPC 21 & RECOF-SPED",
+        "icon": "🚢",
+        "file": "InterimReportingRecofSpedView"
+      }
+    ]
+  }
+]

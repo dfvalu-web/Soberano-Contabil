@@ -1,0 +1,140 @@
+const fs = require('fs');
+
+let c = import React, { useState, useEffect, useMemo } from 'react';
+import { officeStore, Employee, PayrollStatement, SALARIO_MINIMO_2026 } from '../state/office-store.js';
+
+export const PayrollOperationalView: React.FC = () => {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [selectedTenantId, setSelectedTenantId] = useState<string>('t1');
+  const [competencia, setCompetencia] = useState<string>('08/2026');
+  const [selectedEmployeeForHolerite, setSelectedEmployeeForHolerite] = useState<Employee | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+  const [activeTab, setActiveTab] = useState<'FOLHA_GERAL' | 'FUNCIONARIOS' | 'HOLERITE_PREVIEW'>('FOLHA_GERAL');
+
+  const [formData, setFormData] = useState<Partial<Employee>>({
+    name: '',
+    cpf: '',
+    role: '',
+    cbo: '',
+    department: 'Operações',
+    admissionDate: '2024-01-15',
+    baseSalary: 3000,
+    dependantsCount: 0,
+    contractType: 'CLT',
+    hasVt: true,
+    insalubridadeLevel: 'NONE',
+    hasPericulosidade: false,
+    status: 'ACTIVE'
+  });
+
+  const tenants = useMemo(() => officeStore.getTenants(), []);
+
+  useEffect(() => {
+    const load = () => {
+      setEmployees(officeStore.getEmployees(selectedTenantId));
+    };
+    load();
+    const unsub = officeStore.subscribe(load);
+    return () => unsub();
+  }, [selectedTenantId]);
+
+  const currentTenant = useMemo(() => {
+    return tenants.find(t => t.id === selectedTenantId) || tenants[0];
+  }, [tenants, selectedTenantId]);
+
+  const statements: PayrollStatement[] = useMemo(() => {
+    return employees.map(emp => officeStore.calculatePayroll(emp, competencia));
+  }, [employees, competencia]);
+;
+c += 
+  const totals = useMemo(() => {
+    return statements.reduce((acc, st) => {
+      acc.totalBruto += st.totalProventos;
+      acc.totalDescontos += st.totalDescontos;
+      acc.totalLiquido += st.netSalary;
+      acc.totalInss += (st.items.find(i => i.code === ''501'')?.amount || 0);
+      acc.totalIrrf += (st.items.find(i => i.code === ''505'')?.amount || 0);
+      acc.totalFgts += st.fgtsAmount;
+      return acc;
+    }, { totalBruto: 0, totalDescontos: 0, totalLiquido: 0, totalInss: 0, totalIrrf: 0, totalFgts: 0 });
+  }, [statements]);
+
+  const handleOpenNewEmployee = () => {
+    setEditingEmployee(null);
+    setFormData({
+      name: '',
+      cpf: '',
+      role: '',
+      cbo: '2522-10',
+      department: 'Operações',
+      admissionDate: new Date().toISOString().split('T')[0],
+      baseSalary: 3500,
+      dependantsCount: 0,
+      contractType: 'CLT',
+      hasVt: false,
+      insalubridadeLevel: 'NONE',
+      hasPericulosidade: false,
+      status: 'ACTIVE'
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEditEmployee = (emp: Employee) => {
+    setEditingEmployee(emp);
+    setFormData({ ...emp });
+    setIsModalOpen(true);
+  };
+
+  const handleSaveEmployee = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.cpf || !formData.role || !formData.baseSalary) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    const empToSave: Employee = {
+      id: editingEmployee ? editingEmployee.id : 'emp-' + Date.now(),
+      tenantId: selectedTenantId,
+      name: formData.name,
+      cpf: formData.cpf,
+      role: formData.role,
+      cbo: formData.cbo || '2522-10',
+      department: formData.department || 'Geral',
+      admissionDate: formData.admissionDate || '2024-01-01',
+      baseSalary: Number(formData.baseSalary),
+      dependantsCount: Number(formData.dependantsCount || 0),
+      contractType: formData.contractType || 'CLT',
+      hasVt: !!formData.hasVt,
+      insalubridadeLevel: formData.insalubridadeLevel || 'NONE',
+      hasPericulosidade: !!formData.hasPericulosidade,
+      status: formData.status || 'ACTIVE',
+      overtime50Hours: formData.overtime50Hours,
+      overtime100Hours: formData.overtime100Hours,
+      unjustifiedAbsencesDays: formData.unjustifiedAbsencesDays,
+      alimonyPercentage: formData.alimonyPercentage
+    };
+
+    officeStore.saveEmployee(empToSave);
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteEmployee = (id: string) => {
+    if (confirm('Deseja realmente excluir este funcionário da base?')) {
+      officeStore.deleteEmployee(id);
+    }
+  };
+
+  const handleUpdateEvents = (emp: Employee, field: keyof Employee, val: number) => {
+    const updated = { ...emp, [field]: val };
+    officeStore.saveEmployee(updated);
+  };
+
+  const activeHoleriteStatement = useMemo(() => {
+    if (!selectedEmployeeForHolerite) {
+      if (employees.length > 0) return officeStore.calculatePayroll(employees[0], competencia);
+      return null;
+    }
+    return officeStore.calculatePayroll(selectedEmployeeForHolerite, competencia);
+  }, [selectedEmployeeForHolerite, employees, competencia]);
+;

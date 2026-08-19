@@ -117,3 +117,7 @@ export * from './special-sectors/non-resident-investor-withholding-tax-engine.js
 export * from './special-sectors/in1888-crypto-tax-reporting-engine.js';
 export * from './special-sectors/agro-cpr-foreign-currency-engine.js';
 export * from './special-sectors/rural-insurance-subsidy-psr-engine.js';
+export * from './special-sectors/fractional-ownership-multipropriedade-ret-engine.js';
+export * from './special-sectors/medical-cooperative-tax-engine.js';
+export * from './special-sectors/port-tup-customs-tax-engine.js';
+export * from './special-sectors/port-lease-storage-icms-iss-engine.js';

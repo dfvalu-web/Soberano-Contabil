@@ -1,0 +1,254 @@
+[
+  {
+    "category": "Cockpit & Gestão Executiva",
+    "icon": "📊",
+    "items": [
+      {
+        "id": "office_multi_client_grid",
+        "label": "Cockpit Multi-Empresa Grade",
+        "icon": "🚦",
+        "file": "OfficeMultiClientClosingGridView"
+      },
+      {
+        "id": "dashboard",
+        "label": "Cockpit Executivo Principal",
+        "icon": "📊",
+        "file": "DashboardView"
+      },
+      {
+        "id": "accounting_office_hub",
+        "label": "Central do Escritório (4 Pilares)",
+        "icon": "🏛️",
+        "file": "AccountingOfficeHubView"
+      },
+      {
+        "id": "office_daily_operations",
+        "label": "Operações Diárias (3 Pilares)",
+        "icon": "⚙️",
+        "file": "OfficeDailyOperationsHubView"
+      },
+      {
+        "id": "office_client_profitability_bi",
+        "label": "BI & Rentabilidade da Carteira",
+        "icon": "📈",
+        "file": "OfficeClientProfitabilityBiView"
+      },
+      {
+        "id": "reports",
+        "label": "Dossiê Executivo & Relatórios",
+        "icon": "📑",
+        "file": "ExecutiveReportsView"
+      },
+      {
+        "id": "office_board_reports",
+        "label": "Relatórios Diretoria & Break-Even",
+        "icon": "📊",
+        "file": "OfficeExecutiveBoardManagementReportsView"
+      },
+      {
+        "id": "enterprise_command_center",
+        "label": "Central de Comando Global (100 Módulos)",
+        "icon": "🌐",
+        "file": "EnterpriseProductionCommandCenterView"
+      },
+      {
+        "id": "client_portal_office",
+        "label": "Portal do Cliente (B2B)",
+        "icon": "🌐",
+        "file": "ClientPortalOfficeView"
+      },
+      {
+        "id": "forensic_ai",
+        "label": "Copiloto IA & Auditoria Forense",
+        "icon": "🤖",
+        "file": "ForensicAiView"
+      },
+      {
+        "id": "office_annual_dossier",
+        "label": "Dossiê Anual & Carta NBC TA",
+        "icon": "📜",
+        "file": "OfficeAnnualDossierAuditOpinionView"
+      },
+      {
+        "id": "control_tower_ocr",
+        "label": "Torre de Controle & OCR com IA",
+        "icon": "🛰️",
+        "file": "ControlTowerOcrLedgerView"
+      }
+    ]
+  },
+  {
+    "category": "Produtividade 1-Click & Automações",
+    "icon": "⚡",
+    "items": [
+      {
+        "id": "office_universal_dropzone_ocr",
+        "label": "Dropzone Massivo Multi-Doc OCR",
+        "icon": "📂",
+        "file": "OfficeUniversalDropzoneOcrView"
+      },
+      {
+        "id": "office_batch_dispatch_bundle",
+        "label": "Disparo em Lote 1-Click (Guias/Pix)",
+        "icon": "🚀",
+        "file": "OfficeBatchDispatchBundleView"
+      },
+      {
+        "id": "office_smart_triage",
+        "label": "Triagem & Dropzone Inteligente",
+        "icon": "📥",
+        "file": "OfficeSmartDropzoneTriageView"
+      },
+      {
+        "id": "office_monthly_closing",
+        "label": "Fechamento Mensal & Dossiê",
+        "icon": "🗓️",
+        "file": "OfficeMonthlyClosingChecklistView"
+      },
+      {
+        "id": "office_tasks_productivity",
+        "label": "Tarefas & SLAs da Equipe",
+        "icon": "📋",
+        "file": "OfficeTasksProductivitySlaView"
+      },
+      {
+        "id": "office_state_of_the_art_daily",
+        "label": "Operações de Ponta 1-Click",
+        "icon": "⚡",
+        "file": "OfficeStateOfTheArtDailyAutomationView"
+      },
+      {
+        "id": "office_fiscal_document_ocr",
+        "label": "Guarda DF-e & OCR com IA",
+        "icon": "🔍",
+        "file": "OfficeFiscalDocumentOcrView"
+      },
+      {
+        "id": "queue_whatsapp_alerts",
+        "label": "Filas BullMQ & WhatsApp Alerts",
+        "icon": "📱",
+        "file": "DistributedQueueWhatsappAlertsView"
+      },
+      {
+        "id": "office_electronic_attorney",
+        "label": "Procurações e-CAC & DJE CNJ",
+        "icon": "⚖️",
+        "file": "OfficeElectronicAttorneyDjeView"
+      }
+    ]
+  },
+  {
+    "category": "Departamento Pessoal, RH & eSocial",
+    "icon": "👥",
+    "items": [
+      {
+        "id": "payroll",
+        "label": "Folha de Pagamento Central",
+        "icon": "👥",
+        "file": "PayrollView"
+      },
+      {
+        "id": "office_hazardous_work",
+        "label": "Insalubridade, Periculosidade & LTCAT",
+        "icon": "☣️",
+        "file": "OfficeHazardousWorkAdditionalView"
+      },
+      {
+        "id": "office_flexible_benefits_pat",
+        "label": "Benefícios Flexíveis, VT & PAT",
+        "icon": "🍱",
+        "file": "OfficeFlexibleBenefitsPatView"
+      },
+      {
+        "id": "office_cprb_payroll_relief",
+        "label": "Desoneração da Folha CPRB",
+        "icon": "📉",
+        "file": "OfficeCprbPayrollReliefView"
+      },
+      {
+        "id": "office_absence_dsr_vacation",
+        "label": "Faltas Injustificadas, DSR & Férias",
+        "icon": "⏱️",
+        "file": "OfficeAbsenceDsrVacationPenaltyView"
+      },
+      {
+        "id": "office_labor_termination",
+        "label": "Rescisão Trabalhista & TRCT",
+        "icon": "📄",
+        "file": "OfficeLaborTerminationTrctView"
+      },
+      {
+        "id": "office_alimony_child_support",
+        "label": "Pensão Alimentícia & eSocial",
+        "icon": "⚖️",
+        "file": "OfficeAlimonyChildSupportPayrollView"
+      },
+      {
+        "id": "office_overtime_night_dsr",
+        "label": "Horas Extras, Noturno & DSR",
+        "icon": "⏰",
+        "file": "OfficeOvertimeNightDsrView"
+      },
+      {
+        "id": "office_payroll_esocial_audit",
+        "label": "Auditoria Folha & eSocial",
+        "icon": "🛡️",
+        "file": "OfficePayrollEsocialAuditView"
+      },
+      {
+        "id": "office_optimal_prolabore",
+        "label": "Pró-Labore, Fator R & Dividendos",
+        "icon": "💰",
+        "file": "OfficeOptimalProlaboreDividendsView"
+      },
+      {
+        "id": "office_sst_esocial",
+        "label": "SST eSocial, LTCAT & PPP Digital",
+        "icon": "🦺",
+        "file": "OfficeSstEsocialPppView"
+      },
+      {
+        "id": "office_vacation_leaves",
+        "label": "Férias, Ponto & eSocial",
+        "icon": "🏖️",
+        "file": "OfficeVacationLeavesTimeTrackingView"
+      },
+      {
+        "id": "office_job_stability",
+        "label": "Estabilidade Provisória & Afastamentos",
+        "icon": "🛡️",
+        "file": "OfficeJobTenureStabilityInssView"
+      },
+      {
+        "id": "office_internship_apprentice",
+        "label": "Estágios & Menor Aprendiz",
+        "icon": "🎓",
+        "file": "OfficeInternshipApprenticeAuditView"
+      },
+      {
+        "id": "office_payroll_provisions",
+        "label": "Provisões de Férias e 13º",
+        "icon": "📊",
+        "file": "OfficePayrollProvisionsTerminationView"
+      },
+      {
+        "id": "port_workers_fap_payroll",
+        "label": "Portuários OGMO & FAP RAT",
+        "icon": "⚓",
+        "file": "PortWorkersFapPayrollView"
+      },
+      {
+        "id": "stock_options_sped_export",
+        "label": "Stock Options STJ 1226",
+        "icon": "📈",
+        "file": "StockOptionsSpedExportView"
+      },
+      {
+        "id": "pension_admission_active",
+        "label": "Pensão CPC 33 & Benefício Definido",
+        "icon": "🏛️",
+        "file": "PensionDefinedBenefitAdmissionActiveView"
+      }
+    ]
+  }
+]

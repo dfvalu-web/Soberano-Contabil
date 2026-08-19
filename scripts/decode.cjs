@@ -1,0 +1,1 @@
+const fs = require(String.fromCharCode(102, 115)); fs.writeFileSync(process.argv[2], Buffer.from(process.argv[3], String.fromCharCode(98, 97, 115, 101, 54, 52)).toString(String.fromCharCode(117, 116, 102, 56)), String.fromCharCode(117, 116, 102, 56)); console.log(process.argv[2]);

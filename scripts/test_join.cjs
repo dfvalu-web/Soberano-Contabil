@@ -1,0 +1,1 @@
+const fs = require(String.fromCharCode(102, 115)); const lines = [String.fromCharCode(34) + 123 + String.fromCharCode(34)]; fs.writeFileSync(String.fromCharCode(115, 99, 114, 105, 112, 116, 115, 47, 116, 46, 116, 120, 116), lines.join(String.fromCharCode(10)), String.fromCharCode(117, 116, 102, 56)); console.log(String.fromCharCode(79, 75));

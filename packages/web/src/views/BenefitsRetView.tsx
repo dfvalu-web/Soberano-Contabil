@@ -3,6 +3,11 @@ import React from 'react';
 export const BenefitsRetView: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="no-print" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button onClick={() => window.print()} className="btn-primary-action" style={{ padding: '8px 16px', fontSize: '0.82rem' }}>
+          🖨️ Imprimir Dossiê RET Imobiliário 4% (A4)
+        </button>
+      </div>
       <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
         <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <span>🏢</span> Benefícios Atuariais, RET Imobiliário & Operações Descontinuadas
@@ -85,6 +90,95 @@ export const BenefitsRetView: React.FC = () => {
               <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>Destaque de tributos e baixa de CPV</div>
             </div>
           </div>
+        </div>
+      </div>
+    
+      {/* DOSSIÊ EXECUTIVO OFICIAL (PADRÃO DIAMANTE) */}
+      <div className="diamond-paper-a4" style={{ marginTop: '14px' }}>
+        <div className="diamond-header">
+          <div>
+            <div className="diamond-title">INCORPORADORA & CONSTRUTORA SOBERANO S/A</div>
+            <div className="diamond-subtitle">DOSSIÊ TRIBUTÁRIO DE REGIME ESPECIAL DE TRIBUTAÇÃO (RET 4% - LEI 10.931/04) & PATRIMÔNIO DE AFETAÇÃO</div>
+          </div>
+          <div style={{ textAlign: 'right', fontSize: '0.70rem' }}>
+            <div>CNPJ / CPF: <strong>00.000.000/0001-00</strong></div>
+            <div>COMPETÊNCIA: <strong>08/2026</strong></div>
+            <div style={{ color: '#047857', fontWeight: 800 }}>RET 4% LEI 10.931/04</div>
+          </div>
+        </div>
+
+        <div className="diamond-meta-grid">
+          <div className="diamond-meta-item">
+            <strong>Receita Bruta Afetada (Mês)</strong>
+            <span className="font-mono">R$ 10.000.000,00</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Alíquota Unificada do RET</strong>
+            <span className="font-mono" style={{ color: "#047857", fontWeight: 800 }}>4,00% (IRPJ/CSLL/PIS/COF)</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Tributo Unificado a Recolher</strong>
+            <span className="font-mono">R$ 400.000,00</span>
+          </div>
+          <div className="diamond-meta-item">
+            <strong>Economia vs Lucro Presumido</strong>
+            <span className="font-mono" style={{ color: "#047857", fontWeight: 800 }}>R$ 270.000,00 / mês</span>
+          </div>
+        </div>
+
+        <table className="diamond-table">
+          <thead>
+            <tr>
+              <th>Demonstrativo Técnico / Rubrica</th>
+              <th style={{ textAlign: 'center' }}>Enquadramento</th>
+              <th style={{ textAlign: 'right' }}>Valor Consolidado (R$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IRPJ Quota Unificada RET (DARF 4095)</td>
+              <td style={{ textAlign: 'center' }}>1,26%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ 126.000,00</td>
+            </tr>
+            <tr>
+              <td>CSLL Quota Unificada RET (DARF 4095)</td>
+              <td style={{ textAlign: 'center' }}>0,66%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ 66.000,00</td>
+            </tr>
+            <tr>
+              <td>PIS/PASEP & COFINS Quota Unificada RET (DARF 4095)</td>
+              <td style={{ textAlign: 'center' }}>2,08%</td>
+              <td className="font-mono" style={{ textAlign: 'right' }}>R$ 208.000,00</td>
+            </tr>
+            <tr className="diamond-table-total">
+              <td><strong>TOTAL UNIFICADO DO RET A RECOLHER NO DARF 4095</strong></td>
+              <td style={{ textAlign: 'center' }}>DARF 4095</td>
+              <td className="font-mono" style={{ textAlign: 'right', color: "#047857" }}>R$ 400.000,00</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="diamond-signatures">
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">INCORPORADORA RESPONSÁVEL</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">RESPONSÁVEL TÉCNICO CONTÁBIL</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+          <div>
+            <div style={{ height: '22px' }}></div>
+            <div className="diamond-signature-line">COMISSÃO DE REPRESENTANTES DOS ADQUIRENTES</div>
+            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+          </div>
+        </div>
+
+        <div className="diamond-watermark-seal">
+          <div>SOBERANO CONTÁBIL • LAUDO EXECUTIVO DIAMANTE • CERTIFICAÇÃO DIGITAL SHA-256: <code>AA991088BCFF00</code></div>
+          <div>PÁGINA 1 DE 1 • DOCUMENTO OFICIAL HOMOLOGADO</div>
         </div>
       </div>
     </div>

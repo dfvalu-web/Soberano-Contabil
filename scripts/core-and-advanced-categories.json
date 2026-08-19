@@ -1,0 +1,1160 @@
+[
+  {
+    "category": "Gestão & Produtividade do Escritório",
+    "icon": "📊",
+    "isCore": true,
+    "tag": "ESCRITORIO",
+    "items": [
+      {
+        "id": "office_multi_client_grid",
+        "label": "Cockpit Multi-Empresa em Grade",
+        "icon": "🚦",
+        "file": "OfficeMultiClientClosingGridView"
+      },
+      {
+        "id": "office_universal_dropzone_ocr",
+        "label": "Dropzone Massivo Multi-Doc OCR",
+        "icon": "📂",
+        "file": "OfficeUniversalDropzoneOcrView"
+      },
+      {
+        "id": "office_batch_dispatch_bundle",
+        "label": "Disparo em Lote 1-Click (Guias/Pix)",
+        "icon": "🚀",
+        "file": "OfficeBatchDispatchBundleView"
+      },
+      {
+        "id": "dashboard",
+        "label": "Cockpit Executivo Principal",
+        "icon": "📊",
+        "file": "DashboardView"
+      },
+      {
+        "id": "accounting_office_hub",
+        "label": "Central do Escritório (4 Pilares)",
+        "icon": "🏛️",
+        "file": "AccountingOfficeHubView"
+      },
+      {
+        "id": "office_daily_operations",
+        "label": "Operações Diárias (3 Pilares)",
+        "icon": "⚙️",
+        "file": "OfficeDailyOperationsHubView"
+      },
+      {
+        "id": "office_monthly_closing",
+        "label": "Fechamento Mensal & Dossiê",
+        "icon": "🗓️",
+        "file": "OfficeMonthlyClosingChecklistView"
+      },
+      {
+        "id": "office_tasks_productivity",
+        "label": "Tarefas & SLAs da Equipe",
+        "icon": "📋",
+        "file": "OfficeTasksProductivitySlaView"
+      },
+      {
+        "id": "office_client_profitability_bi",
+        "label": "BI & Rentabilidade da Carteira",
+        "icon": "📈",
+        "file": "OfficeClientProfitabilityBiView"
+      },
+      {
+        "id": "client_portal_office",
+        "label": "Portal do Cliente (B2B)",
+        "icon": "🌐",
+        "file": "ClientPortalOfficeView"
+      }
+    ]
+  },
+  {
+    "category": "Comércio & Varejo",
+    "icon": "🏪",
+    "isCore": true,
+    "tag": "COMERCIO",
+    "items": [
+      {
+        "id": "office_monophasic_tax",
+        "label": "Monofásicos PIS/COFINS (Farmácias)",
+        "icon": "💊",
+        "file": "OfficeMonophasicTaxSegregationView"
+      },
+      {
+        "id": "office_card_pix_crossaudit",
+        "label": "Cruzamento Cartões/PIX vs DF-e",
+        "icon": "💳",
+        "file": "OfficeCardPixCrossAuditView"
+      },
+      {
+        "id": "office_returns_tax",
+        "label": "Devoluções & Estornos de Crédito",
+        "icon": "🔄",
+        "file": "OfficeReturnsTaxAdjustmentView"
+      },
+      {
+        "id": "office_inventory_block_hk",
+        "label": "Estoques & SPED Bloco H/K",
+        "icon": "📦",
+        "file": "OfficeInventoryBlockHKTaxAdjustmentView"
+      },
+      {
+        "id": "office_dda_matching",
+        "label": "DDA Bancário vs Notas de Entrada",
+        "icon": "📑",
+        "file": "OfficeDdaBankingNfeMatchingView"
+      },
+      {
+        "id": "office_inbound_dfe",
+        "label": "DF-e Entrada & Manifestação SEFAZ",
+        "icon": "📥",
+        "file": "OfficeInboundDfeBookkeepingView"
+      },
+      {
+        "id": "office_state_ancillary",
+        "label": "Obrigações Estaduais (GIA/DeSTDA)",
+        "icon": "🏛️",
+        "file": "OfficeStateAncillaryDeclarationsView"
+      },
+      {
+        "id": "warranty_difal_fcp",
+        "label": "DIFAL & Fundo de Combate à Pobreza",
+        "icon": "🛡️",
+        "file": "ExtendedWarrantyDifalFcpView"
+      }
+    ]
+  },
+  {
+    "category": "Indústria & Manufatura",
+    "icon": "🏭",
+    "isCore": true,
+    "tag": "INDUSTRIA",
+    "items": [
+      {
+        "id": "office_ciap_block_g",
+        "label": "CIAP Bloco G SPED (1/48 Avos)",
+        "icon": "🏗️",
+        "file": "OfficeCiapSpedBlockGView"
+      },
+      {
+        "id": "office_fixed_assets_ciap",
+        "label": "Ativo Imobilizado Fabril",
+        "icon": "🏭",
+        "file": "OfficeFixedAssetsCiapBlocoGView"
+      },
+      {
+        "id": "office_annual_closing_are",
+        "label": "Custos CPV & ARE Anual 1-Click",
+        "icon": "🏁",
+        "file": "OfficeAnnualClosingAreView"
+      },
+      {
+        "id": "office_tax_credit_recovery",
+        "label": "Recuperação Créditos PIS/COFINS",
+        "icon": "💎",
+        "file": "OfficeTaxCreditRecoveryView"
+      },
+      {
+        "id": "office_tax_reform_transition",
+        "label": "Reforma Tributária IBS/CBS Fabril",
+        "icon": "⚖️",
+        "file": "OfficeTaxReformTransitionView"
+      },
+      {
+        "id": "office_tax_arrears",
+        "label": "Recálculo de Tributos em Atraso",
+        "icon": "⏱️",
+        "file": "OfficeTaxArrearsRecalculatorView"
+      },
+      {
+        "id": "office_perdcomp_negative_balance",
+        "label": "PER/DCOMP & Saldos Negativos",
+        "icon": "📑",
+        "file": "OfficePerDcompNegativeBalanceView"
+      }
+    ]
+  },
+  {
+    "category": "Prestadores de Serviços & PJ",
+    "icon": "💼",
+    "isCore": true,
+    "tag": "SERVICOS",
+    "items": [
+      {
+        "id": "office_optimal_prolabore",
+        "label": "Pró-Labore & Fator R (28%)",
+        "icon": "💰",
+        "file": "OfficeOptimalProlaboreDividendsView"
+      },
+      {
+        "id": "office_federal_tax_withholding",
+        "label": "Retenções Federais (CSRF 4,65%)",
+        "icon": "🏛️",
+        "file": "OfficeFederalTaxWithholdingView"
+      },
+      {
+        "id": "office_issqn_withholding",
+        "label": "ISS Tomador & CPOM Municipal",
+        "icon": "🏙️",
+        "file": "OfficeIssqnWithholdingCpomView"
+      },
+      {
+        "id": "office_reinf_r4000",
+        "label": "EFD-Reinf R-4000 & DCTFWeb",
+        "icon": "📋",
+        "file": "OfficeReinfR4000DctfwebCrossAuditView"
+      },
+      {
+        "id": "office_tax_withholdings",
+        "label": "Retenções na Fonte & Comprovantes",
+        "icon": "📑",
+        "file": "OfficeTaxWithholdingsReinfView"
+      },
+      {
+        "id": "office_carne_leao_irpf",
+        "label": "Carnê-Leão & Livro Caixa IRPF",
+        "icon": "🦁",
+        "file": "OfficeCarneLeaoCashBookIrpfView"
+      },
+      {
+        "id": "tax",
+        "label": "Simulador Tributário (3 Regimes)",
+        "icon": "🧮",
+        "file": "TaxEngineView"
+      },
+      {
+        "id": "financial_bpo_office",
+        "label": "BPO Financeiro & Fluxo de Caixa",
+        "icon": "💼",
+        "file": "FinancialBpoOfficeView"
+      }
+    ]
+  },
+  {
+    "category": "Departamento Pessoal & eSocial",
+    "icon": "👥",
+    "isCore": true,
+    "tag": "DP",
+    "items": [
+      {
+        "id": "payroll",
+        "label": "Folha de Pagamento Central & Encargos",
+        "icon": "👥",
+        "file": "PayrollView"
+      },
+      {
+        "id": "office_labor_termination",
+        "label": "Rescisão Trabalhista & TRCT",
+        "icon": "📄",
+        "file": "OfficeLaborTerminationTrctView"
+      },
+      {
+        "id": "office_absence_dsr_vacation",
+        "label": "Faltas Injustificadas & Férias CLT",
+        "icon": "⏱️",
+        "file": "OfficeAbsenceDsrVacationPenaltyView"
+      },
+      {
+        "id": "office_hazardous_work",
+        "label": "Insalubridade & Periculosidade (NR-15/16)",
+        "icon": "☣️",
+        "file": "OfficeHazardousWorkAdditionalView"
+      },
+      {
+        "id": "office_flexible_benefits_pat",
+        "label": "Benefícios Flexíveis, VT & PAT",
+        "icon": "🍱",
+        "file": "OfficeFlexibleBenefitsPatView"
+      },
+      {
+        "id": "office_cprb_payroll_relief",
+        "label": "Desoneração da Folha (CPRB)",
+        "icon": "📉",
+        "file": "OfficeCprbPayrollReliefView"
+      },
+      {
+        "id": "office_alimony_child_support",
+        "label": "Pensão Alimentícia Judicial",
+        "icon": "⚖️",
+        "file": "OfficeAlimonyChildSupportPayrollView"
+      },
+      {
+        "id": "office_overtime_night_dsr",
+        "label": "Horas Extras, Noturno & DSR",
+        "icon": "⏰",
+        "file": "OfficeOvertimeNightDsrView"
+      },
+      {
+        "id": "office_payroll_esocial_audit",
+        "label": "Auditoria Folha & eSocial",
+        "icon": "🛡️",
+        "file": "OfficePayrollEsocialAuditView"
+      },
+      {
+        "id": "office_sst_esocial",
+        "label": "SST eSocial & PPP Digital",
+        "icon": "🦺",
+        "file": "OfficeSstEsocialPppView"
+      },
+      {
+        "id": "office_vacation_leaves",
+        "label": "Férias & Controle de Ponto",
+        "icon": "🏖️",
+        "file": "OfficeVacationLeavesTimeTrackingView"
+      },
+      {
+        "id": "office_payroll_provisions",
+        "label": "Provisões de Férias e 13º Salário",
+        "icon": "📊",
+        "file": "OfficePayrollProvisionsTerminationView"
+      }
+    ]
+  },
+  {
+    "category": "Contabilidade, IFRS & SPED",
+    "icon": "📚",
+    "isCore": true,
+    "tag": "CONTABIL",
+    "items": [
+      {
+        "id": "accounting",
+        "label": "Contabilidade IFRS & Razão Digital",
+        "icon": "📖",
+        "file": "AccountingView"
+      },
+      {
+        "id": "office_annual_closing",
+        "label": "Fechamento Anual & Notas Explicativas",
+        "icon": "📊",
+        "file": "OfficeAnnualAccountingClosingView"
+      },
+      {
+        "id": "office_equity_method_cpc18",
+        "label": "Equivalência Patrimonial (MEP - CPC 18)",
+        "icon": "🏢",
+        "file": "OfficeEquityMethodCpc18View"
+      },
+      {
+        "id": "office_ecd_ecf_junta",
+        "label": "ECD, ECF & Livros Junta Comercial",
+        "icon": "🏛️",
+        "file": "OfficeEcdEcfJuntaRegistryView"
+      },
+      {
+        "id": "sped",
+        "label": "Suíte SPED & Validador PVA",
+        "icon": "📄",
+        "file": "SpedView"
+      },
+      {
+        "id": "office_sped_batch_prevalidator",
+        "label": "Pré-Validador SPED em Lote",
+        "icon": "🔍",
+        "file": "OfficeSpedBatchPrevalidatorView"
+      },
+      {
+        "id": "dfe",
+        "label": "Auditoria DF-e & Malhas Fiscais",
+        "icon": "⚡",
+        "file": "DfeAuditView"
+      },
+      {
+        "id": "dfc_merger",
+        "label": "DFC Demonstração Fluxos de Caixa",
+        "icon": "🌊",
+        "file": "DfcMergerBackupView"
+      },
+      {
+        "id": "dva_wealth_jcp",
+        "label": "DVA Demonstração Valor Adicionado",
+        "icon": "💎",
+        "file": "DvaWealthJcpTaxView"
+      }
+    ]
+  },
+  {
+    "category": "Societário, Legalização & Advisory",
+    "icon": "🏛️",
+    "isCore": true,
+    "tag": "SOCIETARIO",
+    "items": [
+      {
+        "id": "corporate_legalization_cnd",
+        "label": "Legalização & Gestão de CNDs",
+        "icon": "📜",
+        "file": "CorporateLegalizationCndView"
+      },
+      {
+        "id": "office_redesim_viability",
+        "label": "Viabilidade Redesim & Licenças",
+        "icon": "🏢",
+        "file": "OfficeRedesimViabilityLicensingView"
+      },
+      {
+        "id": "office_family_holding",
+        "label": "Holding Familiar & Sucessão",
+        "icon": "🏰",
+        "file": "OfficeFamilyHoldingSuccessionView"
+      },
+      {
+        "id": "office_strategic_valuation",
+        "label": "Valuation & Advisory Estratégico",
+        "icon": "🎯",
+        "file": "OfficeStrategicAdvisoryValuationView"
+      },
+      {
+        "id": "office_corporate_governance",
+        "label": "Governança & Atas Digitais",
+        "icon": "⚖️",
+        "file": "OfficeCorporateGovernanceAssemblyView"
+      },
+      {
+        "id": "office_fees_billing",
+        "label": "Honorários & Cobrança Escritório",
+        "icon": "🧾",
+        "file": "OfficeFeesBillingDunningView"
+      },
+      {
+        "id": "office_client_onboarding",
+        "label": "Onboarding & Migração Clientes",
+        "icon": "🚀",
+        "file": "OfficeClientOnboardingMigrationView"
+      },
+      {
+        "id": "office_electronic_attorney",
+        "label": "Procurações e-CAC & DJE",
+        "icon": "⚖️",
+        "file": "OfficeElectronicAttorneyDjeView"
+      }
+    ]
+  },
+  {
+    "category": "Segurança, HSM & Conformidade",
+    "icon": "🛡️",
+    "isCore": true,
+    "tag": "SEGURANCA",
+    "items": [
+      {
+        "id": "security",
+        "label": "Segurança & Ledger ACID",
+        "icon": "🛡️",
+        "file": "SecurityLedgerView"
+      },
+      {
+        "id": "office_digital_certificates",
+        "label": "Certificados Digitais & Assinador",
+        "icon": "🔐",
+        "file": "OfficeDigitalCertificatesSignerView"
+      },
+      {
+        "id": "cloud_hsm_pfx_vault",
+        "label": "Cloud HSM & Cofre PFX A1",
+        "icon": "🔒",
+        "file": "CloudHsmPfxVaultView"
+      },
+      {
+        "id": "office_aml_coaf",
+        "label": "Prevenção PLD & COAF / CFC",
+        "icon": "🚨",
+        "file": "OfficeAmlCoafComplianceView"
+      },
+      {
+        "id": "gov_webservices_prod",
+        "label": "WebServices Gov em Produção",
+        "icon": "🔌",
+        "file": "GovWebservicesProductionView"
+      },
+      {
+        "id": "sefaz_k8s_prod",
+        "label": "SEFAZ mTLS & Transmissão Segura",
+        "icon": "☸️",
+        "file": "SefazDirectTransmissionK8sView"
+      }
+    ]
+  },
+  {
+    "category": "Módulos Setoriais & Especiais (Sob Demanda)",
+    "icon": "🌐",
+    "items": [
+      {
+        "id": "agri_derivatives",
+        "label": "Agro & Derivativos Climáticos",
+        "icon": "🌾",
+        "file": "AgriDerivativesView"
+      },
+      {
+        "id": "cattle_agro_lcdpr",
+        "label": "Pecuária CPC 29 & LCDPR Rural",
+        "icon": "🐄",
+        "file": "CattleAgroLcdprView"
+      },
+      {
+        "id": "bearer_plants_agro",
+        "label": "Plantas Portadoras & Agro",
+        "icon": "🌱",
+        "file": "BearerPlantsAgroView"
+      },
+      {
+        "id": "biological_fco_tax",
+        "label": "Valor Justo CPC 29 & Subvenção",
+        "icon": "🌿",
+        "file": "BiologicalFairValueFcoTaxView"
+      },
+      {
+        "id": "agro_cpr_psr",
+        "label": "CPR Dólar & Seguro Rural PSR",
+        "icon": "🌾",
+        "file": "AgroCprForeignInsurancePsrView"
+      },
+      {
+        "id": "forestry_biological_debt",
+        "label": "Florestas FCD & Conversão Dívidas",
+        "icon": "🌲",
+        "file": "ForestryBiologicalDebtView"
+      },
+      {
+        "id": "earnout_sugarcane",
+        "label": "Earn-out em M&A & Cana/Etanol",
+        "icon": "🎋",
+        "file": "EarnoutSugarcaneView"
+      },
+      {
+        "id": "carbon_cbio",
+        "label": "Créditos Carbono & CBIOs RenovaBio",
+        "icon": "♻️",
+        "file": "CarbonCbioView"
+      },
+      {
+        "id": "sbce_carbon_redd",
+        "label": "Mercado Carbono SBCE & REDD+",
+        "icon": "🌳",
+        "file": "SbceCarbonMarketReddView"
+      },
+      {
+        "id": "methane_carbon_port_tax",
+        "label": "Metano & Praticagem Portuária",
+        "icon": "🚢",
+        "file": "MethaneCarbonPortTaxView"
+      },
+      {
+        "id": "zfm40_suframa_pin",
+        "label": "ZFM 4.0 & Automação PIN",
+        "icon": "📦",
+        "file": "Zfm40SuframaPinAutomationView"
+      },
+      {
+        "id": "carveout_zfm_tax",
+        "label": "Carve-Out CPC 18 & ZFM ICMS",
+        "icon": "🏭",
+        "file": "CarveoutZfmTaxView"
+      },
+      {
+        "id": "segments_amazon_alc",
+        "label": "Segmentos CPC 22 & Amazônia ALC",
+        "icon": "🌴",
+        "file": "SegmentsAmazonAlcTaxView"
+      },
+      {
+        "id": "distribution_alc",
+        "label": "Distribuição Sócios & ALCs",
+        "icon": "📦",
+        "file": "DistributionAlcView"
+      },
+      {
+        "id": "drex_cbdc_tpft",
+        "label": "DREX Real Digital & TPFTs",
+        "icon": "🪙",
+        "file": "DrexCbdcTokenizedTpftView"
+      },
+      {
+        "id": "rwa_tokens_ibs_cbs",
+        "label": "Tokens RWA & Reforma IBS/CBS",
+        "icon": "🪙",
+        "file": "RwaTokensIbsCbsView"
+      },
+      {
+        "id": "crypto_vasp_in1888",
+        "label": "Marco Cripto VASP & IN 1888",
+        "icon": "₿",
+        "file": "CryptoVaspIn1888ComplianceView"
+      },
+      {
+        "id": "borrowing_crypto",
+        "label": "Empréstimos Cripto & Custódia",
+        "icon": "🔐",
+        "file": "BorrowingCryptoView"
+      },
+      {
+        "id": "crypto_natural_gas",
+        "label": "Criptoativos & Gás Natural",
+        "icon": "⛽",
+        "file": "CryptoNaturalGasView"
+      },
+      {
+        "id": "ccee_energy_tp",
+        "label": "Mercado Livre CCEE & TP OCDE",
+        "icon": "⚡",
+        "file": "CceeEnergyTransferPricingView"
+      },
+      {
+        "id": "bets_cooperatives_tax",
+        "label": "Apostas / Bets & Cooperativas",
+        "icon": "🎲",
+        "file": "BetsCooperativesTaxView"
+      },
+      {
+        "id": "medical_cooperative_tax",
+        "label": "Cooperativas Médicas & PIS",
+        "icon": "🏥",
+        "file": "MedicalCooperativeTaxView"
+      },
+      {
+        "id": "port_tup_storage_tax",
+        "label": "Portos TUP & Armazenagem",
+        "icon": "⚓",
+        "file": "PortTupStorageIcmsIssView"
+      },
+      {
+        "id": "shopping_mall_fii_tax",
+        "label": "Shopping Centers & FIIs",
+        "icon": "🏬",
+        "file": "ShoppingMallFiiTaxView"
+      },
+      {
+        "id": "fractional_multipropriedade_ret",
+        "label": "Multipropriedade & RET 4%",
+        "icon": "🏖️",
+        "file": "FractionalOwnershipMultipropriedadeRetView"
+      },
+      {
+        "id": "naval_shipbuilding",
+        "label": "Construção Naval & Estaleiros",
+        "icon": "🚢",
+        "file": "NavalShipbuildingView"
+      },
+      {
+        "id": "resurfacing_cinema",
+        "label": "Recapeamento & Cinema RECINE",
+        "icon": "🎬",
+        "file": "ResurfacingCinemaView"
+      },
+      {
+        "id": "concession_hospital",
+        "label": "Concessões & Equiparação Hosp.",
+        "icon": "🏥",
+        "file": "ConcessionHospitalView"
+      },
+      {
+        "id": "hybrid_concession_vehicles",
+        "label": "Concessões & Veículos Usados",
+        "icon": "🚗",
+        "file": "HybridConcessionVehiclesView"
+      },
+      {
+        "id": "common_control_oil",
+        "label": "Controle Comum & Royalties ANP",
+        "icon": "🛢️",
+        "file": "CommonControlOilView"
+      },
+      {
+        "id": "telemetry_repetro",
+        "label": "Telemetria & Regime REPETRO",
+        "icon": "📡",
+        "file": "TelemetryRepetroView"
+      },
+      {
+        "id": "infrastructure_debentures",
+        "label": "Debêntures de Infraestrutura",
+        "icon": "🏛️",
+        "file": "InfrastructureDebenturesTaxView"
+      },
+      {
+        "id": "hybrid_perpetual_reidi_tax",
+        "label": "Títulos Híbridos & REIDI",
+        "icon": "⚡",
+        "file": "HybridPerpetualReidiTaxView"
+      },
+      {
+        "id": "fidc_cpr_agro",
+        "label": "FIDCs CPC 48 & CPR Agro Verde",
+        "icon": "📜",
+        "file": "FidcSecuritizationCprAgroView"
+      },
+      {
+        "id": "software_oea_customs",
+        "label": "Softwares CPC 04 & OEA Receita",
+        "icon": "💻",
+        "file": "SoftwareIntangiblesOeaCustomsView"
+      },
+      {
+        "id": "drawback_aap",
+        "label": "Drawback & AAP / OCI",
+        "icon": "🚢",
+        "file": "DrawbackAapView"
+      },
+      {
+        "id": "intercompany_drawback",
+        "label": "Mútuos CPC 05 & Drawback",
+        "icon": "🚢",
+        "file": "IntercompanyLoansDrawbackExemptionView"
+      },
+      {
+        "id": "borrowing_lei_do_bem",
+        "label": "Juros CPC 20 & Lei do Bem P&D",
+        "icon": "💡",
+        "file": "BorrowingCostsLeiDoBemView"
+      },
+      {
+        "id": "ndf_hedge_split_payment",
+        "label": "NDF Hedge & Split Payment",
+        "icon": "🛡️",
+        "file": "NdfHedgeSplitPaymentIbsView"
+      },
+      {
+        "id": "streaming_lease_ifrs",
+        "label": "Streaming Digital & IFRS 16",
+        "icon": "🎬",
+        "file": "StreamingLeaseIfrsView"
+      },
+      {
+        "id": "sudene_maintenance_overhaul",
+        "label": "Paradas CPC 27 & SUDENE",
+        "icon": "🏭",
+        "file": "SudeneMaintenanceOverhaulView"
+      },
+      {
+        "id": "weather_ipi_export",
+        "label": "Derivativos Climáticos & IPI",
+        "icon": "🌦️",
+        "file": "WeatherIpiExportView"
+      },
+      {
+        "id": "actuarial_pharma",
+        "label": "Previdência & Farmacêutico",
+        "icon": "💊",
+        "file": "ActuarialPharmaView"
+      },
+      {
+        "id": "perpetual_autoparts",
+        "label": "Perpétuos & Autopeças",
+        "icon": "⚙️",
+        "file": "PerpetualAutoPartsView"
+      },
+      {
+        "id": "uncertainty_beverages",
+        "label": "Incertezas & Bebidas Frias",
+        "icon": "🍹",
+        "file": "UncertaintyBeveragesView"
+      },
+      {
+        "id": "onerous_cosmetics",
+        "label": "Onerosos & Cosméticos",
+        "icon": "💄",
+        "file": "OnerousCosmeticsView"
+      },
+      {
+        "id": "compound_recycling",
+        "label": "Compostos & Reciclagem",
+        "icon": "♻️",
+        "file": "CompoundRecyclingView"
+      },
+      {
+        "id": "revaluation_biodiesel",
+        "label": "Custo Atribuído & Biodiesel",
+        "icon": "🛢️",
+        "file": "RevaluationBiodieselView"
+      },
+      {
+        "id": "regulatory_ev_mover",
+        "label": "Regulatórios & Programa MOVER",
+        "icon": "🚗",
+        "file": "RegulatoryEvMoverView"
+      },
+      {
+        "id": "embedded_freight",
+        "label": "Derivativos & Fretes Embutidos",
+        "icon": "🚛",
+        "file": "EmbeddedFreightView"
+      },
+      {
+        "id": "tax_loss_saas",
+        "label": "Prejuízos Fiscais & SaaS",
+        "icon": "💻",
+        "file": "TaxLossSaasView"
+      },
+      {
+        "id": "lessor_construction",
+        "label": "Arrendador & Obras Construção",
+        "icon": "🏗️",
+        "file": "LessorConstructionView"
+      },
+      {
+        "id": "liquidation_afrmm",
+        "label": "Liquidação & AFRMM Marinha",
+        "icon": "⚓",
+        "file": "LiquidationAfrmmView"
+      },
+      {
+        "id": "insurance_telecom",
+        "label": "Seguros BBA & Telecomunicações",
+        "icon": "📡",
+        "file": "InsuranceTelecomView"
+      },
+      {
+        "id": "grants_cide",
+        "label": "Subvenções & CIDE-Combustíveis",
+        "icon": "⛽",
+        "file": "GrantsCideView"
+      },
+      {
+        "id": "poc_leasing",
+        "label": "Contratos POC & Locação Imóveis",
+        "icon": "🏢",
+        "file": "PocLeasingView"
+      },
+      {
+        "id": "phantom_swap",
+        "label": "Phantom Shares & Swaps Permuta",
+        "icon": "🔄",
+        "file": "PhantomSwapView"
+      },
+      {
+        "id": "guarantee_fuels",
+        "label": "Garantias & Combustíveis",
+        "icon": "⛽",
+        "file": "GuaranteeFuelsView"
+      },
+      {
+        "id": "loans_cooperative",
+        "label": "Mútuos Subsidiados & Coop.",
+        "icon": "🤝",
+        "file": "LoansCooperativeView"
+      },
+      {
+        "id": "insurance_fii",
+        "label": "Seguros, FIIs & Criptoativos",
+        "icon": "🏬",
+        "file": "InsuranceFiiView"
+      },
+      {
+        "id": "separate_offshore",
+        "label": "Demonstrações Separadas & Offshores",
+        "icon": "🏝️",
+        "file": "SeparateOffshoreView"
+      },
+      {
+        "id": "benefits_ret",
+        "label": "Benefícios Pós-Emprego & RET",
+        "icon": "🏢",
+        "file": "BenefitsRetView"
+      },
+      {
+        "id": "discontinued_future",
+        "label": "Operações Descontinuadas",
+        "icon": "📦",
+        "file": "DiscontinuedFutureDeliveryView"
+      },
+      {
+        "id": "policies_triangular",
+        "label": "Políticas & Venda Triangular",
+        "icon": "📐",
+        "file": "PoliciesTriangularView"
+      },
+      {
+        "id": "mineral_trading",
+        "label": "Recursos Minerais & Tradings",
+        "icon": "⛏️",
+        "file": "MineralTradingView"
+      },
+      {
+        "id": "goodwill_toll",
+        "label": "Goodwill & Industrialização",
+        "icon": "🏭",
+        "file": "GoodwillTollView"
+      },
+      {
+        "id": "investment_warehouse",
+        "label": "Propriedades para Investimento",
+        "icon": "🏬",
+        "file": "InvestmentWarehouseView"
+      },
+      {
+        "id": "intangibles_returns",
+        "label": "Intangíveis & Devoluções",
+        "icon": "💡",
+        "file": "IntangiblesReturnsView"
+      },
+      {
+        "id": "aro_bonification",
+        "label": "Desmantelamento (ARO)",
+        "icon": "🏗️",
+        "file": "AroBonificationView"
+      },
+      {
+        "id": "queue_esg",
+        "label": "Filas & Mobilidade Urbana ESG",
+        "icon": "⚡",
+        "file": "QueueEsgEventsView"
+      },
+      {
+        "id": "interim_mover",
+        "label": "Demonstrações Intermediárias",
+        "icon": "🚗",
+        "file": "InterimMoverView"
+      },
+      {
+        "id": "capital_markets",
+        "label": "Mercado de Capitais & ZPEs",
+        "icon": "🏛️",
+        "file": "CapitalMarketsZpeView"
+      },
+      {
+        "id": "consolidation_consignment",
+        "label": "Consolidação & Consignação",
+        "icon": "📦",
+        "file": "ConsolidationConsignmentView"
+      },
+      {
+        "id": "beps_globe_qdmtt_tax_treaty_view",
+        "label": "Beps Globe Qdmtt Tax Treaty",
+        "icon": "🌐",
+        "file": "BepsGlobeQdmttTaxTreatyView"
+      },
+      {
+        "id": "control_tower_ocr_ledger_view",
+        "label": "Control Tower Ocr Ledger",
+        "icon": "🌐",
+        "file": "ControlTowerOcrLedgerView"
+      },
+      {
+        "id": "corporate_sso_govbr_mfa_view",
+        "label": "Corporate Sso Govbr Mfa",
+        "icon": "🌐",
+        "file": "CorporateSsoGovbrMfaView"
+      },
+      {
+        "id": "cross_border_ma_safe_harbor_view",
+        "label": "Cross Border Ma Safe Harbor",
+        "icon": "🌐",
+        "file": "CrossBorderMaSafeHarborView"
+      },
+      {
+        "id": "dfc_compounding_view",
+        "label": "Dfc Compounding",
+        "icon": "🌐",
+        "file": "DfcCompoundingView"
+      },
+      {
+        "id": "distributed_queue_whatsapp_alerts_view",
+        "label": "Distributed Queue Whatsapp Alerts",
+        "icon": "🌐",
+        "file": "DistributedQueueWhatsappAlertsView"
+      },
+      {
+        "id": "enterprise_production_command_center_view",
+        "label": "Enterprise Production Command Center",
+        "icon": "🌐",
+        "file": "EnterpriseProductionCommandCenterView"
+      },
+      {
+        "id": "esg_ifrs_globe_tax_view",
+        "label": "Esg Ifrs Globe Tax",
+        "icon": "🌐",
+        "file": "EsgIfrsGlobeTaxView"
+      },
+      {
+        "id": "executive_reports_view",
+        "label": "Executive Reports",
+        "icon": "🌐",
+        "file": "ExecutiveReportsView"
+      },
+      {
+        "id": "first_time_ifrs_reiq_tax_view",
+        "label": "First Time Ifrs Reiq Tax",
+        "icon": "🌐",
+        "file": "FirstTimeIfrsReiqTaxView"
+      },
+      {
+        "id": "first_time_insurance_paa_view",
+        "label": "First Time Insurance Paa",
+        "icon": "🌐",
+        "file": "FirstTimeInsurancePaaView"
+      },
+      {
+        "id": "foreign_currency_agro_pis_cofins_view",
+        "label": "Foreign Currency Agro Pis Cofins",
+        "icon": "🌐",
+        "file": "ForeignCurrencyAgroPisCofinsView"
+      },
+      {
+        "id": "forensic_ai_view",
+        "label": "Forensic Ai",
+        "icon": "🌐",
+        "file": "ForensicAiView"
+      },
+      {
+        "id": "hyperinflation_iof_view",
+        "label": "Hyperinflation Iof",
+        "icon": "🌐",
+        "file": "HyperinflationIofView"
+      },
+      {
+        "id": "interim_reporting_recof_sped_view",
+        "label": "Interim Reporting Recof Sped",
+        "icon": "🌐",
+        "file": "InterimReportingRecofSpedView"
+      },
+      {
+        "id": "kms_parties_grants_view",
+        "label": "Kms Parties Grants",
+        "icon": "🌐",
+        "file": "KmsPartiesGrantsView"
+      },
+      {
+        "id": "office_annual_dossier_audit_opinion_view",
+        "label": "Office Annual Dossier Audit Opinion",
+        "icon": "🌐",
+        "file": "OfficeAnnualDossierAuditOpinionView"
+      },
+      {
+        "id": "office_annual_tax_planning_view",
+        "label": "Office Annual Tax Planning",
+        "icon": "🌐",
+        "file": "OfficeAnnualTaxPlanningView"
+      },
+      {
+        "id": "office_cfc_responsibility_transfer_view",
+        "label": "Office Cfc Responsibility Transfer",
+        "icon": "🌐",
+        "file": "OfficeCfcResponsibilityTransferView"
+      },
+      {
+        "id": "office_contracts_responsibility_transfer_view",
+        "label": "Office Contracts Responsibility Transfer",
+        "icon": "🌐",
+        "file": "OfficeContractsResponsibilityTransferView"
+      },
+      {
+        "id": "office_executive_board_management_reports_view",
+        "label": "Office Executive Board Management Reports",
+        "icon": "🌐",
+        "file": "OfficeExecutiveBoardManagementReportsView"
+      },
+      {
+        "id": "office_fees_collection_dunning_view",
+        "label": "Office Fees Collection Dunning",
+        "icon": "🌐",
+        "file": "OfficeFeesCollectionDunningView"
+      },
+      {
+        "id": "office_financial_investment_tax_view",
+        "label": "Office Financial Investment Tax",
+        "icon": "🌐",
+        "file": "OfficeFinancialInvestmentTaxView"
+      },
+      {
+        "id": "office_fiscal_document_ocr_view",
+        "label": "Office Fiscal Document Ocr",
+        "icon": "🌐",
+        "file": "OfficeFiscalDocumentOcrView"
+      },
+      {
+        "id": "office_internship_apprentice_audit_view",
+        "label": "Office Internship Apprentice Audit",
+        "icon": "🌐",
+        "file": "OfficeInternshipApprenticeAuditView"
+      },
+      {
+        "id": "office_job_tenure_stability_inss_view",
+        "label": "Office Job Tenure Stability Inss",
+        "icon": "🌐",
+        "file": "OfficeJobTenureStabilityInssView"
+      },
+      {
+        "id": "office_smart_dropzone_triage_view",
+        "label": "Office Smart Dropzone Triage",
+        "icon": "🌐",
+        "file": "OfficeSmartDropzoneTriageView"
+      },
+      {
+        "id": "office_state_of_the_art_daily_automation_view",
+        "label": "Office State Of The Art Daily Automation",
+        "icon": "🌐",
+        "file": "OfficeStateOfTheArtDailyAutomationView"
+      },
+      {
+        "id": "office_tax_discrepancies_notifications_view",
+        "label": "Office Tax Discrepancies Notifications",
+        "icon": "🌐",
+        "file": "OfficeTaxDiscrepanciesNotificationsView"
+      },
+      {
+        "id": "office_tax_incentives_donation_view",
+        "label": "Office Tax Incentives Donation",
+        "icon": "🌐",
+        "file": "OfficeTaxIncentivesDonationView"
+      },
+      {
+        "id": "office_tax_installments_pgfn_view",
+        "label": "Office Tax Installments Pgfn",
+        "icon": "🌐",
+        "file": "OfficeTaxInstallmentsPgfnView"
+      },
+      {
+        "id": "open_finance_audit_cross_view",
+        "label": "Open Finance Audit Cross",
+        "icon": "🌐",
+        "file": "OpenFinanceAuditCrossView"
+      },
+      {
+        "id": "pension_defined_benefit_admission_active_view",
+        "label": "Pension Defined Benefit Admission Active",
+        "icon": "🌐",
+        "file": "PensionDefinedBenefitAdmissionActiveView"
+      },
+      {
+        "id": "port_workers_fap_payroll_view",
+        "label": "Port Workers Fap Payroll",
+        "icon": "🌐",
+        "file": "PortWorkersFapPayrollView"
+      },
+      {
+        "id": "postgres_multi_tenant_rls_view",
+        "label": "Postgres Multi Tenant Rls",
+        "icon": "🌐",
+        "file": "PostgresMultiTenantRlsView"
+      },
+      {
+        "id": "postgres_pgvector_otel_prometheus_view",
+        "label": "Postgres Pgvector Otel Prometheus",
+        "icon": "🌐",
+        "file": "PostgresPgvectorOtelPrometheusView"
+      },
+      {
+        "id": "pva_compliance_soc2_security_view",
+        "label": "Pva Compliance Soc2 Security",
+        "icon": "🌐",
+        "file": "PvaComplianceSoc2SecurityView"
+      },
+      {
+        "id": "soc2_iso_drp_lgpd_audit_view",
+        "label": "Soc2 Iso Drp Lgpd Audit",
+        "icon": "🌐",
+        "file": "Soc2IsoDrpLgpdAuditView"
+      },
+      {
+        "id": "stock_options_sped_export_view",
+        "label": "Stock Options Sped Export",
+        "icon": "🌐",
+        "file": "StockOptionsSpedExportView"
+      },
+      {
+        "id": "treasury_demonstration_view",
+        "label": "Treasury Demonstration",
+        "icon": "🌐",
+        "file": "TreasuryDemonstrationView"
+      }
+    ],
+    "isCore": false,
+    "tag": "SETORIAL"
+  }
+]
