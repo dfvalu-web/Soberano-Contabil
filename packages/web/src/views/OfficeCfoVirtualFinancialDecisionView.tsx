@@ -49,7 +49,9 @@ import {
 
 export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'cockpit' | 'dupont' | 'copilot' | 'simulator' | 'dossier'>('cockpit');
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string>('comp-demo-1');
+  const tenants = useMemo(() => officeStore.getTenants(), []);
+  const [selectedTenantId, setSelectedTenantId] = useState<string>('t1');
+  const currentTenant = useMemo(() => tenants.find(t => t.id === selectedTenantId) || tenants[0], [tenants, selectedTenantId]);
   const [periodo, setPeriodo] = useState<string>('2026');
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
   const [selectedPreset, setSelectedPreset] = useState<string>('NOVA_FILIAL');
@@ -233,11 +235,8 @@ export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-surface-card,#131C30)] border border-[rgba(255,255,255,0.08)] text-xs">
-            <Building className="w-4 h-4 text-emerald-400" />
-            <span className="font-medium text-slate-200">Soberano Industrial S/A</span>
-          </div>
+        <div className="flex items-center gap-3"><button onClick={() => window.print()} className="btn-primary-action no-print" style={{ padding: "6px 12px", fontSize: "0.78rem", display: "flex", alignItems: "center", gap: "6px" }}><Printer size={15} /><span>Imprimir Dossiê A4</span></button>
+          <select value={selectedTenantId} onChange={(e) => setSelectedTenantId(e.target.value)} style={{ background: "var(--bg-surface-card, #131C30)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff", padding: "6px 12px", borderRadius: "8px", fontSize: "0.78rem", fontWeight: 700 }}>{tenants.map(t => (<option key={t.id} value={t.id}>{t.name} ({t.regime.replace("_", " ")})</option>))}</select>
 
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--bg-surface-card,#131C30)] border border-[rgba(255,255,255,0.08)] text-xs">
             <span className="text-slate-400">Exercício:</span>
