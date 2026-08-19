@@ -155,15 +155,17 @@ export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
   }, [cfoInput]);
 
   const scenarioInput: ExpansionScenarioInput = useMemo(() => ({
-    nomeProjeto: 'Expansão & Nova Unidade Comercial',
-    investimentoInicialCapex: simCapex,
-    horizonteMeses: simMeses,
-    receitaMensalEstimada: simReceita,
-    custosVariaveisPercentual: simCvPercent,
-    custosFixosMensaisEstimados: simCustoFixo,
-    taxaMinimaAtratividadeTmaAnual: simTma,
-    depreciacaoMensalEstimada: simDepreciacao
-  }), [simCapex, simMeses, simReceita, simCvPercent, simCustoFixo, simTma, simDepreciacao]);
+    tipoProjeto: (selectedPreset === 'NOVA_FILIAL' ? 'NOVA_FILIAL' : selectedPreset === 'CONTRATACAO_EQUIPE' ? 'CONTRATACAO_EQUIPE' : 'NOVA_MAQUINA_TECNOLOGIA') as any,
+    nomeProjeto: 'Expansão & Novos Negócios',
+    investimentoInicialCapex: Math.max(0, simCapex || 0),
+    receitaIncrementalMensal: Math.max(0, simReceita || 0),
+    custoVariavelPercent: Math.min(100, Math.max(0, simCvPercent || 0)),
+    custoFixoIncrementalMensal: Math.max(0, simCustoFixo || 0),
+    depreciacaoMensal: Math.max(0, simDepreciacao || 0),
+    vidaUtilMeses: Math.max(1, simMeses || 12),
+    taxaMinimaAtratividadeTmaAnual: Math.max(0.1, simTma || 12),
+    aliquotaImpostosPercent: 15
+  }), [selectedPreset, simCapex, simMeses, simReceita, simCvPercent, simCustoFixo, simTma, simDepreciacao]);
 
   const simulationResult = useMemo(() => {
     return runExpansionSimulation(scenarioInput);
@@ -225,15 +227,15 @@ export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
 
   const handleApplyPreset = (presetKey: string) => {
     setSelectedPreset(presetKey);
-    const preset = PRESET_EXPANSION_SCENARIOS[presetKey as keyof typeof PRESET_EXPANSION_SCENARIOS];
+    const preset = PRESET_EXPANSION_SCENARIOS[presetKey];
     if (preset) {
-      setSimCapex(preset.investimentoInicialCapex);
-      setSimMeses(preset.horizonteMeses);
-      setSimReceita(preset.receitaMensalEstimada);
-      setSimCvPercent(preset.custosVariaveisPercentual);
-      setSimCustoFixo(preset.custosFixosMensaisEstimados);
-      setSimTma(preset.taxaMinimaAtratividadeTmaAnual);
-      setSimDepreciacao(preset.depreciacaoMensalEstimada);
+      setSimCapex(preset.investimentoInicialCapex || 250000);
+      setSimMeses(preset.vidaUtilMeses || 36);
+      setSimReceita(preset.receitaIncrementalMensal || 80000);
+      setSimCvPercent(preset.custoVariavelPercent || 45);
+      setSimCustoFixo(preset.custoFixoIncrementalMensal || 25000);
+      setSimTma(preset.taxaMinimaAtratividadeTmaAnual || 12);
+      setSimDepreciacao(preset.depreciacaoMensal || 3500);
     }
   };
 
@@ -496,14 +498,14 @@ export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
           <div className="no-print panel-card">
             <div style={{ padding: '10px 0 12px', borderBottom: '1px solid var(--border-subtle)', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#fff' }}>Cenários Predefinidos de Expansão & Novos Negócios</span>
+              <span className="badge badge-emerald">Simulador What-If Ativo</span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
               {[
-                { id: 'NOVA_FILIAL', label: '🏢 Nova Filial Comercial', icon: '🏢' },
-                { id: 'MAQUINARIO_INDUSTRIAL', label: '⚙️ Maquinário Industrial', icon: '⚙️' },
-                { id: 'LINHA_PRODUTOS', label: '📦 Nova Linha de Produtos', icon: '📦' },
-                { id: 'EQUIPE_VENDAS', label: '👥 Expansão Equipe Comercial', icon: '👥' }
+                { id: 'NOVA_FILIAL', label: '🏢 Nova Filial Comercial', desc: 'CAPEX R$ 250k • 36 meses' },
+                { id: 'NOVA_MAQUINA', label: '⚙️ Maquinário Industrial', desc: 'CAPEX R$ 180k • 48 meses' },
+                { id: 'CONTRATACAO_EQUIPE', label: '👥 Expansão Equipe Vendas', desc: 'CAPEX R$ 60k • 24 meses' }
               ].map(preset => {
                 const isSelected = selectedPreset === preset.id;
                 return (
@@ -512,60 +514,139 @@ export const OfficeCfoVirtualFinancialDecisionView: React.FC = () => {
                     type="button"
                     onClick={() => handleApplyPreset(preset.id)}
                     style={{
-                      padding: '10px 14px',
+                      padding: '12px 14px',
                       borderRadius: '8px',
                       fontSize: '0.80rem',
                       fontWeight: isSelected ? 800 : 600,
                       cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '8px',
+                      gap: '10px',
+                      transition: 'all 0.2s ease',
                       background: isSelected ? 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)' : 'rgba(15, 23, 42, 0.6)',
                       color: isSelected ? '#fff' : 'var(--text-secondary, #94A3B8)',
-                      border: isSelected ? '1.5px solid #38BDF8' : '1px solid var(--border-medium)',
-                      boxShadow: isSelected ? '0 4px 12px rgba(2, 132, 199, 0.4)' : 'none'
+                      border: isSelected ? '2px solid #38BDF8' : '1px solid var(--border-medium)',
+                      boxShadow: isSelected ? '0 4px 14px rgba(2, 132, 199, 0.4)' : 'none'
                     }}
                   >
-                    <span>{preset.icon}</span>
-                    <span>{preset.label}</span>
-                    {isSelected && <span style={{ marginLeft: 'auto', fontSize: '0.65rem', fontWeight: 900 }}>✓</span>}
+                    <div style={{ textAlign: 'left' }}>
+                      <div style={{ fontWeight: 800, color: '#fff' }}>{preset.label}</div>
+                      <div style={{ fontSize: '0.68rem', opacity: isSelected ? 0.95 : 0.65 }}>{preset.desc}</div>
+                    </div>
+                    {isSelected && <span style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.25)', borderRadius: '999px', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 900 }}>ATIVO</span>}
                   </button>
                 );
               })}
             </div>
           </div>
 
+          {/* KPI Cards de Viabilidade */}
           <div className="no-print grid-cards-4">
             <div className="metric-card">
-              <div className="metric-header"><span className="metric-title">VPL do Projeto</span><TrendingUp size={18} color="var(--emerald-400)" /></div>
-              <div className="metric-value font-mono" style={{ color: simulationResult.capitalBudgeting.vpl > 0 ? 'var(--emerald-400)' : '#F87171' }}>
-                R$ {simulationResult.capitalBudgeting.vpl.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+              <div className="metric-header"><span className="metric-title">VPL (Valor Presente Líquido)</span><TrendingUp size={18} color="var(--emerald-400)" /></div>
+              <div className="metric-value font-mono" style={{ color: (simulationResult?.capitalBudgeting?.vpl || 0) > 0 ? 'var(--emerald-400)' : '#F87171' }}>
+                R$ {(simulationResult?.capitalBudgeting?.vpl || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
               </div>
-              <div className="metric-sub">TMA: {simTma}% a.a.</div>
+              <div className="metric-sub">TMA: {simTma}% a.a. • {(simulationResult?.capitalBudgeting?.vpl || 0) > 0 ? '✓ Projeto Viável' : '⚠️ VPL Negativo'}</div>
             </div>
 
             <div className="metric-card">
               <div className="metric-header"><span className="metric-title">TIR (Taxa Interna de Retorno)</span><TrendingUp size={18} color="var(--cyan-400)" /></div>
               <div className="metric-value font-mono" style={{ color: 'var(--cyan-400)' }}>
-                {simulationResult.capitalBudgeting.tirPercentual.toFixed(1)}% a.a.
+                {(simulationResult?.capitalBudgeting?.tirPercentual || 0).toFixed(1)}% a.a.
               </div>
-              <div className="metric-sub">{simulationResult.capitalBudgeting.tirPercentual > simTma ? '✓ Superior à TMA' : '⚠️ Abaixo da TMA'}</div>
+              <div className="metric-sub">{(simulationResult?.capitalBudgeting?.tirPercentual || 0) > simTma ? '✓ Superior à TMA (' + simTma + '%)' : '⚠️ Abaixo da TMA'}</div>
             </div>
 
             <div className="metric-card">
               <div className="metric-header"><span className="metric-title">Payback Simples</span><Activity size={18} color="var(--amber-400)" /></div>
               <div className="metric-value font-mono" style={{ color: 'var(--amber-400)' }}>
-                {simulationResult.capitalBudgeting.paybackSimplesMeses.toFixed(1)} Meses
+                {(simulationResult?.capitalBudgeting?.paybackSimplesMeses || 0).toFixed(1)} Meses
               </div>
-              <div className="metric-sub">Retorno do Capital Investido</div>
+              <div className="metric-sub">Horizonte: {simMeses} Meses</div>
             </div>
 
             <div className="metric-card">
               <div className="metric-header"><span className="metric-title">Ponto de Equilíbrio (Break-Even)</span><Scale size={18} color="var(--indigo-400)" /></div>
               <div className="metric-value font-mono" style={{ color: '#fff' }}>
-                R$ {simulationResult.breakEven.pontoEquilibrioContabilMensal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês
+                R$ {(simulationResult?.breakEven?.pontoEquilibrioContabilMensal || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}/mês
               </div>
-              <div className="metric-sub">Margem de Segurança: {simulationResult.breakEven.margemSegurancaOperacionalPercent.toFixed(1)}%</div>
+              <div className="metric-sub">Margem Segurança: {(simulationResult?.breakEven?.margemSegurancaOperacionalPercent || 0).toFixed(1)}%</div>
+            </div>
+          </div>
+
+          {/* Inputs Form */}
+          <div className="no-print panel-card">
+            <div style={{ padding: '10px 0 12px', borderBottom: '1px solid var(--border-subtle)', marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#fff' }}>Parâmetros Interativos do Cenário de Expansão</span>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+              <div className="form-group">
+                <label>Investimento Inicial CAPEX (R$)</label>
+                <input
+                  type="number"
+                  step="10000"
+                  className="form-control font-mono"
+                  value={simCapex}
+                  onChange={e => setSimCapex(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Receita Incremental Mensal (R$)</label>
+                <input
+                  type="number"
+                  step="5000"
+                  className="form-control font-mono"
+                  value={simReceita}
+                  onChange={e => setSimReceita(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Custos Variáveis (%)</label>
+                <input
+                  type="number"
+                  step="1"
+                  className="form-control font-mono"
+                  value={simCvPercent}
+                  onChange={e => setSimCvPercent(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Custos Fixos Mensais (R$)</label>
+                <input
+                  type="number"
+                  step="1000"
+                  className="form-control font-mono"
+                  value={simCustoFixo}
+                  onChange={e => setSimCustoFixo(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>TMA - Taxa Atratividade (% a.a.)</label>
+                <input
+                  type="number"
+                  step="0.5"
+                  className="form-control font-mono"
+                  value={simTma}
+                  onChange={e => setSimTma(Number(e.target.value))}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Horizonte do Projeto (Meses)</label>
+                <input
+                  type="number"
+                  step="6"
+                  className="form-control font-mono"
+                  value={simMeses}
+                  onChange={e => setSimMeses(Number(e.target.value))}
+                />
+              </div>
             </div>
           </div>
         </div>
