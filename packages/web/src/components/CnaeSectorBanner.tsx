@@ -106,9 +106,10 @@ export const CnaeSectorBanner: React.FC<CnaeSectorBannerProps> = ({
                 key={mod.id}
                 onClick={() => onSelectModule(mod.id)}
                 style={{
-                  background: isActive ? 'var(--emerald-500)' : 'rgba(255, 255, 255, 0.06)',
-                  color: isActive ? '#070B12' : '#fff',
-                  border: isActive ? 'none' : '1px solid var(--border-medium)',
+                  background: isActive ? 'linear-gradient(135deg, #059669 0%, #047857 100%)' : 'rgba(255, 255, 255, 0.06)',
+                  color: isActive ? '#FFFFFF' : 'var(--text-secondary, #94A3B8)',
+                  border: isActive ? '1.5px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  boxShadow: isActive ? '0 2px 8px rgba(5, 150, 105, 0.4)' : 'none',
                   padding: '4px 10px',
                   borderRadius: '6px',
                   fontSize: '0.74rem',

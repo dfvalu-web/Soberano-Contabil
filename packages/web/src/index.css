@@ -114,20 +114,7 @@ html, body, #root {
   overflow: hidden;
 }
 
-/* 1. TOPBAR GLOBAL CORPORATIVA */
-.app-topbar-global {
-  height: 60px;
-  min-height: 60px;
-  background: #0E1526;
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  flex-shrink: 0;
-  z-index: 50;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
+/* 1. TOPBAR GLOBAL CORPORATIVA (Merged to Diamond Champion below) */
 
 /* Layout dos PainÃ©is Internos */
 .app-body-layout {
@@ -245,10 +232,11 @@ html, body, #root {
 }
 
 .module-item-btn.active {
-  background: linear-gradient(90deg, rgba(16, 185, 129, 0.22), rgba(6, 182, 212, 0.08));
-  color: var(--emerald-400);
-  font-weight: 700;
-  border-left-color: var(--emerald-500);
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.18) 0%, rgba(6, 182, 212, 0.06) 100%) !important;
+  color: #34D399 !important;
+  font-weight: 800 !important;
+  border-left: 3px solid #10B981 !important;
+  box-shadow: inset 0 0 12px rgba(16, 185, 129, 0.1) !important;
 }
 
 /* 3. WORKSPACE CENTRAL (CANVAS) */
@@ -480,597 +468,80 @@ html, body, #root {
 }
 
 
-/* ==========================================================================
-   DIAMOND CHAMPION SIDEBAR NAVIGATION & PREMIUM THEME
-   ========================================================================== */
-
-.sidebar-brand-container {
-  padding: 14px 16px;
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(12, 18, 32, 0.95) 100%);
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sidebar-tenant-badge {
-  padding: 8px 12px;
-  background: #0E1526;
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.sidebar-search-container {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.sidebar-pills-bar {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-x: auto;
-}
-
-.sidebar-pill-btn {
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: #111726;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #94A3B8;
-  transition: all 0.15s ease;
-}
-
-.sidebar-pill-btn:hover {
-  background: #1E293B;
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.16);
-}
-
-.sidebar-pill-btn.active {
-  background: linear-gradient(135deg, #10B981, #059669);
-  color: #070B12;
-  border: none;
-  font-weight: 800;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
-}
-
-.dept-accordion-card {
-  background: #0E1526;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 8px;
-  transition: border-color 0.15s ease;
-}
-
-.dept-accordion-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.dept-accordion-card.active-dept {
-  border-color: rgba(16, 185, 129, 0.35);
-}
-
-.dept-header-btn {
-  width: 100%;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  border: none;
-  color: #F8FAFC;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s ease;
-}
-
-.dept-header-btn:hover {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.routine-item {
-  width: 100%;
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: transparent;
-  border: none;
-  border-left: 3px solid transparent;
-  color: #CBD5E1;
-  font-size: 0.76rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.15s ease;
-  border-radius: 4px;
-}
-
-.routine-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #FFFFFF;
-  transform: translateX(2px);
-}
-
-.routine-item.active {
-  background: linear-gradient(90deg, rgba(16, 185, 129, 0.18), rgba(6, 182, 212, 0.06));
-  color: #34D399;
-  border-left-color: #10B981;
-  font-weight: 700;
-}
-
-/* Ensure strict flex shrinking on non-scrollable header/footer containers */
-.sidebar-brand-container,
-.sidebar-tenant-badge,
-.sidebar-search-container,
-.sidebar-pills-bar,
-.sidebar-footer {
-  flex-shrink: 0 !important;
-}
-
-.sidebar-nav-scroll {
-  flex: 1 1 0% !important;
-  min-height: 0 !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  -webkit-overflow-scrolling: touch;
-}
 
 /* ==========================================================================
-   ENGINE DE RELATÓRIOS EXECUTIVOS PADRÃO DIAMANTE & IMPRESSÃO A4 DE ELITE
-   ========================================================================== */
-
-.diamond-report-card {
-  background: #0D1424;
-  border: 1px solid rgba(16, 185, 129, 0.35);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-}
-
-.diamond-paper-a4 {
-  background: #FFFFFF;
-  color: #0F172A;
-  padding: 32px 36px;
-  border-radius: 8px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  border: 2px solid #0F172A;
-  position: relative;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.diamond-paper-a4 * {
-  box-sizing: border-box;
-}
-
-.diamond-header {
-  border-bottom: 2px solid #0F172A;
-  padding-bottom: 14px;
-  margin-bottom: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.diamond-title {
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: #0F172A;
-  text-transform: uppercase;
-}
-
-.diamond-subtitle {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #047857;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-top: 2px;
-}
-
-.diamond-meta-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-radius: 6px;
-  padding: 10px 12px;
-  margin-bottom: 16px;
-  font-size: 0.75rem;
-}
-
-.diamond-meta-item strong {
-  display: block;
-  font-size: 0.65rem;
-  color: #64748B;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 2px;
-}
-
-.diamond-meta-item span {
-  font-weight: 700;
-  color: #0F172A;
-}
-
-.diamond-kpi-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-.diamond-kpi-box {
-  background: #F1F5F9;
-  border-left: 3px solid #047857;
-  padding: 8px 10px;
-  border-radius: 4px;
-}
-
-.diamond-kpi-box strong {
-  font-size: 0.65rem;
-  color: #475569;
-  display: block;
-  text-transform: uppercase;
-}
-
-.diamond-kpi-box .value {
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #0F172A;
-  font-family: var(--font-mono);
-}
-
-.diamond-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0;
-  font-size: 0.74rem;
-}
-
-.diamond-table th {
-  background: #0F172A;
-  color: #FFFFFF;
-  padding: 6px 8px;
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 0.68rem;
-  letter-spacing: 0.03em;
-}
-
-.diamond-table td {
-  border-bottom: 1px solid #E2E8F0;
-  padding: 6px 8px;
-  color: #1E293B;
-}
-
-.diamond-table tr:nth-child(even) {
-  background: #F8FAFC;
-}
-
-.diamond-table-total {
-  background: #E2E8F0 !important;
-  font-weight: 900 !important;
-  border-top: 2px solid #0F172A !important;
-  border-bottom: 2px solid #0F172A !important;
-}
-
-.diamond-signatures {
-  margin-top: 28px;
-  padding-top: 14px;
-  border-top: 1px solid #CBD5E1;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  text-align: center;
-  font-size: 0.68rem;
-}
-
-.diamond-signature-line {
-  border-top: 1px solid #0F172A;
-  padding-top: 6px;
-  font-weight: 700;
-  color: #0F172A;
-}
-
-.diamond-watermark-seal {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 0.62rem;
-  color: #64748B;
-  border-top: 1px dashed #CBD5E1;
-  margin-top: 16px;
-  padding-top: 6px;
-}
-
-/* REGRAS OFICIAIS DE IMPRESSÃO A4 (Zero cortes / 1 Página Perfeita / Cristalina) */
-@page {
-  size: A4 portrait;
-  margin: 5mm 6mm;
-}
-
-@media print {
-  /* 1. Ocultar rigorosamente toda e qualquer casca de UI e elementos não impressos */
-  .app-topbar-global,
-  .app-sidebar-left,
-  .app-right-deck,
-  .right-deck-header,
-  .right-deck-scroll,
-  .cnae-sector-banner,
-  .category-filter-bar,
-  .category-filter-pills-container,
-  .sidebar-nav-scroll,
-  .btn-primary,
-  .btn-primary-action,
-  .btn-secondary,
-  .no-print,
-  nav,
-  header,
-  aside,
-  button,
-  input,
-  select,
-  .app-toast-container,
-  .feedback-banner {
-    display: none !important;
-    visibility: hidden !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    overflow: hidden !important;
-  }
-
-  /* 2. Reset completo do container da aplicação para fluxo de página 100% natural */
-  html, body, #root, .app-container, .app-body-layout, .app-center-workspace, .view-card-container {
-    display: block !important;
-    position: static !important;
-    overflow: visible !important;
-    height: auto !important;
-    min-height: auto !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #FFFFFF !important;
-    color: #000000 !important;
-    box-shadow: none !important;
-    border: none !important;
-    transform: none !important;
-  }
-
-  /* 3. Documentos Oficiais & Dossiês Padrão Diamante A4 (Fixados em 1 Página) */
-  .diamond-paper-a4,
-  .official-payslip-a4 {
-    display: block !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto !important;
-    padding: 5mm 7mm !important;
-    border: 1.5px solid #000000 !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    background: #FFFFFF !important;
-    color: #000000 !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    box-sizing: border-box !important;
-    font-size: 0.68rem !important;
-  }
-
-  .diamond-header {
-    border-bottom: 1.5px solid #000000 !important;
-    padding-bottom: 6px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .diamond-title {
-    font-size: 0.95rem !important;
-    color: #000000 !important;
-  }
-
-  .diamond-meta-grid {
-    padding: 4px 8px !important;
-    margin-bottom: 8px !important;
-    gap: 4px !important;
-    border: 1px solid #CBD5E1 !important;
-    background: #F8FAFC !important;
-    font-size: 0.65rem !important;
-  }
-
-  .diamond-kpi-row {
-    gap: 6px !important;
-    margin-bottom: 8px !important;
-  }
-
-  .diamond-kpi-box {
-    padding: 4px 6px !important;
-  }
-
-  .diamond-kpi-box .value {
-    font-size: 0.85rem !important;
-  }
-
-  .diamond-table {
-    margin: 6px 0 !important;
-    font-size: 0.66rem !important;
-  }
-
-  .diamond-table th,
-  .diamond-table td {
-    padding: 3px 6px !important;
-  }
-
-  .diamond-signatures {
-    margin-top: 12px !important;
-    padding-top: 6px !important;
-    gap: 10px !important;
-    page-break-inside: avoid !important;
-  }
-
-  .diamond-signature-line {
-    padding-top: 3px !important;
-    font-size: 0.62rem !important;
-  }
-
-  .diamond-watermark-seal {
-    margin-top: 6px !important;
-    padding-top: 4px !important;
-    font-size: 0.55rem !important;
-  }
-
-  table {
-    width: 100% !important;
-    border-collapse: collapse !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  tr {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-}
-
-
-/* ==========================================================================
-   DIAMOND CHAMPION MAIN MENU & DUAL-TIER TOPBAR (ZERO OVERLAP & ROUNDED)
+   DIAMOND CHAMPION 1-ROW ULTRA-COMPACT HEADER (48PX EDGE-TO-EDGE)
    ========================================================================== */
 
 .app-topbar-global {
-  background: linear-gradient(180deg, #0F172A 0%, #0A0F1D 100%);
-  border-bottom: 1px solid var(--border-medium, rgba(255, 255, 255, 0.1));
-  display: flex;
-  flex-direction: column;
-  padding: 10px 18px 12px 18px;
-  gap: 10px;
-  flex-shrink: 0;
-  z-index: 50;
-  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6);
-  min-height: auto;
-  height: auto;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  background: #0B101D !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 12px !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
+  z-index: 50 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  flex-wrap: nowrap !important;
 }
 
-.topbar-executive-row {
+.topbar-left-flank {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.topbar-department-hub-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  flex-wrap: wrap;
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 6px 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
 }
 
-.department-pill-btn {
-  padding: 6px 12px;
-  border-radius: 10px;
-  font-size: 0.76rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
+.topbar-center-flank {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;
+  justify-content: center;
+  min-width: 0;
+}
+
+.topbar-right-flank {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.topbar-pill-card {
+  background: #111726;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 3px 8px;
+  display: flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  color: #94A3B8;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.15s ease;
 }
 
-.department-pill-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.16);
-  transform: translateY(-1px);
-}
-
-.department-pill-btn.active {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  color: #FFFFFF;
-  border: 1.5px solid #34D399;
-  font-weight: 800;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
-  transform: translateY(-1px);
-}
-
-.department-pill-badge {
-  font-size: 0.62rem;
-  padding: 1px 6px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.3);
-  color: inherit;
-  font-weight: 800;
-}
-
-.topbar-control-card {
-  background: var(--bg-surface-elevated, #131C30);
-  border: 1px solid var(--border-medium, rgba(255, 255, 255, 0.12));
-  border-radius: 10px;
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-.topbar-control-card:hover {
+.topbar-pill-card:hover {
   border-color: var(--emerald-500, #10B981);
 }
 
-/* Rounded Cards & Items across sidebar and views */
-.category-card {
-  border-radius: 12px !important;
-}
-
-.module-item-btn {
-  border-radius: 8px !important;
-  margin: 1px 0 !important;
-}
-
-.dept-header-btn {
-  border-radius: 10px !important;
-}
-
-.sidebar-tenant-badge,
-.sidebar-search-container,
-.sidebar-pills-bar {
-  border-radius: 10px !important;
-  margin: 4px 8px !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-}
-
-.sidebar-pill-btn {
-  border-radius: 10px !important;
+.app-center-workspace {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-deep, #070B14);
+  padding: 10px 14px 30px 14px;
+  gap: 10px;
 }

@@ -78,11 +78,11 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
           <mark
             key={i}
             style={{
-              background: 'rgba(16, 185, 129, 0.4)',
-              color: '#FFFFFF',
-              borderRadius: '2px',
-              padding: '0 2px',
-              fontWeight: 700
+              background: 'rgba(245, 158, 11, 0.25)',
+              color: '#FBBF24',
+              borderRadius: '4px',
+              padding: '1px 4px',
+              fontWeight: 800
             }}
           >
             {part}

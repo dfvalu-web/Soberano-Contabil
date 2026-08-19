@@ -317,95 +317,122 @@ export const App: React.FC = () => {
       {/* 1. TOPBAR GLOBAL CORPORATIVA (HEADER PRINCIPAL)                          */}
       {/* ========================================================================= */}
       <header className="app-topbar-global">
-        {/* Esquerda: Logo + Botão Menu + Breadcrumb */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+        {/* FLANCO ESQUERDO: MENU + BRAND + BREADCRUMB COMPACTO */}
+        <div className="topbar-left-flank">
           <button
             onClick={() => setIsSidebarOpen(prev => !prev)}
             style={{
-              background: 'var(--bg-surface-elevated)',
-              border: '1px solid var(--border-subtle)',
+              background: '#131C30',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
               color: '#fff',
-              padding: '6px 10px',
-              borderRadius: '6px',
+              padding: '4px 8px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '0.82rem',
+              fontSize: '0.75rem',
               fontWeight: 700,
               display: 'flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '4px'
             }}
           >
             <span>☰</span> {isSidebarOpen ? 'Recolher' : 'Menu'}
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
+              width: '26px',
+              height: '26px',
+              borderRadius: '6px',
               background: 'linear-gradient(135deg, #10B981, #06B6D4)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '1rem',
-              color: '#070B12',
-              boxShadow: '0 0 12px rgba(16, 185, 129, 0.35)'
+              fontWeight: 900,
+              fontSize: '0.75rem',
+              color: '#070B12'
             }}>
-              S
+              SC
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#fff', letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                Soberano <span style={{ color: 'var(--emerald-400)' }}>ERP</span>
-                <span style={{
-                  background: 'rgba(16, 185, 129, 0.15)',
-                  color: 'var(--emerald-400)',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
-                  padding: '1px 6px',
-                  borderRadius: '4px',
-                  fontSize: '0.62rem',
-                  fontWeight: 800
-                }}>
-                  MASTER
-                </span>
-              </div>
-            </div>
+            <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#fff', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+              Soberano <span style={{ color: 'var(--emerald-400)' }}>ERP</span>
+            </span>
+            <span style={{
+              background: 'rgba(16, 185, 129, 0.15)',
+              color: 'var(--emerald-400)',
+              border: '1px solid rgba(16, 185, 129, 0.3)',
+              padding: '1px 4px',
+              borderRadius: '4px',
+              fontSize: '0.55rem',
+              fontWeight: 900
+            }}>
+              PRO
+            </span>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem', marginLeft: '8px' }}>
-            <span style={{ color: 'var(--text-muted)' }}>/</span>
-            <span style={{ color: 'var(--text-secondary)' }}>{activeModule.category}</span>
-            <span style={{ color: 'var(--text-muted)' }}>/</span>
-            <span style={{
-              color: '#fff',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              padding: '3px 8px',
-              borderRadius: '6px',
-              border: '1px solid rgba(255, 255, 255, 0.08)'
-            }}>
+          {/* Breadcrumb Compacto de Alto Contraste Diamante */}
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontSize: '0.74rem',
+            background: 'rgba(16, 185, 129, 0.12)',
+            border: '1px solid rgba(16, 185, 129, 0.35)',
+            padding: '3px 10px',
+            borderRadius: '8px',
+            maxWidth: '320px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}>
+            <span style={{ color: 'var(--text-secondary, #94A3B8)', fontWeight: 600 }}>{activeModule.category}</span>
+            <span style={{ color: 'rgba(255, 255, 255, 0.3)' }}>➔</span>
+            <span style={{ color: 'var(--emerald-400, #34D399)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
               <span>{activeModule.icon}</span> {activeModule.label}
             </span>
           </div>
         </div>
 
-        {/* Centro: Competência + Status Conexões Gov */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          {/* Seletor de Competência */}
-          <div style={{
-            background: 'var(--bg-surface-elevated)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: '6px',
-            padding: '4px 10px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.75rem'
-          }}>
-            <span style={{ color: 'var(--text-muted)' }}>📅 Mês:</span>
+        {/* FLANCO CENTRAL: EMPRESA ATIVA + COMPETÊNCIA */}
+        <div className="topbar-center-flank">
+          <div className="topbar-pill-card" style={{ maxWidth: '300px' }}>
+            <span style={{ fontSize: '0.80rem' }}>🏢</span>
+            <select
+              value={selectedTenant}
+              onChange={(e) => setSelectedTenant(e.target.value)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: '0.74rem',
+                outline: 'none',
+                cursor: 'pointer',
+                maxWidth: '200px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              {tenants.map(t => (
+                <option key={t.id} value={t.name} style={{ background: '#111726', color: '#fff' }}>
+                  {t.name} ({t.regime.replace('_', ' ')})
+                </option>
+              ))}
+            </select>
+            <span style={{
+              background: 'rgba(16, 185, 129, 0.15)',
+              color: 'var(--emerald-400)',
+              padding: '1px 4px',
+              borderRadius: '4px',
+              fontSize: '0.55rem',
+              fontWeight: 900,
+              flexShrink: 0
+            }}>
+              CND OK
+            </span>
+          </div>
+
+          <div className="topbar-pill-card">
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.70rem' }}>📅</span>
             <select
               value={selectedCompetencia}
               onChange={(e) => setSelectedCompetencia(e.target.value)}
@@ -414,123 +441,69 @@ export const App: React.FC = () => {
                 border: 'none',
                 color: 'var(--emerald-400)',
                 fontWeight: 800,
-                fontSize: '0.78rem',
+                fontSize: '0.74rem',
                 outline: 'none',
                 cursor: 'pointer'
               }}
             >
-              <option value="08/2026" style={{ background: '#111726', color: '#fff' }}>Agosto / 2026 (Aberto)</option>
-              <option value="07/2026" style={{ background: '#111726', color: '#fff' }}>Julho / 2026 (Fechado)</option>
-              <option value="06/2026" style={{ background: '#111726', color: '#fff' }}>Junho / 2026 (Fechado)</option>
-              <option value="2026" style={{ background: '#111726', color: '#fff' }}>Exercício 2026 Completo</option>
+              <option value="08/2026" style={{ background: '#111726', color: '#fff' }}>08/2026 (Aberto)</option>
+              <option value="07/2026" style={{ background: '#111726', color: '#fff' }}>07/2026 (Fechado)</option>
+              <option value="06/2026" style={{ background: '#111726', color: '#fff' }}>06/2026 (Fechado)</option>
+              <option value="2026" style={{ background: '#111726', color: '#fff' }}>Exercício 2026</option>
             </select>
-          </div>
-
-          {/* Status Gov Live */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.7rem' }}>
-            <span style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              background: 'rgba(16, 185, 129, 0.1)',
-              color: 'var(--emerald-400)',
-              padding: '3px 8px',
-              borderRadius: '4px',
-              border: '1px solid rgba(16, 185, 129, 0.25)',
-              fontWeight: 700
-            }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981' }}></span>
-              SEFAZ Online
-            </span>
-            <span style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              background: 'rgba(6, 182, 212, 0.1)',
-              color: 'var(--cyan-400)',
-              padding: '3px 8px',
-              borderRadius: '4px',
-              border: '1px solid rgba(6, 182, 212, 0.25)',
-              fontWeight: 700
-            }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#06B6D4' }}></span>
-              eSocial Conectado
-            </span>
           </div>
         </div>
 
-        {/* Direita: Empresa Ativa + 1-Click Fechamento + Toggle Copiloto Deck */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Seletor de Tenant */}
+        {/* FLANCO DIREITO: STATUS GOV + BOTÕES DE AÇÃO */}
+        <div className="topbar-right-flank">
           <div style={{
-            background: 'var(--bg-surface-elevated)',
-            border: '1px solid var(--border-medium)',
-            borderRadius: '8px',
-            padding: '4px 10px',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '6px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            padding: '3px 7px',
+            borderRadius: '6px',
+            fontSize: '0.64rem',
+            fontWeight: 700
           }}>
-            <span style={{ fontSize: '0.9rem' }}>🏢</span>
-            <div>
-              <select
-                value={selectedTenant}
-                onChange={(e) => setSelectedTenant(e.target.value)}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#fff',
-                  fontWeight: 700,
-                  fontSize: '0.78rem',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}
-              >
-                <option value="Soberano Tech S/A" style={{ background: '#111726', color: '#fff' }}>Soberano Tech S/A (Lucro Real)</option>
-                <option value="Drogaria Alvorada Ltda" style={{ background: '#111726', color: '#fff' }}>Drogaria Alvorada Ltda (Comércio • Simples)</option>
-                <option value="Indústria MetalÃºrgica Alpha S/A" style={{ background: '#111726', color: '#fff' }}>Indústria MetalÃºrgica Alpha (Lucro Real)</option>
-                <option value="ClÃ­nica MÃ©dica & Serviços Ltda" style={{ background: '#111726', color: '#fff' }}>ClÃ­nica MÃ©dica & Serviços (Presumido)</option>
-              </select>
-            </div>
-            <span style={{
-              background: 'rgba(16, 185, 129, 0.15)',
-              color: 'var(--emerald-400)',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              fontSize: '0.65rem',
-              fontWeight: 800
-            }}>
-              CND OK
+            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--emerald-400)' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981' }}></span>
+              SEFAZ
+            </span>
+            <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--cyan-400)' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#06B6D4' }}></span>
+              eSocial
             </span>
           </div>
 
-          {/* Botão 1-Click */}
           <button
             onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
             className="btn-primary-action"
+            style={{ borderRadius: '8px', padding: '4px 9px', fontSize: '0.72rem' }}
           >
-            <span>🚀</span> 1-Click Fechamento
+            <span>🚀</span> 1-Click
           </button>
 
-          {/* Toggle Painel Direito */}
           <button
             onClick={() => setIsRightDeckOpen(prev => !prev)}
             style={{
-              background: isRightDeckOpen ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.1))' : 'var(--bg-surface-elevated)',
-              border: isRightDeckOpen ? '1px solid var(--emerald-500)' : '1px solid var(--border-subtle)',
+              background: isRightDeckOpen ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.1))' : '#131C30',
+              border: isRightDeckOpen ? '1px solid var(--emerald-500)' : '1px solid rgba(255, 255, 255, 0.1)',
               color: isRightDeckOpen ? 'var(--emerald-400)' : '#fff',
-              padding: '6px 12px',
-              borderRadius: '6px',
+              padding: '4px 9px',
+              borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '0.8rem',
+              fontSize: '0.72rem',
               fontWeight: 700,
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
+              gap: '4px',
+              transition: 'all 0.15s ease'
             }}
           >
-            <span>🤖</span> {isRightDeckOpen ? 'Ocultar Copiloto' : 'Copiloto & Ações'}
+            <span>🤖</span> {isRightDeckOpen ? 'Copiloto' : 'Copiloto'}
           </button>
         </div>
       </header>
