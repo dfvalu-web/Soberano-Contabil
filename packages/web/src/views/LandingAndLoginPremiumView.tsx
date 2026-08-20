@@ -1,3 +1,34 @@
+
+export const BRAZILIAN_STATES = [
+  { uf: 'AC', name: 'Acre', capital: 'Rio Branco', region: 'Norte' },
+  { uf: 'AL', name: 'Alagoas', capital: 'Maceió', region: 'Nordeste' },
+  { uf: 'AP', name: 'Amapá', capital: 'Macapá', region: 'Norte' },
+  { uf: 'AM', name: 'Amazonas', capital: 'Manaus', region: 'Norte' },
+  { uf: 'BA', name: 'Bahia', capital: 'Salvador', region: 'Nordeste' },
+  { uf: 'CE', name: 'Ceará', capital: 'Fortaleza', region: 'Nordeste' },
+  { uf: 'DF', name: 'Distrito Federal', capital: 'Brasília', region: 'Centro-Oeste' },
+  { uf: 'ES', name: 'Espírito Santo', capital: 'Vitória', region: 'Sudeste' },
+  { uf: 'GO', name: 'Goiás', capital: 'Goiânia', region: 'Centro-Oeste' },
+  { uf: 'MA', name: 'Maranhão', capital: 'São Luís', region: 'Nordeste' },
+  { uf: 'MT', name: 'Mato Grosso', capital: 'Cuiabá', region: 'Centro-Oeste' },
+  { uf: 'MS', name: 'Mato Grosso do Sul', capital: 'Campo Grande', region: 'Centro-Oeste' },
+  { uf: 'MG', name: 'Minas Gerais', capital: 'Belo Horizonte', region: 'Sudeste' },
+  { uf: 'PA', name: 'Pará', capital: 'Belém', region: 'Norte' },
+  { uf: 'PB', name: 'Paraíba', capital: 'João Pessoa', region: 'Nordeste' },
+  { uf: 'PR', name: 'Paraná', capital: 'Curitiba', region: 'Sul' },
+  { uf: 'PE', name: 'Pernambuco', capital: 'Recife', region: 'Nordeste' },
+  { uf: 'PI', name: 'Piauí', capital: 'Teresina', region: 'Nordeste' },
+  { uf: 'RJ', name: 'Rio de Janeiro', capital: 'Rio de Janeiro', region: 'Sudeste' },
+  { uf: 'RN', name: 'Rio Grande do Norte', capital: 'Natal', region: 'Nordeste' },
+  { uf: 'RS', name: 'Rio Grande do Sul', capital: 'Porto Alegre', region: 'Sul' },
+  { uf: 'RO', name: 'Rondônia', capital: 'Porto Velho', region: 'Norte' },
+  { uf: 'RR', name: 'Roraima', capital: 'Boa Vista', region: 'Norte' },
+  { uf: 'SC', name: 'Santa Catarina', capital: 'Florianópolis', region: 'Sul' },
+  { uf: 'SP', name: 'São Paulo', capital: 'São Paulo', region: 'Sudeste' },
+  { uf: 'SE', name: 'Sergipe', capital: 'Aracaju', region: 'Nordeste' },
+  { uf: 'TO', name: 'Tocantins', capital: 'Palmas', region: 'Norte' }
+];
+
 import { RealWebCryptoEngine } from '../security/real-web-crypto.js';
 import { officeStore } from '../state/office-store.js';
 import React, { useState, useMemo } from 'react';
@@ -3041,39 +3072,85 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                 </div>
               </div>
 
-              {/* Localização */}
-              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px' }}>
-                <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                    Cidade
-                  </label>
-                  <input
-                    type="text"
-                    value={contactCity}
-                    onChange={(e) => setContactCity(e.target.value)}
-                    placeholder="São Paulo"
-                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
-                  />
+              {/* Localização & Pré-preenchimento dos 27 Estados do Brasil */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1.8fr 1.2fr', gap: '12px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Cidade
+                    </label>
+                    <input
+                      type="text"
+                      value={contactCity}
+                      onChange={(e) => setContactCity(e.target.value)}
+                      placeholder="São Paulo"
+                      style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Estado / UF (27 Estados)
+                    </label>
+                    <select
+                      value={contactState}
+                      onChange={(e) => {
+                        const newUf = e.target.value;
+                        setContactState(newUf);
+                        const matchedState = BRAZILIAN_STATES.find(s => s.uf === newUf);
+                        if (matchedState) {
+                          setContactCity(matchedState.capital);
+                        }
+                      }}
+                      style={{ width: '100%', background: '#080D1A', border: '1.5px solid rgba(56, 189, 248, 0.4)', borderRadius: '8px', color: '#38BDF8', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+                    >
+                      {BRAZILIAN_STATES.map(s => (
+                        <option key={s.uf} value={s.uf}>
+                          {s.uf} - {s.name} ({s.region})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
+
+                {/* Seletor Rápido de Pré-preenchimento dos 27 Estados */}
                 <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                    UF
-                  </label>
-                  <select
-                    value={contactState}
-                    onChange={(e) => setContactState(e.target.value)}
-                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
-                  >
-                    <option value="SP">SP</option>
-                    <option value="RJ">RJ</option>
-                    <option value="MG">MG</option>
-                    <option value="PR">PR</option>
-                    <option value="RS">RS</option>
-                    <option value="SC">SC</option>
-                    <option value="BA">BA</option>
-                    <option value="GO">GO</option>
-                    <option value="DF">DF</option>
-                  </select>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <span style={{ fontSize: '0.66rem', fontWeight: 800, color: '#34D399', textTransform: 'uppercase' }}>
+                      ⚡ Pré-preenchimento Rápido 1-Click (27 Estados do Brasil):
+                    </span>
+                    <span style={{ fontSize: '0.62rem', color: '#94A3B8' }}>
+                      Clique para auto-preencher Cidade & UF
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', maxHeight: '78px', overflowY: 'auto', background: '#050A14', padding: '6px', borderRadius: '6px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                    {BRAZILIAN_STATES.map(s => {
+                      const isSelected = contactState === s.uf;
+                      return (
+                        <button
+                          key={s.uf}
+                          type="button"
+                          onClick={() => {
+                            setContactState(s.uf);
+                            setContactCity(s.capital);
+                          }}
+                          style={{
+                            background: isSelected ? 'linear-gradient(180deg, #10B981 0%, #059669 100%)' : '#0B1120',
+                            border: isSelected ? '1.5px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                            color: isSelected ? '#FFFFFF' : '#CBD5E1',
+                            padding: '3px 7px',
+                            borderRadius: '4px',
+                            fontSize: '0.64rem',
+                            fontWeight: 800,
+                            cursor: 'pointer',
+                            transition: 'all 0.1s ease'
+                          }}
+                          title={`${s.name} - Capital: ${s.capital} (${s.region})`}
+                        >
+                          {s.uf}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
