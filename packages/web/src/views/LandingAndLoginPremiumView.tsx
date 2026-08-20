@@ -38,6 +38,8 @@ export interface UserProfile {
   initialModuleId: string;
 }
 
+
+
 export const PRESET_PROFILES: UserProfile[] = [
   {
     id: 'user-master',
@@ -79,6 +81,66 @@ export const PRESET_PROFILES: UserProfile[] = [
   }
 ];
 
+export interface DigitalCertificateItem {
+  id: string;
+  type: 'e-CPF' | 'e-CNPJ';
+  holderName: string;
+  documentNumber: string;
+  issuerAuthority: string;
+  model: 'A1_ARQUIVO' | 'A3_TOKEN_SMARTCARD';
+  validUntil: string;
+  crcOrOab?: string;
+  associatedProfile: UserProfile;
+}
+
+export const INSTALLED_CERTIFICATES: DigitalCertificateItem[] = [
+  {
+    id: 'cert-david',
+    type: 'e-CPF',
+    holderName: 'DAVID VALU',
+    documentNumber: '123.456.789-00',
+    issuerAuthority: 'AC SOLUTI Multipla v5 (ICP-Brasil)',
+    model: 'A3_TOKEN_SMARTCARD',
+    validUntil: '14/10/2027',
+    crcOrOab: 'CRC 1SP999999/O-0',
+    associatedProfile: PRESET_PROFILES[0]
+  },
+  {
+    id: 'cert-soberano-cnpj',
+    type: 'e-CNPJ',
+    holderName: 'SOBERANO CONTABIL PLATINUM LTDA',
+    documentNumber: '12.345.678/0001-90',
+    issuerAuthority: 'AC SERPRO RFB v5 (ICP-Brasil)',
+    model: 'A1_ARQUIVO',
+    validUntil: '05/03/2027',
+    crcOrOab: 'Escritório Matriz',
+    associatedProfile: PRESET_PROFILES[0]
+  },
+  {
+    id: 'cert-beatriz',
+    type: 'e-CPF',
+    holderName: 'BEATRIZ SANTOS',
+    documentNumber: '987.654.321-11',
+    issuerAuthority: 'AC CERTISIGN v5 (ICP-Brasil)',
+    model: 'A3_TOKEN_SMARTCARD',
+    validUntil: '22/08/2026',
+    crcOrOab: 'OAB/SP 412.980 • CRC',
+    associatedProfile: PRESET_PROFILES[1]
+  },
+  {
+    id: 'cert-carlos',
+    type: 'e-CPF',
+    holderName: 'CARLOS MENDES',
+    documentNumber: '456.789.123-22',
+    issuerAuthority: 'AC VALID v5 (ICP-Brasil)',
+    model: 'A1_ARQUIVO',
+    validUntil: '18/11/2026',
+    crcOrOab: 'Coordenador DP',
+    associatedProfile: PRESET_PROFILES[2]
+  }
+];
+
+
 interface LandingAndLoginPremiumViewProps {
   onLoginSuccess: (profile: UserProfile) => void;
 }
@@ -103,6 +165,11 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
   // Recovery Form States
   const [recoveryEmail, setRecoveryEmail] = useState<string>('');
   const [recoverySent, setRecoverySent] = useState<boolean>(false);
+
+  // Certificate Selection States
+  const [selectedCertId, setSelectedCertId] = useState<string>('cert-david');
+  const [certPin, setCertPin] = useState<string>('1234');
+  const [customCertFile, setCustomCertFile] = useState<string>('');
 
   // UI Status States
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
@@ -242,11 +309,30 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
   };
 
   const handleExecuteCertificate = () => {
+    setErrorMessage('');
     setIsAuthenticating(true);
+
+    const chosenCert = INSTALLED_CERTIFICATES.find(c => c.id === selectedCertId) || INSTALLED_CERTIFICATES[0];
+
     setTimeout(() => {
       setIsAuthenticating(false);
-      onLoginSuccess(PRESET_PROFILES[0]);
-    }, 1000);
+      if (customCertFile) {
+        const customProfile: UserProfile = {
+          id: 'user-cert-' + Date.now(),
+          name: customCertFile.replace(/\.[^/.]+$/, "").toUpperCase(),
+          role: 'MASTER_ACCOUNTANT',
+          roleLabel: 'Titular de Certificado A1 (.pfx)',
+          email: 'certificado.a1@soberanocontabil.com.br',
+          avatarIcon: '🔑',
+          initialModuleId: 'office_integrated_closing_pipeline'
+        };
+        setSuccessMessage(`Certificado A1 validado na cadeia ICP-Brasil com sucesso!`);
+        setTimeout(() => onLoginSuccess(customProfile), 400);
+      } else {
+        setSuccessMessage(`Certificado "${chosenCert.holderName}" autenticado com sucesso via mTLS ICP-Brasil!`);
+        setTimeout(() => onLoginSuccess(chosenCert.associatedProfile), 400);
+      }
+    }, 900);
   };
 
   return (
@@ -949,16 +1035,75 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
             {/* FORMULÁRIO 4: CERTIFICADO DIGITAL ICP-BRASIL */}
             {authMode === 'CERTIFICATE' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', textAlign: 'center' }}>
-                <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
-                  <KeyRound size={32} style={{ color: '#38BDF8', margin: '0 auto 8px auto' }} />
-                  <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#FFFFFF' }}>
-                    Autenticação com Certificado Digital
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ padding: '14px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.06)', border: '1px solid rgba(56, 189, 248, 0.25)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <KeyRound size={18} style={{ color: '#38BDF8' }} />
+                    <div style={{ fontSize: '0.84rem', fontWeight: 900, color: '#FFFFFF' }}>
+                      Selecione o Certificado Digital ICP-Brasil
+                    </div>
                   </div>
-                  <p style={{ fontSize: '0.70rem', color: '#94A3B8', margin: '6px 0 12px 0' }}>
-                    Compatível com <strong>e-CNPJ</strong> e <strong>e-CPF</strong> em modelos <strong>A1 (Arquivo)</strong> e <strong>A3 (Token / SmartCard)</strong>.
+                  <p style={{ fontSize: '0.68rem', color: '#94A3B8', margin: '0 0 12px 0', lineHeight: 1.4 }}>
+                    Selecione um certificado detectado no repositório/token ou importe um arquivo <strong>.pfx/.p12</strong>:
                   </p>
 
+                  {/* Lista de Certificados Detectados */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' }}>
+                    {INSTALLED_CERTIFICATES.map(cert => {
+                      const isSelected = selectedCertId === cert.id && !customCertFile;
+                      return (
+                        <div
+                          key={cert.id}
+                          onClick={() => { setSelectedCertId(cert.id); setCustomCertFile(''); }}
+                          style={{
+                            padding: '8px 10px',
+                            borderRadius: '8px',
+                            background: isSelected ? 'linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(3, 105, 161, 0.15) 100%)' : '#0B1120',
+                            border: isSelected ? '1.5px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.08)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            transition: 'all 0.15s ease',
+                            boxShadow: isSelected ? '0 0 10px rgba(56, 189, 248, 0.25)' : 'none'
+                          }}
+                        >
+                          <div style={{ textAlign: 'left' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span style={{ fontSize: '0.76rem', fontWeight: 900, color: isSelected ? '#FFFFFF' : '#CBD5E1' }}>
+                                {cert.holderName}
+                              </span>
+                              <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 5px', borderRadius: '3px', background: cert.type === 'e-CPF' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(167, 139, 250, 0.2)', color: cert.type === 'e-CPF' ? '#34D399' : '#A78BFA' }}>
+                                {cert.type}
+                              </span>
+                            </div>
+                            <div style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>
+                              {cert.issuerAuthority} • Val: {cert.validUntil}
+                            </div>
+                          </div>
+                          {isSelected && (
+                            <span style={{ color: '#38BDF8', fontSize: '0.76rem', fontWeight: 900 }}>●</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Campo de PIN / Senha do Token */}
+                  <div style={{ textAlign: 'left', marginBottom: '12px' }}>
+                    <label style={{ fontSize: '0.66rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Senha PIN do Token / Certificado
+                    </label>
+                    <input
+                      type="password"
+                      value={certPin}
+                      onChange={(e) => setCertPin(e.target.value)}
+                      placeholder="PIN do Certificado..."
+                      style={{ width: '100%', background: '#070B14', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#38BDF8', padding: '6px 10px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', outline: 'none' }}
+                    />
+                  </div>
+
+                  {/* Botão de Autenticação */}
                   <button
                     type="button"
                     onClick={handleExecuteCertificate}
@@ -966,18 +1111,19 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                     style={{
                       width: '100%',
                       background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
-                      border: '1px solid #38BDF8',
-                      borderBottom: '2px solid #075985',
+                      border: '1.5px solid #38BDF8',
+                      borderBottom: '2.5px solid #075985',
                       color: '#FFFFFF',
-                      padding: '10px',
+                      padding: '9px',
                       borderRadius: '8px',
-                      fontWeight: 800,
+                      fontWeight: 900,
                       fontSize: '0.80rem',
                       cursor: 'pointer',
-                      boxShadow: '0 0 16px rgba(56, 189, 248, 0.4)'
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px rgba(56, 189, 248, 0.45)',
+                      transition: 'all 0.15s ease'
                     }}
                   >
-                    {isAuthenticating ? '🔒 Lendo Chave ICP-Brasil...' : '🔑 Conectar com Certificado Digital'}
+                    {isAuthenticating ? '🔒 Validando Chave mTLS ICP-Brasil...' : '🔑 Conectar com o Certificado Selecionado'}
                   </button>
                 </div>
               </div>
