@@ -39,7 +39,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Building2",
     "tag": "GESTAO",
     "isCore": true,
-    "defaultCollapsed": false,
+    "defaultCollapsed": true,
     "modules": [
       {
         "id": "office_integrated_closing_pipeline",
@@ -285,7 +285,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Users",
     "tag": "DP",
     "isCore": true,
-    "defaultCollapsed": false,
+    "defaultCollapsed": true,
     "modules": [
       {
         "id": "office_rh_executive_reports_diamond",
@@ -450,7 +450,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Scale",
     "tag": "FISCAL",
     "isCore": true,
-    "defaultCollapsed": false,
+    "defaultCollapsed": true,
     "modules": [
       {
         "id": "office_predictive_tax_audit_radar",
@@ -742,7 +742,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "BookOpen",
     "tag": "CONTABIL",
     "isCore": true,
-    "defaultCollapsed": false,
+    "defaultCollapsed": true,
     "modules": [
       {
         "id": "office_monthly_consolidated_book",

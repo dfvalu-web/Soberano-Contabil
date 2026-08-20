@@ -144,13 +144,13 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     return DEFAULT_FAVORITE_MODULE_IDS;
   });
 
-  // 5. Accordion Open/Collapsed State
-  const [isFavoritesCollapsed, setIsFavoritesCollapsed] = useState(false);
+  // 5. Accordion Open/Collapsed State (Todos os Módulos Encolhidos por Padrão)
+  const [isFavoritesCollapsed, setIsFavoritesCollapsed] = useState(true);
   const [collapsedDepts, setCollapsedDepts] = useState<Record<DepartmentId, boolean>>({
-    gestao: false,
-    dp: false,
-    fiscal: false,
-    contabil: false,
+    gestao: true,
+    dp: true,
+    fiscal: true,
+    contabil: true,
     setoriais: true
   });
 
@@ -272,15 +272,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     }
   }, [searchQuery, activeFilter]);
 
-  useEffect(() => {
-    const mod = getModuleById(currentModuleId);
-    if (mod && mod.departmentId) {
-      setCollapsedDepts(prev => ({
-        ...prev,
-        [mod.departmentId]: false
-      }));
-    }
-  }, [currentModuleId]);
+  // Mantém os módulos encolhidos por padrão, permitindo que o usuário expanda manualmente com 1 clique
 
   const quickFilterTabs: { id: QuickFilterTab; label: string; count?: number; isSpecial?: boolean }[] = [
     { id: 'todos', label: 'Todos', count: ALL_MODULES.length },
