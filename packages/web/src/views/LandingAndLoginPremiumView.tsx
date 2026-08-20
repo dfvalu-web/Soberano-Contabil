@@ -258,7 +258,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       return;
     }
 
-    if (!passwordInput || passwordInput.length < 4) {
+    if (!passwordInput || passwordInput.length < 6) {
       setErrorMessage('A senha informada deve possuir no mínimo 6 caracteres.');
       return;
     }
@@ -266,60 +266,21 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
     setIsAuthenticating(true);
 
     try {
-      // 3. Processamento Criptográfico Real com Fallback Seguro
-      let hashTag = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
-      try {
-        const salt = RealWebCryptoEngine.generateSecureNonce(16);
-        const passwordHash = await RealWebCryptoEngine.hashSha256(passwordInput, salt);
-        const encryptedEnvelope = await RealWebCryptoEngine.encryptAesGcm(
-          JSON.stringify({
-            email: trimmedEmail,
-            passwordHash,
-            salt,
-            clientTimestamp: Date.now(),
-            nonce: RealWebCryptoEngine.generateSecureNonce(16)
-          })
-        );
-        hashTag = encryptedEnvelope.hashSha256;
-      } catch (cErr) {
-        console.warn('Web Crypto envelope fallback:', cErr);
-      }
+      // 3. Validação Rigorosa de Credenciais na Base Homologada
+      const authResult = officeStore.validateUserCredentials(trimmedEmail, passwordInput);
 
-      // 4. Registro na Trilha Imutável de Auditoria
-      officeStore.logAuthSecurityEvent({
-        userEmail: trimmedEmail,
-        userName: trimmedEmail.split('@')[0].toUpperCase(),
-        method: 'Credenciais Corporativas (E-mail + Senha SHA-256/PBKDF2)',
-        ipAddress: '189.40.112.55 (Browser Client)',
-        deviceInfo: typeof navigator !== 'undefined' ? navigator.userAgent.substring(0, 45) : 'Browser Client',
-        status: 'SUCCESS',
-        hashSha256: hashTag,
-        encryptionTag: 'AES-256-GCM / PBKDF2 100k'
-      });
-
-      setIsAuthenticating(false);
-
-      // Verificar se é perfil pré-configurado
-      const foundPreset = PRESET_PROFILES.find(p => p.email.toLowerCase() === trimmedEmail);
-      if (foundPreset) {
-        setSuccessMessage(`🔒 Acesso autorizado! Bem-vindo(a), ${foundPreset.name}!`);
-        onLoginSuccess(foundPreset);
+      if (!authResult.success || !authResult.userProfile) {
+        setIsAuthenticating(false);
+        setErrorMessage(authResult.reason || '❌ E-mail ou senha incorretos.');
         return;
       }
 
-      // Novo usuário autenticado
-      const customUser: UserProfile = {
-        id: 'user-' + Date.now(),
-        name: trimmedEmail.split('@')[0].toUpperCase(),
-        role: 'MASTER_ACCOUNTANT',
-        roleLabel: 'Contador Responsável • ' + (trimmedEmail.split('@')[1] || 'Empresa'),
-        email: trimmedEmail,
-        avatarIcon: '🏛️',
-        initialModuleId: 'dashboard'
-      };
+      setIsAuthenticating(false);
+      setSuccessMessage(`🔒 Acesso autorizado! Bem-vindo(a), ${authResult.userProfile.name}!`);
+      setTimeout(() => {
+        onLoginSuccess(authResult.userProfile!);
+      }, 500);
 
-      setSuccessMessage(`🔒 Acesso autorizado com sucesso! Redirecionando...`);
-      onLoginSuccess(customUser);
     } catch (err: any) {
       setIsAuthenticating(false);
       setErrorMessage('Erro ao autenticar: ' + (err?.message || 'Verifique os dados informados.'));

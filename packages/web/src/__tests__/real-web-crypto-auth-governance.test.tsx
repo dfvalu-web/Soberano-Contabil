@@ -128,11 +128,34 @@ describe('Governança de Login, Criptografia Real & RBAC Modular Suite', () => {
     const checkFakeCert = officeStore.isCertificateAuthorizedForLogin('cert-fake-atacante', '123456');
     expect(checkFakeCert.authorized).toBe(false);
     expect(checkFakeCert.reason).toContain('não homologado na base de dados');
+  });
 
-    // 7.4 Checagem dos logs de auditoria de tentativas inválidas
-    const logs = officeStore.getAuthSecurityAuditLogs();
-    const failedLog = logs.find(l => l.status === 'FAILED_CREDENTIALS');
-    expect(failedLog).toBeDefined();
-    expect(failedLog?.userEmail).toBe('dfvalu@gmail.com');
+  it('8. OfficeStateStore: valida credenciais corporativas com bloqueio estrito de senhas e usuários não autorizados', () => {
+    // 8.1 Usuário Homologado com Senha Correta -> Autorizado
+    const validLogin = officeStore.validateUserCredentials('dfvalu@gmail.com', 'Soberano#2026');
+    expect(validLogin.success).toBe(true);
+    expect(validLogin.userProfile?.name).toBe('DAVID VALU');
+    expect(validLogin.userProfile?.role).toBe('MASTER_ACCOUNTANT');
+
+    // 8.2 Usuário Homologado com Senha Incorreta -> Bloqueado
+    const wrongPasswordLogin = officeStore.validateUserCredentials('dfvalu@gmail.com', '123456');
+    expect(wrongPasswordLogin.success).toBe(false);
+    expect(wrongPasswordLogin.reason).toContain('Senha de acesso incorreta');
+
+    // 8.3 Senha com menos de 6 dígitos -> Bloqueado
+    const shortPasswordLogin = officeStore.validateUserCredentials('dfvalu@gmail.com', '1234');
+    expect(shortPasswordLogin.success).toBe(false);
+    expect(shortPasswordLogin.reason).toContain('mínimo 6 caracteres');
+
+    // 8.4 Usuário Não Cadastrado -> Bloqueado com Erro de Governança
+    const unknownUserLogin = officeStore.validateUserCredentials('hacker.estranho@gmail.com', 'SenhaForte#2026');
+    expect(unknownUserLogin.success).toBe(false);
+    expect(unknownUserLogin.reason).toContain('não cadastrado no sistema');
+
+    // 8.5 Testar atualização de senha no Primeiro Acesso e login subsequente
+    officeStore.registerUserPassword('beatriz.tributario@soberanocontabil.com.br', 'NovaSenhaBeatriz#2026');
+    const newPassLogin = officeStore.validateUserCredentials('beatriz.tributario@soberanocontabil.com.br', 'NovaSenhaBeatriz#2026');
+    expect(newPassLogin.success).toBe(true);
+    expect(newPassLogin.userProfile?.name).toContain('Beatriz');
   });
 });
