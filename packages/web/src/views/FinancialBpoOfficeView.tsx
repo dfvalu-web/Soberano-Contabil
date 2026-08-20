@@ -1,3 +1,4 @@
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
 import React, { useState, useMemo } from 'react';
 import {
   TrendingUp,
@@ -131,6 +132,7 @@ export const FinancialBpoOfficeView: React.FC = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <SmartPeriodPicker compact={true} />
           <button
             onClick={() => setShowDossierModal(true)}
             style={{

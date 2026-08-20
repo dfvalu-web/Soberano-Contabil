@@ -1,4 +1,30 @@
 
+export type PeriodFilterMode = 'CUSTOM' | 'MONTH' | 'BIMONTH' | 'QUARTER' | 'SEMESTER' | 'YEAR' | 'YTD';
+
+export interface PeriodFilterState {
+  mode: PeriodFilterMode;
+  year: number;
+  month?: number; // 1-12
+  bimonth?: number; // 1-6
+  quarter?: number; // 1-4
+  semester?: number; // 1-2
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  label: string; // ex: "Agosto / 2026" ou "3º Trimestre (Jul a Set / 2026)" ou "01/08/2026 a 20/08/2026"
+  isComparative?: boolean;
+}
+
+export const DEFAULT_PERIOD_FILTER: PeriodFilterState = {
+  mode: 'MONTH',
+  year: 2026,
+  month: 8,
+  startDate: '2026-08-01',
+  endDate: '2026-08-31',
+  label: 'Agosto / 2026',
+  isComparative: false
+};
+
+
 export type AccessScopeType = 'FULL_ALL_MODULES' | 'DEPARTMENT_ONLY' | 'CUSTOM_MODULES';
 
 export interface UserModuleAccessConfig {
@@ -346,6 +372,25 @@ const DEFAULT_EMPLOYEES: Employee[] = [
 ];
 
 class OfficeStateStore {
+  private currentPeriodFilter: PeriodFilterState = { ...DEFAULT_PERIOD_FILTER };
+  private periodListeners: Array<(filter: PeriodFilterState) => void> = [];
+
+  public getPeriodFilter(): PeriodFilterState {
+    return { ...this.currentPeriodFilter };
+  }
+
+  public setPeriodFilter(filter: Partial<PeriodFilterState>): void {
+    this.currentPeriodFilter = { ...this.currentPeriodFilter, ...filter };
+    this.periodListeners.forEach(listener => listener(this.currentPeriodFilter));
+  }
+
+  public subscribePeriodFilter(listener: (filter: PeriodFilterState) => void): () => void {
+    this.periodListeners.push(listener);
+    return () => {
+      this.periodListeners = this.periodListeners.filter(l => l !== listener);
+    };
+  }
+
   private tenants: CompanyTenant[] = DEFAULT_TENANTS;
   private employees: Employee[] = DEFAULT_EMPLOYEES;
   private listeners: (() => void)[] = [];

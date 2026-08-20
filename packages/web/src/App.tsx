@@ -1,3 +1,4 @@
+import { SmartPeriodPicker } from './components/SmartPeriodPicker.js';
 import { OfficeLoginSecurityGovernanceView } from './views/OfficeLoginSecurityGovernanceView.js';
 import { OfficeSandboxIsolationLabView } from './views/OfficeSandboxIsolationLabView.js';
 import { OfficeBusinessPartnersRegistryView } from './views/OfficeBusinessPartnersRegistryView.js';

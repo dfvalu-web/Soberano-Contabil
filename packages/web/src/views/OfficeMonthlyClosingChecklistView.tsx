@@ -1,3 +1,4 @@
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
 import React, { useState } from 'react';
 import {
   Lock,
@@ -131,7 +132,8 @@ export const OfficeMonthlyClosingChecklistView: React.FC<OfficeMonthlyClosingChe
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <select
+          <SmartPeriodPicker compact={true} />
+          <select style={{ display: 'none' }}
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
             style={{ background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#38BDF8', padding: '7px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 800, outline: 'none' }}

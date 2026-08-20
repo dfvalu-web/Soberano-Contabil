@@ -1,3 +1,4 @@
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
 import React, { useState, useMemo } from 'react';
 import {
   TrendingUp,
@@ -125,6 +126,7 @@ export const OfficeClientProfitabilityBiView: React.FC = () => {
                 SIMULADOR IPCA/IGP-M
               </span>
             </div>
+            <div style={{ marginTop: '8px' }}><SmartPeriodPicker compact={true} /></div>
             <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
               Análise de margem por cliente, custo de horas/homem e simulador inteligente de reajuste de honorários.
             </p>

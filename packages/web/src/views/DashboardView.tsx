@@ -1,3 +1,4 @@
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
 import React, { useState, useMemo } from 'react';
 import {
   Activity,
