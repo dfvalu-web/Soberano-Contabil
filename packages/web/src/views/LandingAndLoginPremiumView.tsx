@@ -51,6 +51,16 @@ export interface UserProfile {
 
 export const PRESET_PROFILES: UserProfile[] = [
   {
+    id: 'user-owner-master',
+    name: 'DAVID VALU',
+    role: 'MASTER_ACCOUNTANT',
+    roleLabel: 'Proprietário, Desenvolvedor & Administrador Geral',
+    crc: 'CRC 1SP999999/O-0 • DEV & OWNER FULL ACCESS',
+    email: 'dfvalu@gmail.com',
+    avatarIcon: '👑',
+    initialModuleId: 'dashboard'
+  },
+  {
     id: 'user-master',
     name: 'David Valu',
     role: 'MASTER_ACCOUNTANT',
@@ -106,12 +116,12 @@ export const INSTALLED_CERTIFICATES: DigitalCertificateItem[] = [
   {
     id: 'cert-david',
     type: 'e-CPF',
-    holderName: 'DAVID VALU',
+    holderName: 'DAVID VALU (PROPRIETÁRIO & DEV)',
     documentNumber: '123.456.789-00',
     issuerAuthority: 'AC SOLUTI Multipla v5 (ICP-Brasil)',
     model: 'A3_TOKEN_SMARTCARD',
     validUntil: '14/10/2027',
-    crcOrOab: 'CRC 1SP999999/O-0',
+    crcOrOab: 'CRC 1SP999999/O-0 • OWNER',
     associatedProfile: PRESET_PROFILES[0]
   },
   {
@@ -1130,6 +1140,48 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                     <span>🔐 Entrar no Soberano Contábil</span>
                   )}
                 </button>
+
+                {/* Seletor Rápido de Acesso Master / Proprietário */}
+                <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div style={{ fontSize: '0.64rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>Perfis Pré-Configurados:</span>
+                    <span style={{ color: '#FBBF24' }}>👑 Master Ativo</span>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
+                    {PRESET_PROFILES.slice(0, 4).map(prof => (
+                      <button
+                        key={prof.id}
+                        type="button"
+                        onClick={() => {
+                          setEmailInput(prof.email);
+                          setPasswordInput(prof.email === 'dfvalu@gmail.com' ? 'Soberano@Master2026!' : 'Soberano@2026');
+                          setErrorMessage('');
+                        }}
+                        style={{
+                          background: prof.email === 'dfvalu@gmail.com' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(255,255,255,0.04)',
+                          border: prof.email === 'dfvalu@gmail.com' ? '1px solid #F59E0B' : '1px solid rgba(255,255,255,0.08)',
+                          borderRadius: '6px',
+                          padding: '5px 8px',
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px'
+                        }}
+                      >
+                        <span style={{ fontSize: '0.9rem' }}>{prof.avatarIcon}</span>
+                        <div style={{ overflow: 'hidden' }}>
+                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: prof.email === 'dfvalu@gmail.com' ? '#FBBF24' : '#FFFFFF', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                            {prof.name}
+                          </div>
+                          <div style={{ fontSize: '0.58rem', color: '#94A3B8', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                            {prof.email}
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </form>
             )}
 
