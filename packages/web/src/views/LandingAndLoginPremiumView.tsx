@@ -1,4 +1,4 @@
-import { RealWebCryptoEngine } from '@soberano/core';
+import { RealWebCryptoEngine } from '../security/real-web-crypto.js';
 import { officeStore } from '../state/office-store.js';
 import React, { useState, useMemo } from 'react';
 import {

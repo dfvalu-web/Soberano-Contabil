@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { RealWebCryptoEngine } from '@soberano/core';
+import { RealWebCryptoEngine } from '../security/real-web-crypto';
 import { officeStore } from '../state/office-store';
 import { OfficeLoginSecurityGovernanceView } from '../views/OfficeLoginSecurityGovernanceView';
 
