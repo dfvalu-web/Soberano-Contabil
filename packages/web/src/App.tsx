@@ -3,6 +3,7 @@ import { OfficeIntegratedClosingPipelineView } from './views/OfficeIntegratedClo
 import { OfficePredictiveTaxAuditRadarView } from './views/OfficePredictiveTaxAuditRadarView.js';
 import { OfficeMonthlyConsolidatedBookView } from './views/OfficeMonthlyConsolidatedBookView.js';
 import { OfficeStrategicTaxRegimeComparisonView } from './views/OfficeStrategicTaxRegimeComparisonView.js';
+import { LandingAndLoginPremiumView, UserProfile, PRESET_PROFILES } from './views/LandingAndLoginPremiumView.js';
 
 import { OfficeProductsServicesStockView } from './views/OfficeProductsServicesStockView.js';
 import { OfficeInvoiceBillingIssuerView } from './views/OfficeInvoiceBillingIssuerView.js';
