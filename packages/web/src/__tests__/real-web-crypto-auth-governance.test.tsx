@@ -82,18 +82,37 @@ describe('Criptografia Real Web Crypto API & Central de Governança de Login', (
     expect(logs[0].userEmail).toBe('auditor@soberanocontabil.com.br');
   });
 
-  it('4. OfficeLoginSecurityGovernanceView: renderiza o painel executivo 3D 4K com métricas e Dossiê A4', () => {
+  it('4. OfficeLoginSecurityGovernanceView: renderiza o painel executivo com Matriz de Permissões & Dossiê A4', () => {
     const html = renderToStaticMarkup(
       React.createElement(OfficeLoginSecurityGovernanceView)
     );
 
-    expect(html).toContain('Central de Controle de Login &amp; Governança Criptográfica');
-    expect(html).toContain('FIPS 140-3 &amp; ICP-BRASIL');
-    expect(html).toContain('Métodos de Login Ativos');
-    expect(html).toContain('Aprovações Pendentes');
-    expect(html).toContain('Autenticações Auditadas');
-    expect(html).toContain('AES-GCM-256');
+    expect(html).toContain('Central de Controle de Login');
+    expect(html).toContain('Matriz de Permissões');
+    expect(html).toContain('RBAC &amp; SAAS MODULAR');
+    expect(html).toContain('Perfis &amp; Empresas');
+    expect(html).toContain('Total de Módulos');
+    expect(html).toContain('181 Módulos');
     expect(html).toContain('diamond-paper-a4');
     expect(html).toContain('RELATÓRIO OFICIAL DE GOVERNANÇA DE ACESSOS &amp; SEGURANÇA CRIPTOGRÁFICA');
+  });
+
+  it('5. OfficeStateStore & RBAC: controla acesso a módulos individuais e departamentos contratados', () => {
+    // 5.1 Proprietário Master tem acesso total
+    expect(officeStore.isModuleAllowedForUser('dfvalu@gmail.com', 'office_predictive_tax_audit_radar', 'fiscal')).toBe(true);
+    expect(officeStore.isModuleAllowedForUser('dfvalu@gmail.com', 'payroll', 'dp')).toBe(true);
+    expect(officeStore.isModuleAllowedForUser('dfvalu@gmail.com', 'accounting', 'contabil')).toBe(true);
+
+    // 5.2 Analista Fiscal tem acesso aos módulos fiscais mas não de folha de pagamento
+    expect(officeStore.isModuleAllowedForUser('beatriz.tributario@soberanocontabil.com.br', 'office_predictive_tax_audit_radar', 'fiscal')).toBe(true);
+    expect(officeStore.isModuleAllowedForUser('beatriz.tributario@soberanocontabil.com.br', 'payroll', 'dp')).toBe(false);
+
+    // 5.3 Analista de DP tem acesso a DP mas não a apuração fiscal
+    expect(officeStore.isModuleAllowedForUser('carlos.dp@soberanocontabil.com.br', 'payroll', 'dp')).toBe(true);
+    expect(officeStore.isModuleAllowedForUser('carlos.dp@soberanocontabil.com.br', 'office_predictive_tax_audit_radar', 'fiscal')).toBe(false);
+
+    // 5.4 Cliente BPO tem acesso aos módulos contratados (Emissor) mas não a folha
+    expect(officeStore.isModuleAllowedForUser('diretoria@soberanotech.com.br', 'office_invoice_billing_issuer', 'fiscal')).toBe(true);
+    expect(officeStore.isModuleAllowedForUser('diretoria@soberanotech.com.br', 'payroll', 'dp')).toBe(false);
   });
 });

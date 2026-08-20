@@ -1,4 +1,22 @@
 
+export type AccessScopeType = 'FULL_ALL_MODULES' | 'DEPARTMENT_ONLY' | 'CUSTOM_MODULES';
+
+export interface UserModuleAccessConfig {
+  id: string;
+  userEmail: string;
+  userName: string;
+  companyName: string;
+  role: 'MASTER_ACCOUNTANT' | 'TAX_SPECIALIST' | 'PAYROLL_SPECIALIST' | 'ACCOUNTANT' | 'CLIENT_DIRECTOR' | 'CUSTOM_OPERATOR';
+  scope: AccessScopeType;
+  allowedDepartmentIds: ('gestao' | 'dp' | 'fiscal' | 'contabil' | 'setoriais')[];
+  allowedModuleIds: string[];
+  contractPlanName: string;
+  validUntil: string;
+  isActive: boolean;
+  notes?: string;
+}
+
+
 export interface LoginMethodSecurityPolicy {
   id: 'CERTIFICATE_ICP_BRASIL' | 'EMAIL_PASSWORD_HASH' | 'FIDO2_PASSKEYS' | 'MAGIC_LINK';
   name: string;
@@ -909,6 +927,151 @@ class OfficeStateStore {
 
   public getAuthSecurityAuditLogs(): AuthSecurityAuditLog[] {
     return [...this.authAuditLogs];
+  }
+
+
+  // =========================================================================
+  // MATRIZ DE PERMISSÕES & MÓDULOS CONTRATADOS POR USUÁRIO / EMPRESA
+  // =========================================================================
+  private userAccessConfigs: UserModuleAccessConfig[] = [
+    {
+      id: 'cfg-david-owner',
+      userEmail: 'dfvalu@gmail.com',
+      userName: 'DAVID VALU',
+      companyName: 'Soberano Contábil Platinum Suite',
+      role: 'MASTER_ACCOUNTANT',
+      scope: 'FULL_ALL_MODULES',
+      allowedDepartmentIds: ['gestao', 'dp', 'fiscal', 'contabil', 'setoriais'],
+      allowedModuleIds: ['ALL_181_MODULES'],
+      contractPlanName: 'Plano Enterprise Master (Proprietário & Dev)',
+      validUntil: 'Vitalício / Ilimitado',
+      isActive: true,
+      notes: 'Acesso irrestrito a todos os departamentos, configurações e governança.'
+    },
+    {
+      id: 'cfg-david-corp',
+      userEmail: 'david.valu@soberanocontabil.com.br',
+      userName: 'David Valu',
+      companyName: 'Soberano Contábil Platinum Suite',
+      role: 'MASTER_ACCOUNTANT',
+      scope: 'FULL_ALL_MODULES',
+      allowedDepartmentIds: ['gestao', 'dp', 'fiscal', 'contabil', 'setoriais'],
+      allowedModuleIds: ['ALL_181_MODULES'],
+      contractPlanName: 'Plano Enterprise Master (Sócio Responsável)',
+      validUntil: 'Vitalício / Ilimitado',
+      isActive: true,
+      notes: 'Sócio e Contador Responsável técnico.'
+    },
+    {
+      id: 'cfg-beatriz-tax',
+      userEmail: 'beatriz.tributario@soberanocontabil.com.br',
+      userName: 'Dra. Beatriz Santos',
+      companyName: 'Soberano Contábil (Depto Fiscal)',
+      role: 'TAX_SPECIALIST',
+      scope: 'DEPARTMENT_ONLY',
+      allowedDepartmentIds: ['fiscal'],
+      allowedModuleIds: [
+        'office_universal_dropzone_ocr',
+        'office_predictive_tax_audit_radar',
+        'office_monophasic_tax',
+        'office_tax_reform_simulator_2026',
+        'office_sped_batch_prevalidator',
+        'office_invoice_billing_issuer',
+        'office_products_services_stock'
+      ],
+      contractPlanName: 'Plano Fiscal & Tributário Completo',
+      validUntil: '31/12/2026',
+      isActive: true,
+      notes: 'Especialista responsável pelas apurações fiscais, SPED e Reforma Tributária.'
+    },
+    {
+      id: 'cfg-carlos-dp',
+      userEmail: 'carlos.dp@soberanocontabil.com.br',
+      userName: 'Carlos Mendes',
+      companyName: 'Soberano Contábil (Depto Pessoal)',
+      role: 'PAYROLL_SPECIALIST',
+      scope: 'DEPARTMENT_ONLY',
+      allowedDepartmentIds: ['dp'],
+      allowedModuleIds: [
+        'payroll',
+        'office_integrated_closing_pipeline'
+      ],
+      contractPlanName: 'Plano Departamento Pessoal & eSocial',
+      validUntil: '31/12/2026',
+      isActive: true,
+      notes: 'Coordenador responsável por Folha CLT, TRCT rescisório e eSocial.'
+    },
+    {
+      id: 'cfg-diretoria-client',
+      userEmail: 'diretoria@soberanotech.com.br',
+      userName: 'Diretoria Executiva',
+      companyName: 'Soberano Tech S/A (Cliente BPO)',
+      role: 'CLIENT_DIRECTOR',
+      scope: 'CUSTOM_MODULES',
+      allowedDepartmentIds: ['gestao', 'fiscal'],
+      allowedModuleIds: [
+        'office_invoice_billing_issuer',
+        'office_monthly_consolidated_book',
+        'office_batch_dispatch_bundle'
+      ],
+      contractPlanName: 'Plano BPO Cliente + Emissor NF-e/NFS-e',
+      validUntil: '31/10/2026',
+      isActive: true,
+      notes: 'Cliente BPO: emissão de notas e aprovação de livros contábeis consolidados.'
+    }
+  ];
+
+  public getAllUserAccessConfigs(): UserModuleAccessConfig[] {
+    return [...this.userAccessConfigs];
+  }
+
+  public getUserAccessConfig(email: string): UserModuleAccessConfig | undefined {
+    const trimmed = (email || '').trim().toLowerCase();
+    return this.userAccessConfigs.find(c => c.userEmail.toLowerCase() === trimmed);
+  }
+
+  public saveUserAccessConfig(config: UserModuleAccessConfig): void {
+    const idx = this.userAccessConfigs.findIndex(c => c.id === config.id || c.userEmail.toLowerCase() === config.userEmail.toLowerCase());
+    if (idx >= 0) {
+      this.userAccessConfigs[idx] = { ...config };
+    } else {
+      this.userAccessConfigs.push({ ...config });
+    }
+  }
+
+  public isModuleAllowedForUser(email: string, moduleId: string, departmentId?: string): boolean {
+    const trimmed = (email || '').trim().toLowerCase();
+
+    // 1. Proprietário Master sempre tem acesso irrestrito
+    if (trimmed === 'dfvalu@gmail.com' || trimmed === 'david.valu@soberanocontabil.com.br') {
+      return true;
+    }
+
+    // 2. Localizar configuração do usuário
+    const config = this.getUserAccessConfig(trimmed);
+    if (!config) {
+      // Por padrão, se não tiver configuração cadastrada, permite acesso básico de teste
+      return true;
+    }
+
+    if (!config.isActive) return false;
+
+    // 3. Se tiver escopo total
+    if (config.scope === 'FULL_ALL_MODULES' || config.allowedModuleIds.includes('ALL_181_MODULES')) {
+      return true;
+    }
+
+    // 4. Se o módulo estiver na lista explícita de módulos permitidos
+    if (config.allowedModuleIds.includes(moduleId)) {
+      return true;
+    }
+
+    // 5. Se o escopo for por departamento e o departamento do módulo for permitido
+    if (config.scope === 'DEPARTMENT_ONLY' && departmentId && config.allowedDepartmentIds.includes(departmentId as any)) {
+      return true;
+    }
+
+    return false;
   }
 
   public calculateTermination(

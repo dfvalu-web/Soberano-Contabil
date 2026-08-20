@@ -21,7 +21,7 @@ import {
   DEFAULT_FAVORITE_MODULE_IDS,
   getModuleById
 } from '../config/navigation-modules';
-import { CompanyTenant } from '../state/office-store';
+import { CompanyTenant, officeStore } from '../state/office-store';
 import {
   matchSectorProfile,
   isModuleRecommendedForTenant,
@@ -220,7 +220,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
       return DEPARTMENT_CATEGORIES.map(dept => {
         const matchingModules = dept.modules
-          .filter(m => m.id !== 'office_login_security_governance' || isMasterOwner)
+          .filter(isModulePermitted)
           .filter(m => {
           const searchCorpus = normalizeText(`${m.name} ${m.label} ${m.id} ${m.badge || ''} ${m.file || ''} ${dept.name}`);
           return tokens.every(token => searchCorpus.includes(token));
@@ -249,7 +249,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         return { ...dept, visibleModules: [] };
       }
 
-      let modulesToFilter = dept.modules.filter(m => m.id !== 'office_login_security_governance' || isMasterOwner);
+      let modulesToFilter = dept.modules.filter(isModulePermitted);
       if (activeFilter === 'cnae' && tenant) {
         modulesToFilter = modulesToFilter.filter(m => isModuleRecommendedForTenant(m.id, tenant));
       }

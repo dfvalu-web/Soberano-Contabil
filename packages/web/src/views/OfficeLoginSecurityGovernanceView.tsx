@@ -1,5 +1,5 @@
-// SOBERANO CONTÁBIL — CENTRAL DE CONTROLE DE LOGIN & GOVERNANÇA DE SEGURANÇA CRIPTOGRÁFICA
-// Gestão de Métodos de Autenticação, Aprovação Master de Usuários e Trilha Imutável de Auditoria (Padrão Diamante)
+// SOBERANO CONTÁBIL — CENTRAL DE CONTROLE DE LOGIN, GOVERNANÇA DE SEGURANÇA & MATRIZ DE MÓDULOS CONTRATADOS
+// Gestão de Métodos de Autenticação, Aprovação Master, Auditoria Criptográfica e Matriz Modular por Usuário/Empresa
 
 import React, { useState, useMemo } from 'react';
 import {
@@ -17,17 +17,40 @@ import {
   Fingerprint,
   FileText,
   Activity,
-  Layers
+  Layers,
+  Save,
+  CheckSquare,
+  Square,
+  PlusCircle,
+  Building,
+  Sliders,
+  Search
 } from 'lucide-react';
-import { officeStore, LoginMethodSecurityPolicy, UserAccessApprovalRequest, AuthSecurityAuditLog } from '../state/office-store.js';
+import {
+  officeStore,
+  LoginMethodSecurityPolicy,
+  UserAccessApprovalRequest,
+  AuthSecurityAuditLog,
+  UserModuleAccessConfig
+} from '../state/office-store.js';
+import { DEPARTMENT_CATEGORIES, ALL_MODULES } from '../config/navigation-modules.js';
 
 export const OfficeLoginSecurityGovernanceView: React.FC = () => {
   const [policies, setPolicies] = useState<LoginMethodSecurityPolicy[]>(() => officeStore.getLoginPolicies());
   const [pendingApprovals, setPendingApprovals] = useState<UserAccessApprovalRequest[]>(() => officeStore.getPendingUserApprovals());
   const [auditLogs, setAuditLogs] = useState<AuthSecurityAuditLog[]>(() => officeStore.getAuthSecurityAuditLogs());
-  const [activeTab, setActiveTab] = useState<'METHODS' | 'APPROVALS' | 'AUDIT_LOG'>('METHODS');
+  const [userConfigs, setUserConfigs] = useState<UserModuleAccessConfig[]>(() => officeStore.getAllUserAccessConfigs());
+  const [selectedUserEmail, setSelectedUserEmail] = useState<string>(() => userConfigs[0]?.userEmail || 'dfvalu@gmail.com');
+  const [activeTab, setActiveTab] = useState<'METHODS' | 'APPROVALS' | 'AUDIT_LOG' | 'PERMISSIONS_MATRIX'>('PERMISSIONS_MATRIX');
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [moduleSearchQuery, setModuleSearchQuery] = useState<string>('');
 
+  // Configuração do usuário selecionado na Matriz
+  const currentUserConfig = useMemo(() => {
+    return userConfigs.find(c => c.userEmail.toLowerCase() === selectedUserEmail.toLowerCase()) || userConfigs[0];
+  }, [userConfigs, selectedUserEmail]);
+
+  // Handlers de Métodos de Login
   const handleTogglePolicy = (id: LoginMethodSecurityPolicy['id']) => {
     officeStore.toggleLoginPolicy(id);
     setPolicies(officeStore.getLoginPolicies());
@@ -52,6 +75,139 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
     showToast(`Acesso do usuário "${name}" bloqueado/recusado.`);
   };
 
+  // Handlers da Matriz de Permissões & Módulos Contratados
+  const handleApplyPresetPlan = (presetType: 'FULL' | 'FISCAL' | 'DP' | 'CONTABIL' | 'BPO_CLIENTE') => {
+    if (!currentUserConfig) return;
+
+    let updated: UserModuleAccessConfig;
+
+    if (presetType === 'FULL') {
+      updated = {
+        ...currentUserConfig,
+        scope: 'FULL_ALL_MODULES',
+        contractPlanName: 'Plano Enterprise Master (Todos os 181 Módulos)',
+        allowedDepartmentIds: ['gestao', 'dp', 'fiscal', 'contabil', 'setoriais'],
+        allowedModuleIds: ['ALL_181_MODULES']
+      };
+    } else if (presetType === 'FISCAL') {
+      updated = {
+        ...currentUserConfig,
+        scope: 'DEPARTMENT_ONLY',
+        contractPlanName: 'Plano Fiscal & Tributário Completo (Emissor + SPED + Radar)',
+        allowedDepartmentIds: ['fiscal'],
+        allowedModuleIds: [
+          'office_universal_dropzone_ocr',
+          'office_predictive_tax_audit_radar',
+          'office_monophasic_tax',
+          'office_tax_reform_simulator_2026',
+          'office_sped_batch_prevalidator',
+          'office_invoice_billing_issuer',
+          'office_products_services_stock'
+        ]
+      };
+    } else if (presetType === 'DP') {
+      updated = {
+        ...currentUserConfig,
+        scope: 'DEPARTMENT_ONLY',
+        contractPlanName: 'Plano Departamento Pessoal & eSocial (Folha + TRCT)',
+        allowedDepartmentIds: ['dp'],
+        allowedModuleIds: [
+          'payroll',
+          'office_integrated_closing_pipeline'
+        ]
+      };
+    } else if (presetType === 'CONTABIL') {
+      updated = {
+        ...currentUserConfig,
+        scope: 'DEPARTMENT_ONLY',
+        contractPlanName: 'Plano Contábil & IFRS (Balanço + DRE + OFX Conciliação)',
+        allowedDepartmentIds: ['contabil'],
+        allowedModuleIds: [
+          'accounting',
+          'office_fixed_assets_cpc27',
+          'office_intangibles_amortization',
+          'office_monthly_consolidated_book'
+        ]
+      };
+    } else {
+      updated = {
+        ...currentUserConfig,
+        scope: 'CUSTOM_MODULES',
+        contractPlanName: 'Plano BPO & Portal do Cliente (Emissor + Dossiê + Guias)',
+        allowedDepartmentIds: ['gestao', 'fiscal'],
+        allowedModuleIds: [
+          'office_invoice_billing_issuer',
+          'office_monthly_consolidated_book',
+          'office_batch_dispatch_bundle'
+        ]
+      };
+    }
+
+    officeStore.saveUserAccessConfig(updated);
+    setUserConfigs(officeStore.getAllUserAccessConfigs());
+    showToast(`Plano "${updated.contractPlanName}" aplicado com sucesso para ${updated.userName}!`);
+  };
+
+  const handleToggleModuleInConfig = (moduleId: string) => {
+    if (!currentUserConfig) return;
+
+    let newAllowed = [...currentUserConfig.allowedModuleIds];
+    if (newAllowed.includes('ALL_181_MODULES')) {
+      newAllowed = ALL_MODULES.map(m => m.id);
+    }
+
+    if (newAllowed.includes(moduleId)) {
+      newAllowed = newAllowed.filter(id => id !== moduleId);
+    } else {
+      newAllowed.push(moduleId);
+    }
+
+    const updated: UserModuleAccessConfig = {
+      ...currentUserConfig,
+      scope: 'CUSTOM_MODULES',
+      allowedModuleIds: newAllowed,
+      contractPlanName: `Plano Customizado (${newAllowed.length} Módulos Habilitados)`
+    };
+
+    officeStore.saveUserAccessConfig(updated);
+    setUserConfigs(officeStore.getAllUserAccessConfigs());
+  };
+
+  const handleToggleDepartmentInConfig = (deptId: 'gestao' | 'dp' | 'fiscal' | 'contabil' | 'setoriais') => {
+    if (!currentUserConfig) return;
+
+    const dept = DEPARTMENT_CATEGORIES.find(d => d.id === deptId);
+    if (!dept) return;
+
+    const deptModuleIds = dept.modules.map(m => m.id);
+    const isAllSelected = deptModuleIds.every(id => 
+      currentUserConfig.allowedModuleIds.includes('ALL_181_MODULES') || currentUserConfig.allowedModuleIds.includes(id)
+    );
+
+    let newAllowed = currentUserConfig.allowedModuleIds.includes('ALL_181_MODULES')
+      ? ALL_MODULES.map(m => m.id)
+      : [...currentUserConfig.allowedModuleIds];
+
+    if (isAllSelected) {
+      newAllowed = newAllowed.filter(id => !deptModuleIds.includes(id));
+    } else {
+      deptModuleIds.forEach(id => {
+        if (!newAllowed.includes(id)) newAllowed.push(id);
+      });
+    }
+
+    const updated: UserModuleAccessConfig = {
+      ...currentUserConfig,
+      scope: 'CUSTOM_MODULES',
+      allowedModuleIds: newAllowed,
+      contractPlanName: `Plano Customizado (${newAllowed.length} Módulos Habilitados)`
+    };
+
+    officeStore.saveUserAccessConfig(updated);
+    setUserConfigs(officeStore.getAllUserAccessConfigs());
+    showToast(`Departamento "${dept.name}" ${isAllSelected ? 'desmarcado' : 'habilitado'} para ${currentUserConfig.userName}!`);
+  };
+
   const showToast = (msg: string) => {
     setFeedbackMessage(msg);
     setTimeout(() => setFeedbackMessage(null), 3500);
@@ -61,8 +217,22 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
     const activeMethods = policies.filter(p => p.isEnabled).length;
     const pendingCount = pendingApprovals.filter(p => p.status === 'PENDING').length;
     const successLogsCount = auditLogs.filter(l => l.status === 'SUCCESS').length;
-    return { activeMethods, pendingCount, successLogsCount, totalLogs: auditLogs.length };
-  }, [policies, pendingApprovals, auditLogs]);
+    const totalConfiguredUsers = userConfigs.length;
+    return { activeMethods, pendingCount, successLogsCount, totalConfiguredUsers, totalLogs: auditLogs.length };
+  }, [policies, pendingApprovals, auditLogs, userConfigs]);
+
+  // Módulos filtrados na busca da matriz
+  const filteredDepartmentsInMatrix = useMemo(() => {
+    const q = moduleSearchQuery.trim().toLowerCase();
+    if (!q) return DEPARTMENT_CATEGORIES;
+
+    return DEPARTMENT_CATEGORIES.map(dept => {
+      const matching = dept.modules.filter(m => 
+        m.name.toLowerCase().includes(q) || m.label.toLowerCase().includes(q) || m.id.toLowerCase().includes(q)
+      );
+      return { ...dept, modules: matching };
+    }).filter(dept => dept.modules.length > 0);
+  }, [moduleSearchQuery]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', color: '#FFFFFF' }}>
@@ -70,20 +240,20 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
       {/* Header Diamond 3D */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(56, 189, 248, 0.15) 100%)', border: '1.5px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.3rem', boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)' }}>
+          <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(56, 189, 248, 0.15) 100%)', border: '1.5px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem', boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)' }}>
             🛡️
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <h1 style={{ fontSize: '1.35rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em' }}>
-                Central de Controle de Login & Governança Criptográfica
+                Central de Controle de Login & Matriz de Permissões Contratadas
               </h1>
               <span style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '2px 8px', borderRadius: '6px', fontSize: '0.66rem', fontWeight: 900 }}>
-                FIPS 140-3 & ICP-BRASIL
+                RBAC & SAAS MODULAR
               </span>
             </div>
             <p style={{ fontSize: '0.78rem', color: '#94A3B8', margin: '3px 0 0 0' }}>
-              Gestão determinística de métodos de entrada autorizados, aprovação master de novos usuários e auditoria de envelopes criptográficos SHA-256 / AES-GCM.
+              Defina com precisão quais módulos e departamentos cada colaborador ou cliente contratante pode visualizar e operar.
             </p>
           </div>
         </div>
@@ -93,7 +263,7 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
             onClick={() => window.print()}
             style={{ background: '#0B1120', border: '1px solid rgba(255,255,255,0.15)', color: '#E2E8F0', padding: '7px 14px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <Printer size={14} /> <span>Imprimir Dossiê de Governança A4</span>
+            <Printer size={14} /> <span>Imprimir Matriz de Acessos A4</span>
           </button>
         </div>
       </div>
@@ -105,23 +275,23 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
         </div>
       )}
 
-      {/* 4 Cards de Métricas e Status de Governança */}
+      {/* 4 Cards de Métricas de Governança & Permissões */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
         <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(52, 211, 153, 0.35)', borderBottom: '3.5px solid #059669', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
-            <span>Métodos de Login Ativos</span>
-            <Key size={16} color="#34D399" />
+            <span>Perfis & Empresas</span>
+            <Users size={16} color="#34D399" />
           </div>
           <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#34D399', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
-            {stats.activeMethods} de 4 Formas
+            {stats.totalConfiguredUsers} Configurados
           </div>
-          <div style={{ fontSize: '0.66rem', color: '#64748B' }}>Criptografia ponta a ponta ativa</div>
+          <div style={{ fontSize: '0.66rem', color: '#64748B' }}>Matriz de permissões ativada</div>
         </div>
 
         <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(251, 191, 36, 0.35)', borderBottom: '3.5px solid #D97706', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
             <span>Aprovações Pendentes</span>
-            <Users size={16} color="#FBBF24" />
+            <AlertTriangle size={16} color="#FBBF24" />
           </div>
           <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#FBBF24', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
             {stats.pendingCount} Usuários
@@ -133,35 +303,35 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
 
         <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(56, 189, 248, 0.35)', borderBottom: '3.5px solid #0284C7', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
-            <span>Autenticações Auditadas</span>
-            <Activity size={16} color="#38BDF8" />
+            <span>Total de Módulos</span>
+            <Layers size={16} color="#38BDF8" />
           </div>
           <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#38BDF8', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
-            {stats.successLogsCount} Sucessos
+            181 Módulos
           </div>
-          <div style={{ fontSize: '0.66rem', color: '#38BDF8', fontWeight: 700 }}>100% com Hash SHA-256 verificado</div>
+          <div style={{ fontSize: '0.66rem', color: '#38BDF8', fontWeight: 700 }}>Distribuídos em 5 departamentos</div>
         </div>
 
         <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(168, 85, 247, 0.35)', borderBottom: '3.5px solid #7E22CE', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
-            <span>Nível de Criptografia</span>
+            <span>Nível de Blindagem</span>
             <Lock size={16} color="#C084FC" />
           </div>
           <div style={{ fontSize: '1.45rem', fontWeight: 900, color: '#C084FC', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
-            AES-GCM-256
+            RBAC + FIPS 140-3
           </div>
-          <div style={{ fontSize: '0.66rem', color: '#CBD5E1' }}>PBKDF2 (100k iterações) + Salt</div>
+          <div style={{ fontSize: '0.66rem', color: '#CBD5E1' }}>Isolamento estrito por usuário</div>
         </div>
       </div>
 
       {/* Navegação por Abas 3D */}
-      <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px' }}>
+      <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '8px', flexWrap: 'wrap' }}>
         <button
-          onClick={() => setActiveTab('METHODS')}
+          onClick={() => setActiveTab('PERMISSIONS_MATRIX')}
           style={{
-            background: activeTab === 'METHODS' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.1) 100%)' : '#0B1120',
-            border: activeTab === 'METHODS' ? '1.5px solid #34D399' : '1px solid rgba(255,255,255,0.1)',
-            color: activeTab === 'METHODS' ? '#34D399' : '#94A3B8',
+            background: activeTab === 'PERMISSIONS_MATRIX' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.1) 100%)' : '#0B1120',
+            border: activeTab === 'PERMISSIONS_MATRIX' ? '1.5px solid #34D399' : '1px solid rgba(255,255,255,0.1)',
+            color: activeTab === 'PERMISSIONS_MATRIX' ? '#34D399' : '#94A3B8',
             padding: '8px 16px',
             borderRadius: '8px',
             fontSize: '0.80rem',
@@ -172,7 +342,26 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
             gap: '6px'
           }}
         >
-          <Key size={14} /> <span>1. Métodos de Login & Políticas ({stats.activeMethods} Ativos)</span>
+          <Sliders size={14} /> <span>1. Matriz de Permissões & Módulos por Usuário/Empresa</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('METHODS')}
+          style={{
+            background: activeTab === 'METHODS' ? 'linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(2, 132, 199, 0.1) 100%)' : '#0B1120',
+            border: activeTab === 'METHODS' ? '1.5px solid #38BDF8' : '1px solid rgba(255,255,255,0.1)',
+            color: activeTab === 'METHODS' ? '#38BDF8' : '#94A3B8',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            fontSize: '0.80rem',
+            fontWeight: 800,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+        >
+          <Key size={14} /> <span>2. Métodos de Login & Políticas ({stats.activeMethods} Ativos)</span>
         </button>
 
         <button
@@ -191,15 +380,15 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
             gap: '6px'
           }}
         >
-          <Users size={14} /> <span>2. Fila de Aprovação Master ({stats.pendingCount} Pendentes)</span>
+          <Users size={14} /> <span>3. Fila de Aprovação Master ({stats.pendingCount} Pendentes)</span>
         </button>
 
         <button
           onClick={() => setActiveTab('AUDIT_LOG')}
           style={{
-            background: activeTab === 'AUDIT_LOG' ? 'linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(2, 132, 199, 0.1) 100%)' : '#0B1120',
-            border: activeTab === 'AUDIT_LOG' ? '1.5px solid #38BDF8' : '1px solid rgba(255,255,255,0.1)',
-            color: activeTab === 'AUDIT_LOG' ? '#38BDF8' : '#94A3B8',
+            background: activeTab === 'AUDIT_LOG' ? 'linear-gradient(180deg, rgba(168, 85, 247, 0.25) 0%, rgba(126, 34, 206, 0.1) 100%)' : '#0B1120',
+            border: activeTab === 'AUDIT_LOG' ? '1.5px solid #C084FC' : '1px solid rgba(255,255,255,0.1)',
+            color: activeTab === 'AUDIT_LOG' ? '#C084FC' : '#94A3B8',
             padding: '8px 16px',
             borderRadius: '8px',
             fontSize: '0.80rem',
@@ -210,11 +399,250 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
             gap: '6px'
           }}
         >
-          <Activity size={14} /> <span>3. Trilha de Auditoria Criptográfica ({stats.totalLogs} Eventos)</span>
+          <Activity size={14} /> <span>4. Trilha de Auditoria Criptográfica ({stats.totalLogs} Eventos)</span>
         </button>
       </div>
 
-      {/* ABA 1: MÉTODOS DE LOGIN & POLÍTICAS DE AUTENTICAÇÃO */}
+      {/* ABA 1: MATRIZ DE PERMISSÕES & MÓDULOS CONTRATADOS POR USUÁRIO */}
+      {activeTab === 'PERMISSIONS_MATRIX' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
+          
+          {/* Card de Seleção de Usuário & Presets de Planos */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141F36 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.4)',
+              borderRadius: '14px',
+              padding: '20px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.6)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '14px' }}>
+              <div>
+                <span style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
+                  Configuração Ativa para:
+                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                  <select
+                    value={selectedUserEmail}
+                    onChange={(e) => setSelectedUserEmail(e.target.value)}
+                    style={{
+                      background: '#080D1A',
+                      border: '1.5px solid #34D399',
+                      borderRadius: '8px',
+                      color: '#FFFFFF',
+                      padding: '8px 14px',
+                      fontSize: '0.88rem',
+                      fontWeight: 800,
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {userConfigs.map(u => (
+                      <option key={u.id} value={u.userEmail} style={{ background: '#0B1120', color: '#FFFFFF' }}>
+                        {u.userName} ({u.userEmail}) — {u.contractPlanName}
+                      </option>
+                    ))}
+                  </select>
+                  <span style={{ background: currentUserConfig?.isActive ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)', color: currentUserConfig?.isActive ? '#34D399' : '#EF4444', padding: '4px 10px', borderRadius: '6px', fontSize: '0.72rem', fontWeight: 900 }}>
+                    {currentUserConfig?.isActive ? '✓ CONTA ATIVA' : '🚫 SUSPENSA'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Detalhes do Usuário */}
+              <div style={{ fontSize: '0.74rem', color: '#CBD5E1', display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                <div><strong style={{ color: '#64748B' }}>Empresa:</strong> <span style={{ color: '#FFFFFF', fontWeight: 700 }}>{currentUserConfig?.companyName}</span></div>
+                <div><strong style={{ color: '#64748B' }}>Validade do Acesso:</strong> <span style={{ color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>{currentUserConfig?.validUntil}</span></div>
+              </div>
+            </div>
+
+            {/* Presets Rápidos de Planos 1-Click */}
+            <div style={{ marginTop: '16px' }}>
+              <div style={{ fontSize: '0.70rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Zap size={14} color="#FBBF24" />
+                <span>Aplicar Pacote de Módulos Pré-Configurado (1-Click):</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(190px, 1fr))', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPresetPlan('FULL')}
+                  style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #34D399', color: '#34D399', padding: '8px 12px', borderRadius: '8px', fontSize: '0.74rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                >
+                  👑 1. Master Total (181 Módulos)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPresetPlan('FISCAL')}
+                  style={{ background: 'rgba(56, 189, 248, 0.15)', border: '1px solid #38BDF8', color: '#38BDF8', padding: '8px 12px', borderRadius: '8px', fontSize: '0.74rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                >
+                  ⚖️ 2. Pacote Fiscal & SPED
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPresetPlan('DP')}
+                  style={{ background: 'rgba(251, 191, 36, 0.15)', border: '1px solid #FBBF24', color: '#FBBF24', padding: '8px 12px', borderRadius: '8px', fontSize: '0.74rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                >
+                  👥 3. Pacote DP & eSocial
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPresetPlan('CONTABIL')}
+                  style={{ background: 'rgba(168, 85, 247, 0.15)', border: '1px solid #C084FC', color: '#C084FC', padding: '8px 12px', borderRadius: '8px', fontSize: '0.74rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                >
+                  📚 4. Pacote Contábil & IFRS
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleApplyPresetPlan('BPO_CLIENTE')}
+                  style={{ background: 'rgba(236, 72, 153, 0.15)', border: '1px solid #F472B6', color: '#F472B6', padding: '8px 12px', borderRadius: '8px', fontSize: '0.74rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                >
+                  🏢 5. Pacote BPO / Cliente
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Checklist Granular dos Módulos Contratados (Checkboxes) */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A0F1E 100%)',
+              border: '1.5px solid rgba(56, 189, 248, 0.35)',
+              borderRadius: '14px',
+              padding: '20px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 12px 36px rgba(0, 0, 0, 0.7)'
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+              <div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Sliders size={18} color="#38BDF8" />
+                  <span>Checklist de Módulos Contratados / Habilitados</span>
+                </h3>
+                <p style={{ fontSize: '0.74rem', color: '#94A3B8', margin: '3px 0 0 0' }}>
+                  Marque ou desmarque caixas individuais para personalizar a contratação deste usuário.
+                </p>
+              </div>
+
+              {/* Campo de Busca de Módulos */}
+              <div style={{ position: 'relative', minWidth: '240px' }}>
+                <Search size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: '#64748B' }} />
+                <input
+                  type="text"
+                  value={moduleSearchQuery}
+                  onChange={(e) => setModuleSearchQuery(e.target.value)}
+                  placeholder="Filtrar módulos..."
+                  style={{
+                    background: '#080D1A',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    borderRadius: '6px',
+                    color: '#FFFFFF',
+                    padding: '7px 10px 7px 30px',
+                    fontSize: '0.76rem',
+                    outline: 'none',
+                    width: '100%'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Listagem por Departamentos com Checkboxes */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {filteredDepartmentsInMatrix.map(dept => {
+                const deptModuleIds = dept.modules.map(m => m.id);
+                const isAllSelected = currentUserConfig?.scope === 'FULL_ALL_MODULES' || currentUserConfig?.allowedModuleIds.includes('ALL_181_MODULES') || deptModuleIds.every(id => currentUserConfig?.allowedModuleIds.includes(id));
+                const countSelected = currentUserConfig?.scope === 'FULL_ALL_MODULES' || currentUserConfig?.allowedModuleIds.includes('ALL_181_MODULES')
+                  ? dept.modules.length
+                  : dept.modules.filter(m => currentUserConfig?.allowedModuleIds.includes(m.id)).length;
+
+                return (
+                  <div
+                    key={dept.id}
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.5)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      borderRadius: '10px',
+                      padding: '14px',
+                      overflow: 'hidden'
+                    }}
+                  >
+                    {/* Header do Departamento com Toggle de Todos */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px', borderBottom: '1px solid rgba(255,255,255,0.06)', paddingBottom: '8px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <span style={{ fontSize: '1.2rem' }}>{dept.icon}</span>
+                        <span style={{ fontSize: '0.88rem', fontWeight: 900, color: '#FFFFFF' }}>{dept.name}</span>
+                        <span style={{ fontSize: '0.68rem', color: '#38BDF8', background: 'rgba(56, 189, 248, 0.15)', padding: '2px 6px', borderRadius: '4px', fontWeight: 800 }}>
+                          {countSelected} de {dept.modules.length} liberados
+                        </span>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleToggleDepartmentInConfig(dept.id as any)}
+                        style={{
+                          background: isAllSelected ? 'rgba(16, 185, 129, 0.2)' : 'rgba(255,255,255,0.06)',
+                          border: isAllSelected ? '1px solid #34D399' : '1px solid rgba(255,255,255,0.15)',
+                          color: isAllSelected ? '#34D399' : '#CBD5E1',
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          fontSize: '0.68rem',
+                          fontWeight: 800,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {isAllSelected ? '✓ Desmarcar Departamento' : '⚡ Marcar Todo o Departamento'}
+                      </button>
+                    </div>
+
+                    {/* Grade de Módulos Individuais */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '8px' }}>
+                      {dept.modules.map(mod => {
+                        const isChecked = currentUserConfig?.scope === 'FULL_ALL_MODULES' || currentUserConfig?.allowedModuleIds.includes('ALL_181_MODULES') || currentUserConfig?.allowedModuleIds.includes(mod.id);
+
+                        return (
+                          <div
+                            key={mod.id}
+                            onClick={() => handleToggleModuleInConfig(mod.id)}
+                            style={{
+                              background: isChecked ? 'rgba(16, 185, 129, 0.12)' : 'rgba(8, 13, 26, 0.6)',
+                              border: isChecked ? '1px solid #34D399' : '1px solid rgba(255, 255, 255, 0.06)',
+                              borderRadius: '6px',
+                              padding: '8px 10px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+                              <span style={{ fontSize: '0.9rem' }}>{mod.icon}</span>
+                              <div style={{ overflow: 'hidden' }}>
+                                <div style={{ fontSize: '0.74rem', fontWeight: 800, color: isChecked ? '#FFFFFF' : '#94A3B8', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                                  {mod.label || mod.name}
+                                </div>
+                                <div style={{ fontSize: '0.58rem', color: '#64748B', fontFamily: 'var(--font-mono)' }}>
+                                  ID: {mod.id}
+                                </div>
+                              </div>
+                            </div>
+
+                            <span style={{ color: isChecked ? '#34D399' : '#475569', fontSize: '1.1rem', flexShrink: 0 }}>
+                              {isChecked ? '☑' : '☐'}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ABA 2: MÉTODOS DE LOGIN & POLÍTICAS DE AUTENTICAÇÃO */}
       {activeTab === 'METHODS' && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
           {policies.map(policy => (
@@ -299,7 +727,7 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
         </div>
       )}
 
-      {/* ABA 2: FILA DE APROVAÇÃO MASTER DE USUÁRIOS */}
+      {/* ABA 3: FILA DE APROVAÇÃO MASTER DE USUÁRIOS */}
       {activeTab === 'APPROVALS' && (
         <div
           style={{
@@ -395,7 +823,7 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
         </div>
       )}
 
-      {/* ABA 3: TRILHA DE AUDITORIA CRIPTOGRÁFICA DE LOGINS */}
+      {/* ABA 4: TRILHA DE AUDITORIA CRIPTOGRÁFICA DE LOGINS */}
       {activeTab === 'AUDIT_LOG' && (
         <div
           style={{
@@ -487,7 +915,7 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
           </div>
           <div className="diamond-meta-item">
             <strong>Data da Emissão</strong>
-            <span>19/08/2026 às 23:15</span>
+            <span>20/08/2026</span>
           </div>
           <div className="diamond-meta-item">
             <strong>Status de Integridade</strong>
@@ -498,37 +926,23 @@ export const OfficeLoginSecurityGovernanceView: React.FC = () => {
         <table className="diamond-table">
           <thead>
             <tr>
-              <th>Método de Entrada</th>
-              <th>Padrão Criptográfico</th>
-              <th>Status Operacional</th>
-              <th>Exigência de Aprovação</th>
+              <th>Usuário / Empresa</th>
+              <th>Plano Contratado</th>
+              <th>Escopo de Permissão</th>
+              <th>Status do Acesso</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Certificado Digital ICP-Brasil (e-CPF / e-CNPJ)</td>
-              <td className="font-mono">mTLS / HMAC-SHA256 Challenge</td>
-              <td style={{ color: '#047857', fontWeight: 800 }}>✓ HABILITADO</td>
-              <td>Livre com PIN Válido</td>
-            </tr>
-            <tr>
-              <td>Credenciais Corporativas (E-mail & Senha)</td>
-              <td className="font-mono">PBKDF2 (100k) + SHA-256 Salted + AES-GCM</td>
-              <td style={{ color: '#047857', fontWeight: 800 }}>✓ HABILITADO</td>
-              <td>Livre com MFA</td>
-            </tr>
-            <tr>
-              <td>Biometria FIDO2 / Passkeys / WebAuthn</td>
-              <td className="font-mono">Assinatura Assimétrica ECDSA P-256</td>
-              <td style={{ color: '#047857', fontWeight: 800 }}>✓ HABILITADO</td>
-              <td>Requer Homologação Master</td>
-            </tr>
-            <tr>
-              <td>Magic Link Criptografado por E-mail</td>
-              <td className="font-mono">JWT HMAC-SHA256 Time-Bound (10 min)</td>
-              <td style={{ color: '#DC2626', fontWeight: 800 }}>🚫 DESABILITADO</td>
-              <td>Política Rígida do Escritório</td>
-            </tr>
+            {userConfigs.map(u => (
+              <tr key={u.id}>
+                <td><strong>{u.userName}</strong> ({u.userEmail})</td>
+                <td>{u.contractPlanName}</td>
+                <td className="font-mono">{u.scope} ({u.allowedModuleIds.includes('ALL_181_MODULES') ? '181 Módulos' : u.allowedModuleIds.length + ' Módulos'})</td>
+                <td style={{ color: u.isActive ? '#047857' : '#DC2626', fontWeight: 800 }}>
+                  {u.isActive ? '✓ HABILITADO' : '🚫 SUSPENSO'}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
 
