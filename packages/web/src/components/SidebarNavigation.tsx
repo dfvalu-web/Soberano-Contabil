@@ -300,116 +300,60 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       aria-label="Navegação Soberano Contábil"
     >
       
-      {/* 1. Header & Brand */}
-      <div className="sidebar-brand-container" style={{ flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, #10B981, #06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', fontWeight: 900, fontSize: '0.85rem', boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)' }}>
-            SC
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.02em' }}>SOBERANO</span>
-              <span style={{ fontSize: '0.65rem', fontWeight: 900, background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '1px 5px', borderRadius: '4px' }}>PRO</span>
-            </div>
-            <div style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontWeight: 500 }}>Platinum Suite v4.5</div>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-          <button
-            type="button"
-            onClick={expandAllDepartments}
-            title="Expandir todos os departamentos"
-            style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', padding: '4px', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#34D399')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
-          >
-            <ChevronsDown size={15} />
-          </button>
-          <button
-            type="button"
-            onClick={collapseAllDepartments}
-            title="Recolher todos os departamentos"
-            style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', padding: '4px', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#34D399')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
-          >
-            <ChevronsUp size={15} />
-          </button>
-        </div>
-      </div>
-
-      {/* 2. Smart Tenant Context Indicator */}
-      {tenant && (
-        <div className="sidebar-tenant-badge" style={{ flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flex: 1 }}>
-            <span style={{ fontSize: '0.9rem', flexShrink: 0 }}>{activeSectorProfile?.icon || '🏢'}</span>
-            <div style={{ minWidth: 0, overflow: 'hidden' }}>
-              <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#F1F5F9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {tenant.name}
-              </div>
-              <div className="font-mono" style={{ fontSize: '0.64rem', color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {tenant.cnaePrincipal.split('-')[0]} • {tenant.regime.replace('_', ' ')}
-              </div>
-            </div>
-          </div>
-
-          {recommendedCount > 0 && (
-            <button
-              type="button"
-              onClick={() => setActiveFilter(activeFilter === 'cnae' ? 'todos' : 'cnae')}
+            {/* 1. Search Bar & Quick Controls (Início da Barra Lateral) */}
+      <div className="sidebar-search-container" style={{ flexShrink: 0, paddingTop: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <div style={{ position: 'relative', display: 'flex', alignItems: 'center', flex: 1 }}>
+            <Search size={13} style={{ position: 'absolute', left: '10px', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              placeholder="Buscar em 181 rotinas..."
               style={{
-                fontSize: '0.64rem',
-                fontWeight: 800,
-                padding: '2px 8px',
-                borderRadius: '12px',
-                border: activeFilter === 'cnae' ? '1px solid #34D399' : '1px solid rgba(16, 185, 129, 0.3)',
-                background: activeFilter === 'cnae' ? 'linear-gradient(135deg, #10B981, #059669)' : 'rgba(16, 185, 129, 0.15)',
-                color: activeFilter === 'cnae' ? '#070B12' : 'var(--emerald-400)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                flexShrink: 0,
-                transition: 'all 0.15s ease'
+                width: '100%',
+                padding: '6px 28px 6px 28px',
+                fontSize: '0.74rem',
+                background: '#0B1120',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '6px',
+                color: '#F8FAFC',
+                outline: 'none'
               }}
-            >
-              <Target size={10} />
-              <span>{recommendedCount} Nicho</span>
-            </button>
-          )}
-        </div>
-      )}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                style={{ position: 'absolute', right: '8px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '2px' }}
+              >
+                <X size={12} />
+              </button>
+            )}
+          </div>
 
-      {/* 3. Search Bar */}
-      <div className="sidebar-search-container" style={{ flexShrink: 0 }}>
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <Search size={13} style={{ position: 'absolute', left: '10px', color: 'var(--text-muted)', pointerEvents: 'none' }} />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Buscar em 181 rotinas..."
-            style={{
-              width: '100%',
-              padding: '6px 28px 6px 28px',
-              fontSize: '0.74rem',
-              background: '#0B1120',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '6px',
-              color: '#F8FAFC',
-              outline: 'none'
-            }}
-          />
-          {searchQuery && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
             <button
               type="button"
-              onClick={() => setSearchQuery('')}
-              style={{ position: 'absolute', right: '8px', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', padding: '2px' }}
+              onClick={expandAllDepartments}
+              title="Expandir todos os departamentos"
+              style={{ background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'var(--text-muted)', padding: '5px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#34D399')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
             >
-              <X size={12} />
+              <ChevronsDown size={14} />
             </button>
-          )}
+            <button
+              type="button"
+              onClick={collapseAllDepartments}
+              title="Recolher todos os departamentos"
+              style={{ background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.1)', color: 'var(--text-muted)', padding: '5px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#34D399')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-muted)')}
+            >
+              <ChevronsUp size={14} />
+            </button>
+          </div>
         </div>
 
         {searchQuery.trim() && (
@@ -420,7 +364,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         )}
       </div>
 
-      {/* 4. Quick Filter Tabs (Pills) */}
+      {/* 2. Quick Filter Tabs (Pills) */}
       <div className="sidebar-pills-bar no-scrollbar" style={{ flexShrink: 0 }}>
         {quickFilterTabs.map(tab => {
           const isActive = activeFilter === tab.id;
