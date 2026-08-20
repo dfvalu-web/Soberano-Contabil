@@ -409,9 +409,17 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         }}
       >
         
-        {/* Pinned / Favorite Routines (Collapsible Accordion) */}
+        {/* Pinned / Favorite Routines (3D 4K Gold/Amber Luxury Accordion) */}
         {favoriteModules.length > 0 && !searchQuery.trim() && activeFilter === 'todos' && (
-          <div style={{ background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.25)', borderRadius: '8px', padding: '6px 8px', flexShrink: 0 }}>
+          <div style={{
+            background: 'linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, rgba(18, 26, 44, 0.85) 100%)',
+            border: '1px solid rgba(245, 158, 11, 0.4)',
+            borderBottom: '2px solid rgba(180, 83, 9, 0.65)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 10px rgba(245, 158, 11, 0.2), 0 2px 6px rgba(0, 0, 0, 0.4)',
+            borderRadius: '9px',
+            padding: '6px 8px',
+            flexShrink: 0
+          }}>
             {/* Header / Toggle Button */}
             <button
               type="button"
@@ -506,14 +514,14 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                       {dept.name}
                     </span>
                     {dept.isCore && (
-                      <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 4px', borderRadius: '3px', background: 'rgba(16, 185, 129, 0.15)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                      <span className="dept-core-badge-3d">
                         CORE
                       </span>
                     )}
                   </div>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
-                    <span style={{ fontSize: '0.64rem', fontWeight: 700, padding: '1px 6px', borderRadius: '10px', background: 'rgba(255, 255, 255, 0.08)', color: 'var(--text-secondary)' }}>
+                    <span className="dept-counter-badge-3d">
                       {moduleCount}
                     </span>
                     <span style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', transition: 'transform 0.2s ease', transform: isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)' }}>

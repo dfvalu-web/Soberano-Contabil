@@ -1069,3 +1069,68 @@ html, body, #root {
     break-inside: avoid !important;
   }
 }
+
+
+/* ==========================================================================
+   DIAMOND CHAMPION 3D 4K MODULE ACCORDION HEADERS (SIDEBAR)
+   ========================================================================== */
+
+.dept-accordion-card {
+  background: linear-gradient(180deg, #162137 0%, #0E1626 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5) !important;
+  border-radius: 9px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 3px 8px rgba(0, 0, 0, 0.45) !important;
+  overflow: hidden !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dept-accordion-card:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 4px 12px rgba(0, 0, 0, 0.55) !important;
+  transform: translateY(-1px);
+}
+
+.dept-accordion-card.active-dept {
+  background: linear-gradient(180deg, #192742 0%, #0F1A2E 100%) !important;
+  border: 1px solid rgba(52, 211, 153, 0.45) !important;
+  border-bottom: 2px solid rgba(5, 150, 105, 0.7) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 14px rgba(16, 185, 129, 0.25), 0 4px 10px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dept-header-btn {
+  width: 100% !important;
+  padding: 8px 10px !important;
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  cursor: pointer !important;
+  outline: none !important;
+}
+
+.dept-core-badge-3d {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%) !important;
+  color: #34D399 !important;
+  border: 1px solid rgba(52, 211, 153, 0.5) !important;
+  border-bottom: 1.5px solid rgba(5, 150, 105, 0.6) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+  font-size: 0.58rem !important;
+  font-weight: 900 !important;
+  padding: 2px 6px !important;
+  border-radius: 5px !important;
+  letter-spacing: 0.04em !important;
+}
+
+.dept-counter-badge-3d {
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 1px 3px rgba(0, 0, 0, 0.35) !important;
+  color: #CBD5E1 !important;
+  font-size: 0.64rem !important;
+  font-weight: 800 !important;
+  padding: 2px 7px !important;
+  border-radius: 8px !important;
+}
