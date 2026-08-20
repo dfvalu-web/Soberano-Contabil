@@ -202,7 +202,40 @@ import { TreasuryDemonstrationView } from './views/TreasuryDemonstrationView.js'
 // Navigation categories and types imported from ./config/navigation-modules
 
 export const App: React.FC = () => {
-  const [currentModuleId, setCurrentModuleId] = useState<string>('office_multi_client_grid');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('soberano_auth_session') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
+    try {
+      const saved = localStorage.getItem('soberano_auth_user');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return PRESET_PROFILES[0];
+  });
+  const [currentModuleId, setCurrentModuleId] = useState<string>('office_integrated_closing_pipeline');
+
+  const handleLoginSuccess = (profile: UserProfile) => {
+    setCurrentUser(profile);
+    setIsAuthenticated(true);
+    if (profile.initialModuleId) {
+      setCurrentModuleId(profile.initialModuleId);
+    }
+    try {
+      localStorage.setItem('soberano_auth_session', 'true');
+      localStorage.setItem('soberano_auth_user', JSON.stringify(profile));
+    } catch {}
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    try {
+      localStorage.removeItem('soberano_auth_session');
+    } catch {}
+  };
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeFilterTab, setActiveFilterTab] = useState<QuickFilterTab>('todos');
 
@@ -315,6 +348,10 @@ export const App: React.FC = () => {
     }
     return { id: 'office_multi_client_grid', label: 'Cockpit Multi-Empresa em Grade', icon: '🚦', file: 'OfficeMultiClientClosingGridView', category: 'Gestão & Produtividade do Escritório' };
   }, [currentModuleId]);
+
+  if (!isAuthenticated) {
+    return <LandingAndLoginPremiumView onLoginSuccess={handleLoginSuccess} />;
+  }
 
   return (
     <div className="app-container">
