@@ -168,7 +168,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
   // Certificate Selection States
   const [selectedCertId, setSelectedCertId] = useState<string>('cert-david');
-  const [certPin, setCertPin] = useState<string>('1234');
+  const [certPin, setCertPin] = useState<string>('');
   const [customCertFile, setCustomCertFile] = useState<string>('');
 
   // UI Status States
@@ -310,8 +310,14 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
   const handleExecuteCertificate = () => {
     setErrorMessage('');
-    setIsAuthenticating(true);
+    setSuccessMessage('');
 
+    if (!certPin.trim()) {
+      setErrorMessage('Por favor, digite a senha PIN do Certificado Digital / Token A3 para autorizar a chave privada.');
+      return;
+    }
+
+    setIsAuthenticating(true);
     const chosenCert = INSTALLED_CERTIFICATES.find(c => c.id === selectedCertId) || INSTALLED_CERTIFICATES[0];
 
     setTimeout(() => {
@@ -332,7 +338,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
         setSuccessMessage(`Certificado "${chosenCert.holderName}" autenticado com sucesso via mTLS ICP-Brasil!`);
         setTimeout(() => onLoginSuccess(chosenCert.associatedProfile), 400);
       }
-    }, 900);
+    }, 1000);
   };
 
   return (
@@ -768,7 +774,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                   cursor: 'pointer'
                 }}
               >
-                🪪 e-CNPJ
+                🔑 Certificado Digital
               </button>
             </div>
 
