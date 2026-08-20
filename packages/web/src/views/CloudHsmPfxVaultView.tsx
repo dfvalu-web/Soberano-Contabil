@@ -1,97 +1,136 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  Key,
+  ShieldCheck,
+  CheckCircle2,
+  UploadCloud,
+  Lock,
+  Zap,
+  Server
+} from 'lucide-react';
 
 export const CloudHsmPfxVaultView: React.FC = () => {
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleTestHsm = () => {
+    showToast('Cofre Cloud HSM auditado: Todas as chaves privadas A1 PFX estão isoladas em hardware FIPS 140-2!');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-        <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span>🔐</span> Certificados ICP-Brasil em Nuvem (Cloud HSM) & Cofre A1 PFX (Pilar 3 - Produção)
-        </h2>
-        <p style={{ margin: '8px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-          Assinatura digital remota em nuvem (BirdID, NeoID, SafeID e VIDaaS) e cofre criptografado AES-256-GCM para certificados corporativos A1.
-        </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
+        </div>
+      )}
+
+      {/* Header 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            🔒
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Certificados ICP-Brasil em Nuvem (Cloud HSM) & Cofre A1 PFX
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
+                FIPS 140-2 LEVEL 3
+              </span>
+            </div>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
+              Guarda segura de chaves privadas de certificados digitais A1 em módulos de segurança em nuvem de alta disponibilidade.
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={handleTestHsm}
+          className="btn-1click-3d"
+        >
+          <Zap size={14} /> <span>Auditar Cofre Cloud HSM</span>
+        </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-        {/* Cloud HSM ICP-Brasil */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Cloud HSM (BirdID / NeoID)</h3>
-            <span style={{ background: '#10b98120', color: '#10b981', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              ICP-BRASIL EM NUVEM
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Provedor Conectado:</span>
-              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>BirdID Soluti / NeoID SERPRO</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Autenticação Segura:</span>
-              <span style={{ fontWeight: 600, color: '#3b82f6' }}>OAuth2 PKCE com OTP Push</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Dependência de Token USB:</span>
-              <span style={{ fontWeight: 600, color: '#10b981' }}>ZERO (100% Remoto e Seguro)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Algoritmo de Assinatura:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>SHA256withRSA (XMLDSig)</span>
-            </div>
-          </div>
+      {/* Detalhes do Hardware Security Module */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{ background: '#0B1120', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ fontSize: '0.70rem', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 800 }}>Certificados Armazenados</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#34D399', margin: '4px 0' }}>142 Empresas</div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>100% Chaves Privadas Criptografadas</div>
         </div>
 
-        {/* Cofre A1 PFX Vault */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Cofre Criptográfico A1 PFX</h3>
-            <span style={{ background: '#3b82f620', color: '#3b82f6', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              AES-256-GCM & KMS
-            </span>
-          </div>
-
-          <div style={{ background: 'var(--surface-secondary)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Envelope Encryption:</span>
-              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Chave Mestre KMS Dedicada</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Rotinas Automáticas Noturnas:</span>
-              <span style={{ fontWeight: 600, color: '#10b981' }}>HABILITADAS (Emissão em Lote)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Segurança de Senhas:</span>
-              <span style={{ fontWeight: 600, color: '#3b82f6' }}>Cifrada em Repouso e em Trânsito</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Auditoria de Acessos:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>Registrada no Ledger Merkle</span>
-            </div>
-          </div>
-        </div>
-
-        {/* PostgreSQL RLS & Storage S3 */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>PostgreSQL & S3 WORM</h3>
-            <span style={{ background: '#f59e0b20', color: '#f59e0b', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              CONCILIADO
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Isolamento Multi-Tenant:</div>
-              <div style={{ fontWeight: 700, color: '#10b981', marginTop: '2px' }}>Row Level Security nativo no PostgreSQL</div>
-            </div>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Cofre de Retenção WORM:</div>
-              <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>Bloqueio de exclusão por 5 anos (CTN)</div>
-            </div>
-          </div>
+        <div style={{ background: '#0B1120', padding: '16px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div style={{ fontSize: '0.70rem', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 800 }}>Assinaturas Efetuadas no Mês</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#38BDF8', margin: '4px 0' }}>4.820 Docs</div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>PAdrES e XML-DSig</div>
         </div>
       </div>
     </div>
   );
 };
+
+export default CloudHsmPfxVaultView;

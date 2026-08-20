@@ -424,52 +424,7 @@ export const App: React.FC = () => {
             </span>
           </div>
 
-          {/* Breadcrumb 3D Interactive Module Switcher Pod */}
-          <div
-            className="control-pod-3d"
-            style={{
-              maxWidth: '360px',
-              padding: '3px 9px',
-              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.75) 100%)',
-              border: '1px solid rgba(52, 211, 153, 0.4)',
-              borderBottom: '2px solid rgba(5, 150, 105, 0.6)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 8px rgba(0, 0, 0, 0.45)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{activeModule.icon}</span>
-            <select
-              value={currentModuleId}
-              onChange={(e) => setCurrentModuleId(e.target.value)}
-              title="Clique para alternar para qualquer módulo do sistema"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#34D399',
-                fontWeight: 800,
-                fontSize: '0.74rem',
-                outline: 'none',
-                cursor: 'pointer',
-                maxWidth: '280px',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                textShadow: '0 0 8px rgba(52, 211, 153, 0.4)'
-              }}
-            >
-              {CATEGORIES.map(dept => (
-                <optgroup key={dept.id} label={`${dept.icon} ${dept.name}`} style={{ background: '#0F172A', color: '#94A3B8', fontWeight: 700 }}>
-                  {dept.modules.map(mod => (
-                    <option key={mod.id} value={mod.id} style={{ background: '#111726', color: '#FFFFFF', fontWeight: 600 }}>
-                      {mod.icon} {mod.name}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </select>
-            <span style={{ color: '#34D399', fontSize: '0.62rem', pointerEvents: 'none', opacity: 0.8 }}>▼</span>
-          </div>
+
         </div>
 
         {/* FLANCO CENTRAL: 3D LUXURY CONTROL PODS */}
@@ -595,17 +550,7 @@ export const App: React.FC = () => {
             <span>🤖</span> {isRightDeckOpen ? 'Copiloto' : 'Copiloto'}
           </button>
 
-          {/* User Profile 3D Capsule */}
-          <div
-            className="control-pod-3d"
-            title={`Usuário Ativo: ${currentUser.name} (${currentUser.roleLabel})`}
-            style={{ padding: '3px 8px', gap: '5px' }}
-          >
-            <span style={{ fontSize: '0.80rem' }}>{currentUser.avatarIcon}</span>
-            <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#FFFFFF', maxWidth: '85px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {currentUser.name}
-            </span>
-          </div>
+
 
           {/* Botão de Deslogar / Sair 3D */}
           <button

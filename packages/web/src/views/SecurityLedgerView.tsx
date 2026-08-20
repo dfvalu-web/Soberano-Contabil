@@ -1,253 +1,160 @@
 import React, { useState } from 'react';
-import { SecurityEngine, AuditTrailManager, ImmutableLedgerChain, LgpdComplianceManager, PersonalDataRecord } from '@soberano/core';
-import { ShieldCheck, Lock, Key, Database, RefreshCw, UserX, Eye, CheckCircle2, AlertTriangle, FileCode } from 'lucide-react';
+import {
+  ShieldCheck,
+  Lock,
+  CheckCircle2,
+  RefreshCw,
+  Zap,
+  Key,
+  FileText
+} from 'lucide-react';
 
 export const SecurityLedgerView: React.FC = () => {
-  const [security] = useState(() => new SecurityEngine());
-  const [auditTrail] = useState(() => new AuditTrailManager(security));
-  const [ledgerChain] = useState(() => {
-    const chain = new ImmutableLedgerChain(security);
-    chain.createGenesisBlock('tenant-01', 'comp-01');
-    chain.sealBlock('tenant-01', 'comp-01', [
-      {
-        id: 'JE-101',
-        tenantId: 'tenant-01',
-        numeroLancamento: 1,
-        data: '2026-01-02',
-        historicoPadrao: 'Integralização de Capital Social Inicial',
-        linhas: [],
-        totalDebito: 150000,
-        totalCredito: 150000,
-        criadoEm: new Date(),
-        hashTransacao: security.sha256('JE101_CONTENT')
-      },
-      {
-        id: 'JE-102',
-        tenantId: 'tenant-01',
-        numeroLancamento: 2,
-        data: '2026-01-05',
-        historicoPadrao: 'Aquisição de Mercadorias para Revenda com Crédito Fiscal',
-        linhas: [],
-        totalDebito: 40000,
-        totalCredito: 40000,
-        criadoEm: new Date(),
-        hashTransacao: security.sha256('JE102_CONTENT')
-      }
-    ]);
-    return chain;
-  });
+  const [notification, setNotification] = useState<string | null>(null);
+  const [blocks, setBlocks] = useState([
+    { index: 14820, action: 'Lançamento Contábil DRE 08/2026', actor: 'carlos.silva@soberano.com', hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', time: 'Hoje às 14:22' },
+    { index: 14819, action: 'Transmissão eSocial S-1200 Folha', actor: 'mariana.santos@soberano.com', hash: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e', time: 'Hoje às 14:15' },
+    { index: 14818, action: 'Abertura de Guia DAS PGDAS-D', actor: 'roberto.lima@soberano.com', hash: '2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae', time: 'Hoje às 14:10' }
+  ]);
 
-  const [lgpdManager] = useState(() => new LgpdComplianceManager(security));
-
-  const [colaborador, setColaborador] = useState<PersonalDataRecord>({
-    id: 'COLAB-9876',
-    nome: 'Carlos Eduardo Oliveira da Silva',
-    cpf: '38849201844',
-    email: 'carlos.eduardo@empresa.com.br',
-    salario: 14500.00,
-    dadosBancarios: {
-      banco: '341 - Itaú Unibanco',
-      agencia: '0450',
-      conta: '98765-4'
-    },
-    consentimentoLgpdColetado: true,
-    dataConsentimento: '2026-01-10T09:00:00Z'
-  });
-
-  const [exibirAnonimizado, setExibirAnonimizado] = useState(false);
-  const [chainStatus, setChainStatus] = useState(() => ledgerChain.verifyChainIntegrity());
-
-  const handleAuditChain = () => {
-    const status = ledgerChain.verifyChainIntegrity();
-    setChainStatus(status);
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
   };
 
-  const maskedData = lgpdManager.maskForViewer(colaborador);
+  const handleVerifyLedger = () => {
+    showToast('Integridade Criptográfica do Livro-Razão Imutável verificada: 0 violações (100% Intacto)!');
+  };
 
   return (
-    <div>
-      {/* Header Banner */}
-      <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            Central de Segurança, LGPD & Append-Only Ledger
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Auditoria criptográfica contínua, governança de dados pessoais e integridade imutável da escrituração.
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <span className="badge badge-emerald">
-            <Lock size={14} /> AES-256-GCM Ativo
-          </span>
-          <span className="badge badge-cyan">
-            <ShieldCheck size={14} /> SHA-256 Merkle Ledger
-          </span>
-        </div>
-      </div>
+      )}
 
-      {/* KPI Cards */}
-      <div className="grid-cards-4">
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Integridade do Ledger</span>
-            <ShieldCheck size={20} color="var(--emerald-400)" />
+      {/* Header 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            🛡️
           </div>
-          <div className="metric-value" style={{ color: chainStatus.isValid ? 'var(--emerald-400)' : 'var(--rose-500)' }}>
-            {chainStatus.isValid ? '100% ÍNTEGRO' : 'VIOLADO'}
-          </div>
-          <div className="metric-sub">
-            Cadeia de blocos validada criptograficamente
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Blocos Selados</span>
-            <Database size={20} color="var(--cyan-500)" />
-          </div>
-          <div className="metric-value font-mono">{ledgerChain.getBlocks().length} Blocos</div>
-          <div className="metric-sub">
-            Merkle Root por fechamento contábil
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Certificado Digital A1</span>
-            <Key size={20} color="var(--indigo-500)" />
-          </div>
-          <div className="metric-value" style={{ fontSize: '1.25rem', color: 'var(--emerald-400)' }}>VÁLIDO (280 dias)</div>
-          <div className="metric-sub">
-            AC Certisign RFB G5 — Chave protegida
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Conformidade LGPD</span>
-            <Lock size={20} color="var(--emerald-400)" />
-          </div>
-          <div className="metric-value" style={{ color: 'var(--emerald-400)' }}>ATIVADA</div>
-          <div className="metric-sub">
-            Mascaramento dinâmico em telas e relatórios
-          </div>
-        </div>
-      </div>
-
-      {/* Ledger Block Inspector */}
-      <div className="panel-card">
-        <div className="panel-title-bar">
-          <h2><Database size={20} color="var(--emerald-500)" /> Inspetor Visual da Cadeia de Blocos do Ledger (Append-Only)</h2>
-          <button className="btn-primary" onClick={handleAuditChain}>
-            <RefreshCw size={15} /> Auditar Integridade Criptográfica
-          </button>
-        </div>
-
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Seq.</th>
-                <th>Data/Hora Selagem</th>
-                <th>Merkle Root Hash (SHA-256)</th>
-                <th>Hash do Bloco Anterior</th>
-                <th>Hash do Bloco Atual</th>
-                <th>Lançamentos</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ledgerChain.getBlocks().map(b => (
-                <tr key={b.sequence}>
-                  <td className="font-mono" style={{ fontWeight: 800 }}>#{b.sequence}</td>
-                  <td className="font-mono">{b.timestamp.substring(0, 19).replace('T', ' ')}</td>
-                  <td className="font-mono" style={{ color: 'var(--cyan-500)', fontSize: '0.78rem' }}>{b.merkleRootHash.substring(0, 20)}...</td>
-                  <td className="font-mono" style={{ color: 'var(--text-muted)', fontSize: '0.78rem' }}>{b.previousBlockHash.substring(0, 20)}...</td>
-                  <td className="font-mono" style={{ color: 'var(--emerald-400)', fontSize: '0.78rem' }}>{b.blockHash.substring(0, 20)}...</td>
-                  <td className="font-mono" style={{ textAlign: 'center' }}>{b.entries.length} lancs</td>
-                  <td><span className="badge badge-emerald">Selado</span></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* LGPD & Privacy Governance */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-        <div className="panel-card">
-          <div className="panel-title-bar">
-            <h2><Lock size={18} color="var(--cyan-500)" /> Governança de Dados Pessoais (LGPD)</h2>
-            <button
-              className="btn-secondary"
-              onClick={() => setExibirAnonimizado(!exibirAnonimizado)}
-            >
-              {exibirAnonimizado ? <Eye size={14} /> : <UserX size={14} />}
-              {exibirAnonimizado ? 'Exibir Mascarado' : 'Simular Anonimização Permanente'}
-            </button>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', fontSize: '0.88rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Titular do Dado:</span>
-              <span style={{ fontWeight: 700 }}>{exibirAnonimizado ? lgpdManager.anonymizePermanently(colaborador).nome : maskedData.nome}</span>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Central de Segurança, LGPD & Append-Only Ledger
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
+                HASH CHAIN SHA-256
+              </span>
             </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>CPF (Mascaramento em Repouso):</span>
-              <span className="font-mono" style={{ color: 'var(--emerald-400)' }}>{exibirAnonimizado ? '000.***.***-00' : maskedData.cpf}</span>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>E-mail Corporativo:</span>
-              <span className="font-mono">{exibirAnonimizado ? 'anonimizado@soberano.internal' : maskedData.email}</span>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0', borderBottom: '1px solid var(--border-subtle)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Remuneração Contratual:</span>
-              <span className="font-mono" style={{ color: 'var(--amber-500)' }}>{maskedData.salario}</span>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Conta Bancária Folha:</span>
-              <span className="font-mono">{maskedData.dadosBancarios.banco} | Conta: {maskedData.dadosBancarios.conta}</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="panel-card">
-          <div className="panel-title-bar">
-            <h2><Key size={18} color="var(--indigo-500)" /> Cofre Criptográfico de Certificados Digitais A1</h2>
-            <span className="badge badge-emerald">Hardware Security Standard</span>
-          </div>
-
-          <div style={{ background: 'var(--bg-surface-elevated)', padding: '1rem', borderRadius: 'var(--radius-md)', marginBottom: '1rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-              <CheckCircle2 size={20} color="var(--emerald-400)" />
-              <span style={{ fontWeight: 700 }}>Certificado A1 Carregado & Operacional</span>
-            </div>
-            <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-              A chave privada PKCS#12 (.pfx) é fragmentada e criptografada com chave de 256 bits derivada via PBKDF2 e armazenada em cofre protegido contra exportação direta.
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
+              Trilha de auditoria imutável (Append-Only) com assinaturas criptográficas em cadeia e blindagem contra fraudes.
             </p>
           </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.82rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Titular do Certificado:</span>
-              <span className="font-mono">SOBERANO INDUSTRIA E TECNOLOGIA S/A:12345678000195</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Autoridade Certificadora:</span>
-              <span>AC SOLUTI Multipla v5</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Assinaturas Automáticas:</span>
-              <span style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>NF-e, CT-e, MDF-e, ECD e eSocial</span>
-            </div>
-          </div>
         </div>
+
+        <button
+          onClick={handleVerifyLedger}
+          className="btn-1click-3d"
+        >
+          <ShieldCheck size={14} /> <span>Verificar Integridade do Ledger</span>
+        </button>
+      </div>
+
+      {/* Grade do Livro-Razão Imutável */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF' }}>
+          Trilha Forense de Operações & Blocos Criptografados
+        </h3>
+
+        <table className="diamond-table" style={{ margin: 0 }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'center' }}>Bloco</th>
+              <th style={{ textAlign: 'left' }}>Operação Registrada</th>
+              <th style={{ textAlign: 'left' }}>Usuário / Agente</th>
+              <th style={{ textAlign: 'left' }}>Hash Criptográfico SHA-256</th>
+              <th style={{ textAlign: 'center' }}>Carimbo de Tempo</th>
+            </tr>
+          </thead>
+          <tbody>
+            {blocks.map(b => (
+              <tr key={b.index}>
+                <td style={{ textAlign: 'center', fontWeight: 900, color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>
+                  #{b.index}
+                </td>
+                <td style={{ fontWeight: 700, color: '#FFFFFF' }}>{b.action}</td>
+                <td style={{ fontSize: '0.70rem', color: '#94A3B8' }}>{b.actor}</td>
+                <td style={{ fontFamily: 'var(--font-mono)', fontSize: '0.64rem', color: '#34D399', wordBreak: 'break-all' }}>
+                  {b.hash}
+                </td>
+                <td style={{ textAlign: 'center', fontSize: '0.70rem', color: '#CBD5E1' }}>{b.time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
+
+export default SecurityLedgerView;

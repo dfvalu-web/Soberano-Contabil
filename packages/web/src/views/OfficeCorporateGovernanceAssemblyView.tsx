@@ -1,108 +1,184 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  FileText,
+  CheckCircle2,
+  Users,
+  Building2,
+  Printer,
+  Zap,
+  ShieldCheck
+} from 'lucide-react';
 
 export const OfficeCorporateGovernanceAssemblyView: React.FC = () => {
+  const [notification, setNotification] = useState<string | null>(null);
+  const [atas, setAtas] = useState([
+    { id: 'ATA-2026-01', tipo: 'Reunião de Sócios', pauta: 'Aprovação de Contas do Exercício 2025 & Distribuição de Dividendos Isentos', data: '15/04/2026', status: 'REGISTRADA_JUCESP' },
+    { id: 'ATA-2026-02', tipo: 'Assembleia Geral Extraordinária', pauta: 'Aumento de Capital Social com Incorporação de Lucros Acumulados', data: '18/08/2026', status: 'EM_ASSINATURA' }
+  ]);
+
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleGerarNovaAta = () => {
+    const nova = {
+      id: `ATA-2026-0${atas.length + 1}`,
+      tipo: 'Reunião de Sócios Extraordinária',
+      pauta: 'Deliberação sobre Expansão de Filial e Aquisição de Ativos',
+      data: 'Hoje',
+      status: 'EM_ASSINATURA'
+    };
+    setAtas([nova, ...atas]);
+    showToast('Nova Ata Societária gerada e enviada para coleta de assinaturas digitais ICP-Brasil!');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>🏛️</span> Governança Societária, Assembleias & Livros Digitais
-          </h2>
-          <p style={{ margin: '6px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Reuniões de sócios e assembleias digitais (DREI 79/81/20), atas de aprovação de contas e livros societários eletrônicos autenticados (DREI 82/21).
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <span style={{ background: '#10b98120', color: '#10b981', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 700 }}>
-            IN DREI 79/20, 81/20 & 82/21
-          </span>
+      )}
+
+      {/* Header 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            🏛️
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Governança Societária, Assembleias & Livros Digitais
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
+                LIVROS DIGITAIS DREI
+              </span>
+            </div>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
+              Redação de atas de reuniões de sócios, assembleias gerais, livros societários e registro digital com assinatura ICP-Brasil.
+            </p>
+          </div>
         </div>
+
+        <button
+          onClick={handleGerarNovaAta}
+          className="btn-1click-3d"
+        >
+          <Zap size={14} /> <span>Redigir Nova Ata de Reunião</span>
+        </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-        {/* Assembleias e Reuniões de Sócios Digitais */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Deliberações Societárias</h3>
-            <span style={{ background: '#3b82f620', color: '#3b82f6', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              AGO / REUNIÃO ANUAL
-            </span>
-          </div>
+      {/* Grade de Atas e Livros */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF' }}>
+          Livro Registro de Atas das Reuniões de Sócios
+        </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Quórum de Instalação:</span>
-              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>100% do Capital Social Presente</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Aprovação de Contas da Administração:</span>
-              <span style={{ fontWeight: 600, color: '#10b981' }}>100% Unânime Favorável</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Destinação do Lucro & Dividendos:</span>
-              <span style={{ fontWeight: 600, color: '#3b82f6' }}>Homologado conforme Balanço DRE</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Status da Ata:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>ASSINADA DIGITALMENTE (ICP-BRASIL)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Livros Societários Eletrônicos (DREI 82/21) */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Livros Societários Digitais</h3>
-            <span style={{ background: '#10b98120', color: '#10b981', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              ENCADERNAÇÃO ELETRÔNICA
-            </span>
-          </div>
-
-          <div style={{ background: 'var(--surface-secondary)', padding: '16px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Livro de Registro de Quotas/Ações:</span>
-              <span style={{ fontWeight: 600, color: '#10b981' }}>Livro nº 01 Atualizado</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Livro de Transferência de Quotas/Ações:</span>
-              <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Sem alterações no período</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Livro de Atas das Reuniões de Sócios:</span>
-              <span style={{ fontWeight: 600, color: '#3b82f6' }}>Termos de Abertura/Encerramento OK</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Protocolo na Junta Comercial:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>AUTENTICADO COM HASH DIGITAL</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Publicidade Legal & Compliance */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Compliance Societário</h3>
-            <span style={{ background: '#f59e0b20', color: '#f59e0b', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              PROTEÇÃO AOS SÓCIOS
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Exoneração de Responsabilidade dos Administradores:</div>
-              <div style={{ fontWeight: 700, color: '#10b981', marginTop: '2px' }}>Aprovação formal das contas quita a gestão do exercício</div>
-            </div>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Publicidade Legal Digital:</div>
-              <div style={{ fontWeight: 700, color: '#3b82f6', marginTop: '2px' }}>Dispensa de jornais de grande circulação para empresas fechadas</div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Segurança Jurídica:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>BLINDAGEM SOCIETÁRIA TOTAL</span>
-            </div>
-          </div>
-        </div>
+        <table className="diamond-table" style={{ margin: 0 }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Identificação / Tipo</th>
+              <th style={{ textAlign: 'left' }}>Pauta Deliberativa</th>
+              <th style={{ textAlign: 'center' }}>Data da Sessão</th>
+              <th style={{ textAlign: 'center' }}>Status de Registro</th>
+              <th style={{ textAlign: 'center' }}>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {atas.map(ata => (
+              <tr key={ata.id}>
+                <td style={{ fontWeight: 700, color: '#FFFFFF' }}>
+                  <div>{ata.tipo}</div>
+                  <div style={{ fontSize: '0.68rem', color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>{ata.id}</div>
+                </td>
+                <td style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>{ata.pauta}</td>
+                <td style={{ textAlign: 'center', color: '#94A3B8', fontSize: '0.72rem' }}>{ata.data}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <span style={{
+                    fontSize: '0.62rem',
+                    fontWeight: 800,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: ata.status === 'REGISTRADA_JUCESP' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                    color: ata.status === 'REGISTRADA_JUCESP' ? '#34D399' : '#FBBF24'
+                  }}>
+                    {ata.status === 'REGISTRADA_JUCESP' ? '✓ Registrada na Junta' : '✍️ Em Assinatura'}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <button
+                    onClick={() => showToast(`Ata ${ata.id} aberta para conferência e assinatura!`)}
+                    style={{ background: '#0B1120', border: '1px solid rgba(56,189,248,0.4)', color: '#38BDF8', padding: '3px 8px', borderRadius: '4px', fontSize: '0.68rem', cursor: 'pointer' }}
+                  >
+                    Visualizar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
+
+export default OfficeCorporateGovernanceAssemblyView;

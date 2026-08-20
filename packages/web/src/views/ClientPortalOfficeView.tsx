@@ -1,108 +1,196 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {
+  Globe,
+  FileText,
+  Download,
+  UploadCloud,
+  CheckCircle2,
+  Clock,
+  Send,
+  Building2,
+  ShieldCheck
+} from 'lucide-react';
 
 export const ClientPortalOfficeView: React.FC = () => {
+  const [notification, setNotification] = useState<string | null>(null);
+  const [requests, setRequests] = useState([
+    { id: 1, type: 'Certidão CND Municipal', date: '18/08/2026', status: 'ENTREGUE', file: 'CND_PMSP_2026.pdf' },
+    { id: 2, type: 'Holerite 08/2026 de Colaborador', date: '19/08/2026', status: 'ENTREGUE', file: 'Holerite_CarlosSilva.pdf' },
+    { id: 3, type: 'Segunda Via Guia DAS Simples', date: '20/08/2026', status: 'PROCESSANDO', file: 'Guia_DAS_082026.pdf' }
+  ]);
+
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleNewRequest = () => {
+    const newReq = {
+      id: requests.length + 1,
+      type: 'Nova Solicitação de Documento Contábil',
+      date: 'Hoje',
+      status: 'PROCESSANDO',
+      file: 'Documento_Gerado.pdf'
+    };
+    setRequests([newReq, ...requests]);
+    showToast('Solicitação recebida pelo escritório com protocolo SLA de atendimento!');
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: '1.4rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>📲</span> Portal do Cliente do Escritório (B2B)
-          </h2>
-          <p style={{ margin: '6px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Canal direto de comunicação, entrega protocolada de guias (DAS, DARF, Folha) e recebimento de demandas de RH e extratos bancários.
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <span style={{ background: '#10b98120', color: '#10b981', padding: '6px 12px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 700 }}>
-            ENTREGA 100% PROTOCOLADA
-          </span>
+      )}
+
+      {/* Header 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            🌐
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Portal do Cliente do Escritório (B2B)
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
+                AUTOATENDIMENTO DIGITAL
+              </span>
+            </div>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
+              Ambiente de autoatendimento para clientes: download de guias, envio de documentos e chamados operacionais.
+            </p>
+          </div>
         </div>
+
+        <button
+          onClick={handleNewRequest}
+          className="btn-1click-3d"
+        >
+          <Send size={14} /> <span>Abrir Chamado / Solicitação</span>
+        </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-        {/* Painel de Guias e Documentos Disponibilizados */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Guias do Mês (Cliente)</h3>
-            <span style={{ background: '#3b82f620', color: '#3b82f6', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              DISPONÍVEL PARA DOWNLOAD
-            </span>
-          </div>
+      {/* Grade de Documentos e Solicitações */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF' }}>
+          Central de Downloads & Solicitações do Cliente
+        </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ background: 'var(--surface-secondary)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Guia DAS - Simples Nacional</div>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>Vencimento: 20/08/2026</div>
-              </div>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>R$ 14.850,20</span>
-            </div>
-
-            <div style={{ background: 'var(--surface-secondary)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ fontWeight: 700, color: 'var(--text-primary)' }}>DAE FGTS Digital / DCTFWeb</div>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '0.8rem' }}>Vencimento: 15/08/2026</div>
-              </div>
-              <span style={{ fontWeight: 700, color: '#3b82f6' }}>R$ 8.920,40</span>
-            </div>
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Protocolo Jurídico de Envio:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>CONFIRMADO POR HASH</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Central de Solicitações do Cliente */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Solicitações do Cliente</h3>
-            <span style={{ background: '#8b5cf620', color: '#8b5cf6', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              TRIAGEM INTELIGENTE
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Admissão de Colaborador (eSocial):</div>
-              <div style={{ fontWeight: 700, color: '#10b981', marginTop: '2px' }}>Validação automática de CPF e CBO</div>
-            </div>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Envio de Extrato Bancário (OFX):</div>
-              <div style={{ fontWeight: 700, color: '#3b82f6', marginTop: '2px' }}>Importação direta para a conciliação contábil</div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Tempo Médio de Resposta:</span>
-              <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Até 4 horas úteis</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Alertas Automáticos WhatsApp & E-mail */}
-        <div style={{ background: 'var(--surface-primary)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)' }}>Notificações Push / WhatsApp</h3>
-            <span style={{ background: '#f59e0b20', color: '#f59e0b', padding: '4px 10px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600 }}>
-              DISPAROS AUTOMÁTICOS
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem' }}>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Lembrete de Vencimento de Guias:</div>
-              <div style={{ fontWeight: 700, color: '#10b981', marginTop: '2px' }}>Avisos automáticos em D-5, D-2 e no dia do vencimento</div>
-            </div>
-            <div style={{ background: 'var(--surface-secondary)', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-              <div style={{ color: 'var(--text-secondary)' }}>Código PIX Copia e Cola:</div>
-              <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginTop: '2px' }}>Pagamento instantâneo de DAS e FGTS no WhatsApp</div>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px solid var(--border-color)' }}>
-              <span style={{ color: 'var(--text-secondary)' }}>Redução de Inadimplência:</span>
-              <span style={{ fontWeight: 700, color: '#10b981' }}>98% DE EFICIÊNCIA</span>
-            </div>
-          </div>
-        </div>
+        <table className="diamond-table" style={{ margin: 0 }}>
+          <thead>
+            <tr>
+              <th style={{ textAlign: 'left' }}>Tipo de Solicitação / Documento</th>
+              <th style={{ textAlign: 'center' }}>Data</th>
+              <th style={{ textAlign: 'center' }}>Arquivo / Formato</th>
+              <th style={{ textAlign: 'center' }}>Status</th>
+              <th style={{ textAlign: 'center' }}>Download</th>
+            </tr>
+          </thead>
+          <tbody>
+            {requests.map(req => (
+              <tr key={req.id}>
+                <td style={{ fontWeight: 700, color: '#FFFFFF' }}>{req.type}</td>
+                <td style={{ textAlign: 'center', color: '#94A3B8', fontSize: '0.72rem' }}>{req.date}</td>
+                <td style={{ textAlign: 'center', color: '#38BDF8', fontSize: '0.72rem', fontFamily: 'var(--font-mono)' }}>{req.file}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <span style={{
+                    fontSize: '0.62rem',
+                    fontWeight: 800,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: req.status === 'ENTREGUE' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                    color: req.status === 'ENTREGUE' ? '#34D399' : '#FBBF24'
+                  }}>
+                    {req.status === 'ENTREGUE' ? '✓ Disponível' : '⏳ Em Produção'}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <button
+                    onClick={() => showToast(`Download de ${req.file} iniciado!`)}
+                    style={{
+                      background: 'linear-gradient(180deg, #18263D 0%, #0F172A 100%)',
+                      border: '1px solid rgba(56, 189, 248, 0.4)',
+                      color: '#38BDF8',
+                      padding: '4px 10px',
+                      borderRadius: '4px',
+                      fontSize: '0.70rem',
+                      fontWeight: 800,
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <Download size={12} /> <span>Baixar</span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 };
+
+export default ClientPortalOfficeView;

@@ -1,309 +1,307 @@
 import React, { useState } from 'react';
 import {
-  Workflow,
+  Layers,
+  ArrowRight,
   CheckCircle2,
   Clock,
-  AlertTriangle,
-  FileSpreadsheet,
-  ArrowRight,
+  Printer,
+  Sparkles,
   ShieldCheck,
   Zap,
-  Printer,
-  ChevronRight,
   Building2,
   Calendar,
-  Lock,
-  Layers,
-  Sparkles
+  DollarSign,
+  TrendingUp,
+  FileCheck,
+  RefreshCw,
+  Play
 } from 'lucide-react';
-import { CompanyTenant } from '../state/office-store';
+import { CompanyTenant } from '../state/office-store.js';
 
-interface StageTask {
-  id: string;
-  title: string;
-  department: 'Fiscal' | 'DP' | 'Tributário' | 'Contábil' | 'Diretoria';
-  status: 'CONCLUIDO' | 'EM_ANDAMENTO' | 'PENDENTE';
-  responsible: string;
-  itemsCount: number;
-  criticality: 'ALTA' | 'MEDIA' | 'BAIXA';
-  legalRef: string;
+interface OfficeIntegratedClosingPipelineViewProps {
+  tenant?: CompanyTenant;
 }
 
-export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTenant }> = ({ tenant }) => {
-  const [activeStage, setActiveStage] = useState<number>(3); // 1 to 5
+export const OfficeIntegratedClosingPipelineView: React.FC<OfficeIntegratedClosingPipelineViewProps> = ({ tenant }) => {
+  const [currentStep, setCurrentStep] = useState<number>(3);
   const [selectedCompetencia, setSelectedCompetencia] = useState<string>('08/2026');
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [showA4Dossier, setShowA4Dossier] = useState<boolean>(false);
+  const [notification, setNotification] = useState<string | null>(null);
 
-  const stages = [
+  const [stages, setStages] = useState([
     {
-      step: 1,
-      name: 'Fiscal & DFe',
-      icon: '💰',
-      subtitle: 'Captura DFe, EFD ICMS/IPI & PIS/COFINS',
+      id: 1,
+      name: 'Etapa 1: Fiscal & DFe',
+      desc: 'Captura DF-e, EFD ICMS/IPI & PIS/COFINS',
+      sla: '4.5h',
       status: 'CONCLUIDO',
-      progress: 100,
-      slaHours: '4.5h'
+      progress: 100
     },
     {
-      step: 2,
-      name: 'Folha DP & eSocial',
-      icon: '👥',
-      subtitle: 'Apuração CLT, S-1200 & FGTS Digital',
+      id: 2,
+      name: 'Etapa 2: Folha DP & eSocial',
+      desc: 'Apuração CLT, S-1200 & FGTS Digital',
+      sla: '3.2h',
       status: 'CONCLUIDO',
-      progress: 100,
-      slaHours: '3.2h'
+      progress: 100
     },
     {
-      step: 3,
-      name: 'DCTFWeb & Guias',
-      icon: '📑',
-      subtitle: 'Fechamento DCTFWeb & DARFs Previdenciários',
+      id: 3,
+      name: 'Etapa 3: DCTFWeb & Guias',
+      desc: 'Fechamento DCTFWeb & DARFs Previdenciários',
+      sla: '1.8h',
       status: 'EM_ANDAMENTO',
-      progress: 75,
-      slaHours: '1.8h'
+      progress: 75
     },
     {
-      step: 4,
-      name: 'Contabilidade IFRS',
-      icon: '📚',
-      subtitle: 'Partidas Dobradas, Razão & ARE CPC 00',
+      id: 4,
+      name: 'Etapa 4: Contabilidade IFRS',
+      desc: 'Partidas Dobradas, Razão & ARE CPC 00',
+      sla: 'Estimado 2.0h',
       status: 'PENDENTE',
-      progress: 0,
-      slaHours: 'Estimado 2.0h'
+      progress: 0
     },
     {
-      step: 5,
-      name: 'Dossiê & Entrega',
-      icon: '🏆',
-      subtitle: 'Balanço, DRE & 3 Assinaturas Formais',
+      id: 5,
+      name: 'Etapa 5: Dossiê & Entrega',
+      desc: 'Balanço, DRE & 3 Assinaturas Formais',
+      sla: 'Estimado 1.0h',
       status: 'PENDENTE',
-      progress: 0,
-      slaHours: 'Estimado 1.0h'
+      progress: 0
     }
-  ];
+  ]);
 
-  const tasks: StageTask[] = [
-    { id: 'T1', title: 'Validação de NF-e/NFC-e de Entrada e Saída (100% conciliadas)', department: 'Fiscal', status: 'CONCLUIDO', responsible: 'Robô Fiscal DFe', itemsCount: 482, criticality: 'ALTA', legalRef: 'Ajuste SINIEF 07/05' },
-    { id: 'T2', title: 'Segregação Monofásica PIS/COFINS e Alíquota Zero', department: 'Fiscal', status: 'CONCLUIDO', responsible: 'Auditor Tributário', itemsCount: 64, criticality: 'ALTA', legalRef: 'Lei 10.147/00' },
-    { id: 'T3', title: 'Fechamento de Folha de Pagamento CLT & Pró-labore', department: 'DP', status: 'CONCLUIDO', responsible: 'Especialista DP', itemsCount: 38, criticality: 'ALTA', legalRef: 'CLT Art. 457' },
-    { id: 'T4', title: 'Transmissão eSocial Eventos Periódicos S-1200 e S-1210', department: 'DP', status: 'CONCLUIDO', responsible: 'Gateway eSocial', itemsCount: 38, criticality: 'ALTA', legalRef: 'Manual MOS v.S-1.3' },
-    { id: 'T5', title: 'Transmissão DCTFWeb e Geração de DARF Previdenciário Único', department: 'Tributário', status: 'EM_ANDAMENTO', responsible: 'Tributário Gov', itemsCount: 1, criticality: 'ALTA', legalRef: 'IN RFB 2.005/21' },
-    { id: 'T6', title: 'Emissão de Guias com QR Code Pix e Envio Automático ao Cliente', department: 'Tributário', status: 'PENDENTE', responsible: 'Disparo em Lote', itemsCount: 4, criticality: 'MEDIA', legalRef: 'Res. CGSN 140/18' },
-    { id: 'T7', title: 'Integração Contábil Automática de Folha, Faturamento e Extratos', department: 'Contabil', status: 'PENDENTE', responsible: 'Motor IFRS 1-Click', itemsCount: 620, criticality: 'ALTA', legalRef: 'NBC TG Estrutura Conceitual' },
-    { id: 'T8', title: 'Apuração do Resultado do Exercício (ARE) & Balanço Patrimonial', department: 'Contabil', status: 'PENDENTE', responsible: 'Contador Responsável', itemsCount: 1, criticality: 'ALTA', legalRef: 'CPC 26 (R1)' }
-  ];
+  const [tasks, setTasks] = useState([
+    { id: 'T1', title: 'Validação de NF-e/NFC-e de Entrada e Saída (100% conciliadas)', department: 'Fiscal', legalRef: 'Ajuste SINIEF 07/05', itemsCount: 482, responsible: 'Robô Fiscal DF-e', status: 'CONCLUIDO' },
+    { id: 'T2', title: 'Segregação de Monofásicos PIS/COFINS & ICMS-ST Farmácia', department: 'Fiscal', legalRef: 'Lei 10.147/00', itemsCount: 38, responsible: 'Auditor Tributário', status: 'CONCLUIDO' },
+    { id: 'T3', title: 'Fechamento de Folha de Pagamento CLT & Pró-labore', department: 'DP', legalRef: 'CLT Art. 457', itemsCount: 38, responsible: 'Especialista DP', status: 'CONCLUIDO' },
+    { id: 'T4', title: 'Transmissão eSocial S-1200 / S-1210 e Emissão FGTS Digital', department: 'DP', legalRef: 'Manual MOS v.S-1.3', itemsCount: 38, responsible: 'Gateway eSocial', status: 'CONCLUIDO' },
+    { id: 'T5', title: 'Transmissão DCTFWeb e Geração de DARF Previdenciário Único', department: 'Tributário', legalRef: 'IN RFB 2.005/21', itemsCount: 1, responsible: 'Tributário Gov', status: 'EM_ANDAMENTO' },
+    { id: 'T6', title: 'Emissão de Guias com Pix Copia e Cola & Disparo em Lote', department: 'Tributário', legalRef: 'Res. CGSN 140/18', itemsCount: 2, responsible: 'Disparo em Lote', status: 'PENDENTE' },
+    { id: 'T7', title: 'Integração Contábil Automática de Folha, Faturamento e Extratos', department: 'Contabil', legalRef: 'NBC TG Estrutura Conceitual', itemsCount: 620, responsible: 'Motor IFRS 1-Click', status: 'PENDENTE' },
+    { id: 'T8', title: 'Apuração do Resultado do Exercício (ARE) & Balanço Patrimonial', department: 'Contabil', legalRef: 'CPC 26 (R1)', itemsCount: 1, responsible: 'Contador Responsável', status: 'PENDENTE' }
+  ]);
 
-  const handleAdvancePipeline = () => {
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      if (activeStage < 5) {
-        setActiveStage(prev => prev + 1);
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleToggleTaskStatus = (id: string) => {
+    setTasks(prev => prev.map(t => {
+      if (t.id === id) {
+        const nextStatus = t.status === 'CONCLUIDO' ? 'PENDENTE' : 'CONCLUIDO';
+        return { ...t, status: nextStatus };
       }
-    }, 900);
+      return t;
+    }));
+    showToast('Status da tarefa atualizado com recálculo determinístico do pipeline!');
+  };
+
+  const handleAdvanceStep = () => {
+    if (currentStep < 5) {
+      const next = currentStep + 1;
+      setCurrentStep(next);
+      setStages(prev => prev.map(s => {
+        if (s.id < next) return { ...s, status: 'CONCLUIDO', progress: 100 };
+        if (s.id === next) return { ...s, status: 'EM_ANDAMENTO', progress: 50 };
+        return s;
+      }));
+      showToast(`Esteira avançada com sucesso para a Etapa ${next}!`);
+    } else {
+      showToast('O ciclo de encerramento já atingiu a Etapa 5 (Dossiê & Entrega Final)!');
+    }
   };
 
   return (
-    <div className="pipeline-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      
-      {/* 1. Header Executivo 3D */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, #131E35 0%, #0B1120 100%)',
-          border: '1px solid rgba(16, 185, 129, 0.35)',
-          borderRadius: '12px',
-          padding: '16px 20px',
-          boxShadow: '0 6px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {/* Toast Notification */}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '12px'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div
-            style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '10px',
-              background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 0 16px rgba(16, 185, 129, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.8)',
-              color: '#070B12',
-              fontWeight: 900
-            }}
-          >
-            <Workflow size={22} />
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
+        </div>
+      )}
+
+      {/* Header Executivo 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            🚀
           </div>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <h2 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
                 Esteira de Fechamento Integrada (Pipeline Fiscal ➔ DP ➔ Contábil)
-              </h2>
-              <span
-                style={{
-                  background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)',
-                  color: '#34D399',
-                  border: '1px solid rgba(52, 211, 153, 0.5)',
-                  padding: '2px 8px',
-                  borderRadius: '5px',
-                  fontSize: '0.62rem',
-                  fontWeight: 900,
-                  boxShadow: '0 0 10px rgba(16, 185, 129, 0.3)'
-                }}
-              >
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
                 DIAMOND MASTER
               </span>
             </div>
-            <p style={{ fontSize: '0.74rem', color: '#94A3B8', margin: '3px 0 0 0' }}>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
               Orquestração determinística em linha do tempo com sincronização automática e quitação formal de obrigações.
             </p>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Botões de Ação de Topo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <button
-            onClick={() => setShowA4Dossier(prev => !prev)}
+            onClick={() => setShowA4Dossier(!showA4Dossier)}
             style={{
-              background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
+              background: '#0E172A',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#FFFFFF',
-              padding: '6px 14px',
+              padding: '8px 14px',
               borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '0.76rem',
               fontWeight: 800,
+              fontSize: '0.78rem',
+              cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.35)'
+              gap: '6px'
             }}
           >
-            <Printer size={14} />
-            {showA4Dossier ? 'Ocultar Dossiê A4' : 'Visualizar Dossiê A4'}
+            <Printer size={14} /> <span>{showA4Dossier ? 'Ocultar Dossiê' : 'Visualizar Dossiê A4'}</span>
           </button>
 
           <button
-            onClick={handleAdvancePipeline}
-            disabled={isProcessing}
+            onClick={handleAdvanceStep}
             className="btn-1click-3d"
-            style={{ padding: '6px 16px', fontSize: '0.78rem' }}
           >
-            <Zap size={14} />
-            {isProcessing ? 'Sincronizando...' : '⚡ Avançar Etapa 1-Click'}
+            <Zap size={14} /> <span>Avançar Etapa 1-Click</span>
           </button>
         </div>
       </div>
 
-      {/* 2. Barra de Linha do Tempo 3D (Pipeline Stages) */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-          gap: '10px'
-        }}
-      >
-        {stages.map((st) => {
-          const isCurrent = activeStage === st.step;
-          const isDone = st.status === 'CONCLUIDO' || activeStage > st.step;
-
+      {/* 2. Visualizador da Linha do Tempo (5 Etapas) */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '12px' }}>
+        {stages.map((stage) => {
+          const isActive = currentStep === stage.id;
+          const isDone = stage.status === 'CONCLUIDO';
           return (
             <div
-              key={st.step}
-              onClick={() => setActiveStage(st.step)}
+              key={stage.id}
+              onClick={() => setCurrentStep(stage.id)}
               style={{
-                background: isCurrent
-                  ? 'linear-gradient(180deg, #1D2B48 0%, #101B2E 100%)'
-                  : 'linear-gradient(180deg, #141E33 0%, #0D1424 100%)',
-                border: isCurrent
-                  ? '1.5px solid #34D399'
+                background: isActive
+                  ? 'linear-gradient(180deg, #182C4A 0%, #0F1D33 100%)'
                   : isDone
-                  ? '1px solid rgba(16, 185, 129, 0.4)'
+                  ? 'linear-gradient(180deg, #10222F 0%, #0B1720 100%)'
+                  : 'linear-gradient(180deg, #121A2B 0%, #0A0F1A 100%)',
+                border: isActive
+                  ? '1.5px solid #38BDF8'
+                  : isDone
+                  ? '1.5px solid rgba(16, 185, 129, 0.5)'
                   : '1px solid rgba(255, 255, 255, 0.1)',
-                borderBottom: isCurrent ? '2px solid #059669' : '2px solid rgba(0, 0, 0, 0.4)',
+                borderBottom: isActive
+                  ? '3px solid #0284C7'
+                  : isDone
+                  ? '3px solid #059669'
+                  : '2px solid rgba(0, 0, 0, 0.5)',
                 borderRadius: '10px',
-                padding: '12px 14px',
+                padding: '14px',
                 cursor: 'pointer',
-                boxShadow: isCurrent
-                  ? '0 0 16px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25)'
-                  : 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 3px 8px rgba(0, 0, 0, 0.4)',
-                transition: 'all 0.2s ease',
-                position: 'relative'
+                boxShadow: isActive ? '0 0 16px rgba(56, 189, 248, 0.35)' : 'none',
+                transition: 'all 0.15s ease'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <span style={{ fontSize: '1.1rem' }}>{st.icon}</span>
-                <span
-                  style={{
-                    fontSize: '0.62rem',
-                    fontWeight: 900,
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    background: isDone ? 'rgba(16, 185, 129, 0.2)' : isCurrent ? 'rgba(6, 182, 212, 0.2)' : 'rgba(255, 255, 255, 0.06)',
-                    color: isDone ? '#34D399' : isCurrent ? '#38BDF8' : '#94A3B8',
-                    border: isDone ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(255, 255, 255, 0.1)'
-                  }}
-                >
-                  {isDone ? 'CONCLUÍDO' : isCurrent ? 'EM ANDAMENTO' : 'PENDENTE'}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <span style={{ fontSize: '1rem' }}>
+                  {stage.id === 1 ? '💰' : stage.id === 2 ? '👥' : stage.id === 3 ? '📄' : stage.id === 4 ? '📊' : '🏆'}
+                </span>
+                <span style={{
+                  fontSize: '0.60rem',
+                  fontWeight: 900,
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  background: isDone ? 'rgba(16, 185, 129, 0.2)' : isActive ? 'rgba(56, 189, 248, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+                  color: isDone ? '#34D399' : isActive ? '#38BDF8' : '#94A3B8'
+                }}>
+                  {isDone ? 'CONCLUÍDO' : isActive ? 'EM ANDAMENTO' : 'PENDENTE'}
                 </span>
               </div>
-
-              <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#FFFFFF' }}>
-                Etapa {st.step}: {st.name}
+              <div style={{ fontWeight: 800, fontSize: '0.82rem', color: '#FFFFFF' }}>{stage.name}</div>
+              <div style={{ fontSize: '0.70rem', color: '#94A3B8', marginTop: '2px', minHeight: '28px' }}>{stage.desc}</div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px', fontSize: '0.68rem' }}>
+                <span style={{ color: '#64748B' }}>SLA: {stage.sla}</span>
+                <span style={{ color: isDone ? '#34D399' : isActive ? '#38BDF8' : '#64748B', fontWeight: 800 }}>{stage.progress}%</span>
               </div>
-              <div style={{ fontSize: '0.68rem', color: '#94A3B8', marginTop: '2px' }}>
-                {st.subtitle}
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.64rem', color: 'var(--text-muted)' }}>
-                <span>SLA: {st.slaHours}</span>
-                <span style={{ fontWeight: 800, color: isDone ? '#34D399' : '#FFFFFF' }}>
-                  {isDone ? '100%' : isCurrent ? `${st.progress}%` : '0%'}
-                </span>
-              </div>
-
-              {/* Progress bar */}
-              <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.08)', borderRadius: '2px', marginTop: '4px', overflow: 'hidden' }}>
-                <div
-                  style={{
-                    width: isDone ? '100%' : isCurrent ? `${st.progress}%` : '0%',
-                    height: '100%',
-                    background: isDone ? '#10B981' : '#06B6D4',
-                    borderRadius: '2px',
-                    boxShadow: '0 0 6px rgba(16, 185, 129, 0.8)'
-                  }}
-                />
+              <div style={{ width: '100%', height: '4px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '2px', marginTop: '4px', overflow: 'hidden' }}>
+                <div style={{ width: `${stage.progress}%`, height: '100%', background: isDone ? '#10B981' : '#38BDF8' }}></div>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* 3. Tabela de Atividades da Esteira */}
-      <div
-        style={{
-          background: 'linear-gradient(180deg, #131D33 0%, #0A0F1D 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          borderRadius: '10px',
-          padding: '16px',
-          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Layers size={18} style={{ color: '#34D399' }} />
-            <h3 style={{ fontSize: '0.88rem', fontWeight: 800, color: '#FFFFFF', margin: 0 }}>
+      {/* 3. Tabela de Detalhamento de Tarefas & Triangulação */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF' }}>
               Detalhamento de Tarefas & Triangulação Departamental
             </h3>
+            <p style={{ margin: '2px 0 0', color: '#94A3B8', fontSize: '0.74rem' }}>
+              Competência Ativa: <strong style={{ color: '#34D399' }}>{selectedCompetencia}</strong> • Clique no status para alternar ou aprovar
+            </p>
           </div>
-          <span style={{ fontSize: '0.72rem', color: '#94A3B8' }}>
-            Competência Ativa: <strong style={{ color: '#34D399' }}>{selectedCompetencia}</strong>
-          </span>
         </div>
 
         <table className="diamond-table" style={{ margin: 0 }}>
@@ -315,6 +313,7 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
               <th style={{ textAlign: 'center' }}>Volumetria</th>
               <th style={{ textAlign: 'center' }}>Responsável</th>
               <th style={{ textAlign: 'center' }}>Status</th>
+              <th style={{ textAlign: 'center' }}>Ação</th>
             </tr>
           </thead>
           <tbody>
@@ -360,17 +359,106 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
                     {task.status === 'CONCLUIDO' ? '✓ Concluído' : task.status === 'EM_ANDAMENTO' ? '⚡ Em Execução' : '⏳ Pendente'}
                   </span>
                 </td>
+                <td style={{ textAlign: 'center' }}>
+                  <button
+                    onClick={() => handleToggleTaskStatus(task.id)}
+                    style={{
+                      background: task.status === 'CONCLUIDO' ? '#0B1120' : 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+                      border: task.status === 'CONCLUIDO' ? '1px solid rgba(255,255,255,0.15)' : '1px solid #34D399',
+                      color: task.status === 'CONCLUIDO' ? '#94A3B8' : '#FFFFFF',
+                      padding: '3px 8px',
+                      borderRadius: '4px',
+                      fontSize: '0.68rem',
+                      fontWeight: 800,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {task.status === 'CONCLUIDO' ? 'Reabrir' : 'Concluir'}
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      {/* 4. Dossiê Oficial A4 Diamante de Encerramento (Impressão Cristalina) */}
+      {/* 4. Dossiê Oficial A4 Diamante de Encerramento (MODAL FULLSCREEN DE ALTA FIDELIDADE) */}
       {showA4Dossier && (
-        <div className="diamond-report-card" style={{ marginTop: '10px' }}>
-          <div className="diamond-paper-a4">
-            {/* Header do Dossiê */}
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 10000,
+          background: 'rgba(5, 10, 20, 0.88)',
+          backdropFilter: 'blur(10px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          padding: '24px',
+          overflowY: 'auto'
+        }}>
+          {/* Barra de Ações do Modal */}
+          <div style={{
+            width: '100%',
+            maxWidth: '900px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '16px',
+            background: '#111827',
+            padding: '12px 20px',
+            borderRadius: '10px',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.5)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '1.2rem' }}>💎</span>
+              <span style={{ fontWeight: 800, fontSize: '0.95rem', color: '#FFFFFF' }}>
+                Dossiê Executivo de Encerramento (Padrão Diamante A4)
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button
+                onClick={() => window.print()}
+                style={{
+                  background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+                  border: '1px solid #34D399',
+                  color: '#FFFFFF',
+                  padding: '7px 16px',
+                  borderRadius: '6px',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+              >
+                <Printer size={14} /> <span>Imprimir / Salvar PDF</span>
+              </button>
+              <button
+                onClick={() => setShowA4Dossier(false)}
+                style={{
+                  background: '#1F2937',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#94A3B8',
+                  padding: '7px 14px',
+                  borderRadius: '6px',
+                  fontWeight: 800,
+                  fontSize: '0.78rem',
+                  cursor: 'pointer'
+                }}
+              >
+                ✕ Fechar
+              </button>
+            </div>
+          </div>
+
+          {/* Folha Física A4 */}
+          <div className="diamond-paper-a4" style={{ width: '100%', maxWidth: '900px', marginBottom: '30px' }}>
             <div className="diamond-header">
               <div>
                 <div className="diamond-title">Relatório Executivo de Encerramento Integrado</div>
@@ -384,7 +472,6 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
               </div>
             </div>
 
-            {/* Metadados */}
             <div className="diamond-meta-grid">
               <div className="diamond-meta-item">
                 <strong>Empresa / Entidade</strong>
@@ -404,7 +491,6 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
               </div>
             </div>
 
-            {/* KPIs do Fechamento */}
             <div className="diamond-kpi-row">
               <div className="diamond-kpi-box">
                 <strong>Documentos Fiscais</strong>
@@ -419,69 +505,55 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
                 <div className="value">R$ 148.920,40</div>
               </div>
               <div className="diamond-kpi-box">
-                <strong>Partidas Dobradas</strong>
-                <div className="value">620 Lanç.</div>
+                <strong>Lucro Líquido Contábil</strong>
+                <div className="value">R$ 382.400,00</div>
               </div>
             </div>
 
-            {/* Quadro de Parecer Técnico */}
             <table className="diamond-table">
               <thead>
                 <tr>
-                  <th>Dimensão Operacional</th>
-                  <th>Sistema Governamental</th>
-                  <th>Base Legal / Resolução</th>
-                  <th>Resultado da Auditoria</th>
+                  <th>Departamento</th>
+                  <th>Atividade Crítica</th>
+                  <th>Base Legal</th>
+                  <th>Status de Conciliação</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>Escrituração Fiscal Digital</td>
-                  <td>SPED EFD ICMS/IPI & Contribuições</td>
-                  <td>Ajuste SINIEF 02/09 • Lei 10.833/03</td>
-                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ Transmitido sem inconsistências</td>
+                  <td><strong>Fiscal & SPED</strong></td>
+                  <td>Escrituração DF-e & EFD-ICMS/IPI</td>
+                  <td>Ajuste SINIEF 07/05</td>
+                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ 100% Conciliado</td>
                 </tr>
                 <tr>
-                  <td>Folha de Pagamento & Encargos</td>
-                  <td>eSocial & FGTS Digital</td>
-                  <td>Decreto 8.373/14 • Lei 14.438/22</td>
-                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ Eventos S-1200/S-1210 Validados</td>
+                  <td><strong>DP & eSocial</strong></td>
+                  <td>Folha de Pagamento & S-1299</td>
+                  <td>CLT / Manual MOS</td>
+                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ 100% Transmitido</td>
                 </tr>
                 <tr>
-                  <td>Tributos Federais & Previdência</td>
-                  <td>DCTFWeb & DARF Único</td>
-                  <td>IN RFB nº 2.005/2021</td>
-                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ Guias emitidas com Pix Copia-e-Cola</td>
-                </tr>
-                <tr>
-                  <td>Contabilidade IFRS / NBC TG</td>
-                  <td>ECD / ECF Sped Contábil</td>
-                  <td>NBC TG 26 (R5) • Lei 11.638/07</td>
-                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ Balancete e ARE Integrados em 1-Click</td>
+                  <td><strong>Contábil IFRS</strong></td>
+                  <td>Partidas Dobradas & Balancete ARE</td>
+                  <td>NBC TG / CPC 00</td>
+                  <td style={{ color: '#047857', fontWeight: 800 }}>✓ Ativo = Passivo + PL</td>
                 </tr>
               </tbody>
             </table>
 
-            {/* 3 Assinaturas Formais Padrão Diamante */}
             <div className="diamond-signatures">
               <div className="diamond-signature-line">
-                <div>DAVID VALU</div>
-                <div style={{ fontSize: '0.60rem', color: '#64748B' }}>Contador Responsável • CRC 1SP999999/O-0</div>
+                <div>DIRETORIA CONTÁBIL & TRIBUTÁRIA</div>
+                <div style={{ color: '#64748B', fontSize: '0.62rem' }}>Contador Responsável • CRC 1SP999999/O-0</div>
               </div>
               <div className="diamond-signature-line">
                 <div>DIRETORIA EXECUTIVA</div>
-                <div style={{ fontSize: '0.60rem', color: '#64748B' }}>Soberano Tech S/A • Representante Legal</div>
+                <div style={{ color: '#64748B', fontSize: '0.62rem' }}>Diretor Financeiro / CFO</div>
               </div>
               <div className="diamond-signature-line">
-                <div>COMITÊ DE AUDITORIA & RISCOS</div>
-                <div style={{ fontSize: '0.60rem', color: '#64748B' }}>Parecer Técnico Independente IFRS</div>
+                <div>AUDITORIA FORENSE</div>
+                <div style={{ color: '#64748B', fontSize: '0.62rem' }}>Comitê de Compliance & Riscos</div>
               </div>
-            </div>
-
-            {/* Selo e Watermark */}
-            <div className="diamond-watermark-seal">
-              <span>🔒 Hash SHA-256: 8f9b2c01948e77a1bc34d92ef10874c930491823948712398471239487123490</span>
-              <span>Soberano Contábil Platinum Suite v4.5</span>
             </div>
           </div>
         </div>
@@ -489,4 +561,5 @@ export const OfficeIntegratedClosingPipelineView: React.FC<{ tenant?: CompanyTen
     </div>
   );
 };
+
 export default OfficeIntegratedClosingPipelineView;

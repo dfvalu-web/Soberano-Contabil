@@ -1,251 +1,347 @@
-import React from 'react';
-import { Activity, ShieldCheck, Zap, TrendingUp, AlertTriangle, Layers, FileCheck } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import {
+  Activity,
+  ShieldCheck,
+  Zap,
+  TrendingUp,
+  AlertTriangle,
+  Layers,
+  FileCheck,
+  RefreshCw,
+  Play,
+  CheckCircle2,
+  Filter,
+  DollarSign,
+  Download,
+  Printer,
+  Sparkles,
+  ArrowRight
+} from 'lucide-react';
 
 export const DashboardView: React.FC = () => {
+  const [selectedRegime, setSelectedRegime] = useState<string>('ALL');
+  const [selectedCompetencia, setSelectedCompetencia] = useState<string>('08/2026');
+  const [isScanning, setIsScanning] = useState<boolean>(false);
+  const [scanProgress, setScanProgress] = useState<number>(100);
+  const [notification, setNotification] = useState<string | null>(null);
+
+  // Alertas dinâmicos com resolução interativa
+  const [alerts, setAlerts] = useState([
+    { id: 1, title: 'Divergência de ICMS-ST em NF-e de Entrada (Fornecedor SP)', severity: 'MEDIA', status: 'PENDENTE', economy: 1450.00 },
+    { id: 2, title: 'Item monofásico de PIS/COFINS tributado indevidamente no Simples', severity: 'ALTA', status: 'PENDENTE', economy: 3280.40 },
+    { id: 3, title: 'Fechamento S-1299 eSocial sem DARF Previdenciário emitido', severity: 'BAIXA', status: 'RESOLVIDO', economy: 0.00 }
+  ]);
+
+  // Score dinâmico
+  const scoreFiscal = useMemo(() => {
+    const pendingCount = alerts.filter(a => a.status === 'PENDENTE').length;
+    if (pendingCount === 0) return 100;
+    if (pendingCount === 1) return 98.4;
+    return 94.2;
+  }, [alerts]);
+
+  const showToast = (msg: string) => {
+    setNotification(msg);
+    setTimeout(() => setNotification(null), 3500);
+  };
+
+  const handleResolveAlert = (id: number) => {
+    setAlerts(prev => prev.map(a => a.id === id ? { ...a, status: 'RESOLVIDO' } : a));
+    showToast('Inconsistência fiscal corrigida e ajustada nas apurações com sucesso!');
+  };
+
+  const handleRunFullScan = () => {
+    setIsScanning(true);
+    setScanProgress(20);
+    setTimeout(() => setScanProgress(60), 400);
+    setTimeout(() => {
+      setScanProgress(100);
+      setIsScanning(false);
+      showToast('Varredura completa do SPED PVA & Malhas Fiscais concluída: 100% Regular!');
+    }, 900);
+  };
+
   return (
-    <div>
-      {/* Top Banner / Hero */}
-      <div className="no-print" style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-        <div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
-            Cockpit Fiscal & Contábil Autônomo
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
-            Monitoramento em tempo real de conformidade SPED, apuração híbrida (Legado + Reforma EC 132/2023) e pipeline DF-e Zero-Touch.
-          </p>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
+      {/* Toast Notification */}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '70px',
+          right: '24px',
+          zIndex: 9999,
+          background: 'linear-gradient(135deg, #064E3B 0%, #065F46 100%)',
+          border: '1.5px solid #34D399',
+          color: '#FFFFFF',
+          padding: '12px 20px',
+          borderRadius: '10px',
+          fontWeight: 800,
+          fontSize: '0.85rem',
+          boxShadow: '0 10px 25px rgba(0,0,0,0.6), 0 0 15px rgba(52, 211, 153, 0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
+        }}>
+          <CheckCircle2 size={20} color="#34D399" />
+          <span>{notification}</span>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <span className="badge badge-emerald">
-            <Zap size={14} /> Pipeline Zero-Touch Ativo
-          </span>
-          <button onClick={() => window.print()} className="btn-primary-action" style={{ padding: '6px 12px', fontSize: '0.78rem' }}>
-            🖨️ Imprimir Dossiê Executivo (A4)
-          </button>
-          <span className="badge badge-cyan">
-            <ShieldCheck size={14} /> Pre-Flight PVA 100% Ok
-          </span>
-        </div>
-      </div>
+      )}
 
-      {/* KPI Cards */}
-      <div className="no-print grid-cards-4">
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Score Fiscal Pre-Flight</span>
-            <ShieldCheck size={20} color="var(--emerald-400)" />
+      {/* Header com Identidade 3D 4K */}
+      <div style={{
+        background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.14)',
+        borderBottom: '3px solid rgba(16, 185, 129, 0.4)',
+        borderRadius: '14px',
+        padding: '20px 24px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: '16px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.45)'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{
+            width: '46px',
+            height: '46px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.35) 0%, rgba(6, 182, 212, 0.2) 100%)',
+            border: '1.5px solid #34D399',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.4rem',
+            boxShadow: '0 0 16px rgba(16, 185, 129, 0.45)'
+          }}>
+            📊
           </div>
-          <div className="metric-value" style={{ color: 'var(--emerald-400)' }}>98.4%</div>
-          <div className="metric-sub">
-            <span style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>+2.1%</span> vs mês anterior (0 inconsistências críticas)
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">DF-e Ingeridos (Zero-Touch)</span>
-            <Zap size={20} color="var(--cyan-500)" />
-          </div>
-          <div className="metric-value">14.820</div>
-          <div className="metric-sub">
-            <span style={{ color: 'var(--cyan-500)', fontWeight: 700 }}>99.2%</span> contabilizados automaticamente
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Tributos Apurados (Mês)</span>
-            <TrendingUp size={20} color="var(--indigo-500)" />
-          </div>
-          <div className="metric-value">R$ 482.350</div>
-          <div className="metric-sub">
-            DAS, DCTFWeb, IRPJ/CSLL e CBS/IBS simulados
-          </div>
-        </div>
-
-        <div className="metric-card">
-          <div className="metric-header">
-            <span className="metric-title">Obrigações SPED Status</span>
-            <FileCheck size={20} color="var(--emerald-400)" />
-          </div>
-          <div className="metric-value" style={{ color: 'var(--emerald-400)' }}>5 / 5</div>
-          <div className="metric-sub">
-            ECD, ECF, EFD-ICMS, Contribuições & Reinf
-          </div>
-        </div>
-      </div>
-
-      {/* Main Panels */}
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
-        <div className="no-print panel-card">
-          <div className="panel-title-bar">
-            <h2><Activity size={18} color="var(--emerald-500)" /> Matriz de Auditoria Cruzada & Pre-Flight</h2>
-            <span className="badge badge-emerald">Auditoria Contínua</span>
-          </div>
-          <div className="table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Cruzamento Fiscal</th>
-                  <th>Período</th>
-                  <th>Status</th>
-                  <th>Impacto Risco</th>
-                  <th>Diagnóstico</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ fontWeight: 600 }}>EFD-ICMS/IPI x EFD-Contribuições</td>
-                  <td className="font-mono">2026-01</td>
-                  <td><span className="badge badge-emerald">Conciliado</span></td>
-                  <td className="font-mono">R$ 0,00</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>Faturamento 100% aderente entre blocos C e M</td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: 600 }}>ECF Bloco L/P x ECD Bloco J (DRE)</td>
-                  <td className="font-mono">2025-Anual</td>
-                  <td><span className="badge badge-emerald">Validado</span></td>
-                  <td className="font-mono">R$ 0,00</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>Resultado contábil amarrado ao Lalur Parte A</td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: 600 }}>DCTFWeb x eSocial S-1299 x Reinf</td>
-                  <td className="font-mono">2026-01</td>
-                  <td><span className="badge badge-emerald">Sincronizado</span></td>
-                  <td className="font-mono">R$ 0,00</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>Guias de INSS e retenções federais batidas ao centavo</td>
-                </tr>
-                <tr>
-                  <td style={{ fontWeight: 600 }}>Reforma Dual-Engine (CBS/IBS vs PIS/COFINS)</td>
-                  <td className="font-mono">2026-Transição</td>
-                  <td><span className="badge badge-cyan">Em Simulação</span></td>
-                  <td className="font-mono">R$ 1.000,00</td>
-                  <td style={{ color: 'var(--text-secondary)' }}>Ano-teste: alíquotas CBS 0,9% e IBS 0,1% compensáveis</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="panel-card">
-          <div className="panel-title-bar">
-            <h2><Layers size={18} color="var(--indigo-500)" /> Regimes Ativos</h2>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <div style={{ padding: '0.85rem', background: 'var(--bg-surface-elevated)', borderRadius: 'var(--radius-md)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>Simples Nacional</span>
-                <span className="font-mono" style={{ color: 'var(--emerald-400)', fontWeight: 700 }}>45% das empresas</span>
-              </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Monitoramento automático de Fator R e sublimites estaduais</p>
-            </div>
-
-            <div style={{ padding: '0.85rem', background: 'var(--bg-surface-elevated)', borderRadius: 'var(--radius-md)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>Lucro Presumido</span>
-                <span className="font-mono" style={{ color: 'var(--cyan-500)', fontWeight: 700 }}>35% das empresas</span>
-              </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Apuração trimestral IRPJ/CSLL com retenções compensadas</p>
-            </div>
-
-            <div style={{ padding: '0.85rem', background: 'var(--bg-surface-elevated)', borderRadius: 'var(--radius-md)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.35rem' }}>
-                <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>Lucro Real & Lalur</span>
-                <span className="font-mono" style={{ color: 'var(--indigo-500)', fontWeight: 700 }}>20% das empresas</span>
-              </div>
-              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Trava de 30% prejuízos Parte B e PIS/COFINS não-cumulativo</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-      {/* DOSSIÊ EXECUTIVO OFICIAL (PADRÃO DIAMANTE) */}
-      <div className="diamond-paper-a4" style={{ marginTop: '14px' }}>
-        <div className="diamond-header">
           <div>
-            <div className="diamond-title">DAVID AUDITORIA, CONTROLADORIA & BPO CONTÁBIL</div>
-            <div className="diamond-subtitle">RELATÓRIO EXECUTIVO CONSOLIDADO • CONFORMIDADE FISCAL, CONTÁBIL & DF-e ZERO-TOUCH</div>
-          </div>
-          <div style={{ textAlign: 'right', fontSize: '0.70rem' }}>
-            <div>CNPJ / CPF: <strong>00.000.000/0001-00</strong></div>
-            <div>COMPETÊNCIA: <strong>08/2026</strong></div>
-            <div style={{ color: '#047857', fontWeight: 800 }}>ISO 9001 • CFC • NBC TG</div>
-          </div>
-        </div>
-
-        <div className="diamond-meta-grid">
-          <div className="diamond-meta-item">
-            <strong>Score Fiscal Pre-Flight</strong>
-            <span className="font-mono" style={{ color: "#047857", fontWeight: 800 }}>98,4% (Zero Inconsistências)</span>
-          </div>
-          <div className="diamond-meta-item">
-            <strong>DF-e Ingeridos (Zero-Touch)</strong>
-            <span className="font-mono">14.820 Notas</span>
-          </div>
-          <div className="diamond-meta-item">
-            <strong>Tributos Totais Apurados</strong>
-            <span className="font-mono">R$ 482.350,00</span>
-          </div>
-          <div className="diamond-meta-item">
-            <strong>Massa Salarial Gerenciada</strong>
-            <span className="font-mono">R$ 1.840.000,00</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h1 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
+                Cockpit Fiscal & Contábil Autônomo
+              </h1>
+              <span style={{
+                background: 'rgba(16, 185, 129, 0.2)',
+                color: '#34D399',
+                border: '1px solid rgba(52, 211, 153, 0.5)',
+                padding: '2px 8px',
+                borderRadius: '6px',
+                fontSize: '0.66rem',
+                fontWeight: 900
+              }}>
+                PIPELINE ZERO-TOUCH ATIVO
+              </span>
+            </div>
+            <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.80rem' }}>
+              Monitoramento em tempo real de conformidade SPED, apuração híbrida e esteira DF-e de alta velocidade.
+            </p>
           </div>
         </div>
 
-        <table className="diamond-table">
+        {/* Controles de Topo */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <select
+            value={selectedCompetencia}
+            onChange={(e) => setSelectedCompetencia(e.target.value)}
+            style={{ background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#38BDF8', padding: '7px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 800, outline: 'none' }}
+          >
+            <option value="08/2026">Competência 08/2026</option>
+            <option value="07/2026">Competência 07/2026</option>
+            <option value="06/2026">Competência 06/2026</option>
+          </select>
+
+          <button
+            onClick={handleRunFullScan}
+            disabled={isScanning}
+            className="btn-1click-3d"
+          >
+            <RefreshCw size={14} className={isScanning ? 'animate-spin' : ''} />
+            <span>{isScanning ? 'Varrendo PVA...' : 'Executar Varredura SPED'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 4 Cards de Métricas e KPIs */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+        <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(52, 211, 153, 0.35)', borderBottom: '3px solid #059669', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.70rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
+            <span>Score Fiscal Pre-Flight</span>
+            <ShieldCheck size={16} color="#34D399" />
+          </div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#34D399', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
+            {scoreFiscal}%
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>
+            Validação algorítmica sem pendências impeditivas
+          </div>
+        </div>
+
+        <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(56, 189, 248, 0.35)', borderBottom: '3px solid #0284C7', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.70rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
+            <span>DF-e Ingeridos (Zero-Touch)</span>
+            <Zap size={16} color="#38BDF8" />
+          </div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#38BDF8', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
+            14.820 NFs
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>
+            99.2% contabilizados automaticamente
+          </div>
+        </div>
+
+        <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(168, 85, 247, 0.35)', borderBottom: '3px solid #7C3AED', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.70rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
+            <span>Tributos Apurados</span>
+            <TrendingUp size={16} color="#C084FC" />
+          </div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#C084FC', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
+            R$ 482.350
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>
+            DAS, DCTFWeb e IRPJ/CSLL
+          </div>
+        </div>
+
+        <div style={{ background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)', border: '1.5px solid rgba(245, 158, 11, 0.35)', borderBottom: '3px solid #D97706', borderRadius: '12px', padding: '16px', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.15), 0 8px 20px rgba(0,0,0,0.5)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.70rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase' }}>
+            <span>Obrigações SPED</span>
+            <FileCheck size={16} color="#FBBF24" />
+          </div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#FBBF24', margin: '6px 0 2px 0', fontFamily: 'var(--font-mono)' }}>
+            5 / 5 Prontas
+          </div>
+          <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>
+            ECD, ECF, EFD-ICMS & Reinf
+          </div>
+        </div>
+      </div>
+
+      {/* Radar de Inconsistências com Correção 1-Click */}
+      <div style={{
+        background: 'linear-gradient(180deg, #141E34 0%, #0A101C 100%)',
+        border: '1.5px solid rgba(255, 255, 255, 0.12)',
+        borderRadius: '12px',
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+          <div>
+            <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF' }}>
+              Central de Diagnóstico & Correção Fiscal Interativa
+            </h3>
+            <p style={{ margin: '2px 0 0', color: '#94A3B8', fontSize: '0.74rem' }}>
+              Detectores de malhas fiscais preditivas com resolução em 1-Click e proteção de caixa.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setAlerts(prev => prev.map(a => ({ ...a, status: 'RESOLVIDO' })));
+              showToast('Todos os alertas fiscais foram saneados com sucesso!');
+            }}
+            style={{
+              background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+              border: '1px solid #34D399',
+              color: '#FFFFFF',
+              padding: '7px 14px',
+              borderRadius: '6px',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <Sparkles size={14} /> <span>Resolver Todos 1-Click</span>
+          </button>
+        </div>
+
+        <table className="diamond-table" style={{ margin: 0 }}>
           <thead>
             <tr>
-              <th>Demonstrativo Técnico / Rubrica</th>
-              <th style={{ textAlign: 'center' }}>Enquadramento</th>
-              <th style={{ textAlign: 'right' }}>Valor Consolidado (R$)</th>
+              <th style={{ textAlign: 'left' }}>Diagnóstico / Inconsistência</th>
+              <th style={{ textAlign: 'center' }}>Severidade</th>
+              <th style={{ textAlign: 'right' }}>Economia / Risco Evitado</th>
+              <th style={{ textAlign: 'center' }}>Status</th>
+              <th style={{ textAlign: 'center' }}>Ação Corretiva</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Fiscal & Tributário: SPED Fiscal, EFD-Reinf, PGDAS-D & Retenções</td>
-              <td style={{ textAlign: 'center' }}>14.820 DF-e</td>
-              <td className="font-mono" style={{ textAlign: 'right' }}>99,2% Automatizado</td>
-            </tr>
-            <tr>
-              <td>Departamento Pessoal: Folha CLT, eSocial S-1299 & DCTFWeb</td>
-              <td style={{ textAlign: 'center' }}>48 Vidas</td>
-              <td className="font-mono" style={{ textAlign: 'right' }}>100% Conforme</td>
-            </tr>
-            <tr>
-              <td>Contabilidade & IFRS: Partidas Dobradas, DRE, Balanço & ARE</td>
-              <td style={{ textAlign: 'center' }}>3.410 Lançamentos</td>
-              <td className="font-mono" style={{ textAlign: 'right' }}>100% Equilibrado</td>
-            </tr>
-            <tr className="diamond-table-total">
-              <td><strong>NÍVEL GERAL DE CONFORMIDADE E SEGURANÇA JURÍDICA DA CARTEIRA</strong></td>
-              <td style={{ textAlign: 'center' }}>Geral</td>
-              <td className="font-mono" style={{ textAlign: 'right', color: "#047857" }}>EXCELÊNCIA DIAMANTE</td>
-            </tr>
+            {alerts.map(item => (
+              <tr key={item.id}>
+                <td style={{ fontWeight: 700, color: '#FFFFFF' }}>{item.title}</td>
+                <td style={{ textAlign: 'center' }}>
+                  <span style={{
+                    fontSize: '0.64rem',
+                    fontWeight: 800,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: item.severity === 'ALTA' ? 'rgba(239, 68, 68, 0.2)' : item.severity === 'MEDIA' ? 'rgba(245, 158, 11, 0.2)' : 'rgba(56, 189, 248, 0.2)',
+                    color: item.severity === 'ALTA' ? '#FCA5A5' : item.severity === 'MEDIA' ? '#FDE68A' : '#BAE6FD'
+                  }}>
+                    {item.severity}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'right', fontWeight: 800, color: '#34D399' }}>
+                  {item.economy > 0 ? item.economy.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'Protegido'}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  <span style={{
+                    fontSize: '0.64rem',
+                    fontWeight: 800,
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    background: item.status === 'RESOLVIDO' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                    color: item.status === 'RESOLVIDO' ? '#34D399' : '#FBBF24',
+                    border: item.status === 'RESOLVIDO' ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(245, 158, 11, 0.4)'
+                  }}>
+                    {item.status === 'RESOLVIDO' ? '✓ Resolvido' : '⏳ Pendente'}
+                  </span>
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {item.status === 'PENDENTE' ? (
+                    <button
+                      onClick={() => handleResolveAlert(item.id)}
+                      style={{
+                        background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+                        border: '1px solid #34D399',
+                        color: '#FFFFFF',
+                        padding: '4px 10px',
+                        borderRadius: '4px',
+                        fontSize: '0.70rem',
+                        fontWeight: 800,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Corrigir 1-Click
+                    </button>
+                  ) : (
+                    <span style={{ color: '#34D399', fontSize: '0.72rem', fontWeight: 800 }}>✓ Regularizado</span>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
-
-        <div className="diamond-signatures">
-          <div>
-            <div style={{ height: '22px' }}></div>
-            <div className="diamond-signature-line">DIRETORIA EXECUTIVA / CEO</div>
-            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
+      </div>
+    
+      {/* Dossiê Executivo Diamante para Impressão & Conformidade A4 */}
+      <div className="diamond-report-card" style={{ marginTop: '16px' }}>
+        <div className="diamond-paper-a4">
+          <div className="diamond-header">
+            <div>
+              <div className="diamond-title">RELATÓRIO EXECUTIVO CONSOLIDADO</div>
+              <div className="diamond-subtitle">Painel de Conformidade e Performance Fiscal & Contábil • Padrão Diamante</div>
+            </div>
           </div>
-          <div>
-            <div style={{ height: '22px' }}></div>
-            <div className="diamond-signature-line">RESPONSÁVEL TÉCNICO CONTÁBIL</div>
-            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
-          </div>
-          <div>
-            <div style={{ height: '22px' }}></div>
-            <div className="diamond-signature-line">AUDITORIA INDEPENDENTE / IFRS</div>
-            <div style={{ fontSize: '0.58rem', color: '#64748B' }}>Homologação Oficial</div>
-          </div>
-        </div>
-
-        <div className="diamond-watermark-seal">
-          <div>SOBERANO CONTÁBIL • LAUDO EXECUTIVO DIAMANTE • CERTIFICAÇÃO DIGITAL SHA-256: <code>AA991088BCFF00</code></div>
-          <div>PÁGINA 1 DE 1 • DOCUMENTO OFICIAL HOMOLOGADO</div>
         </div>
       </div>
     </div>
   );
 };
+
+export default DashboardView;
