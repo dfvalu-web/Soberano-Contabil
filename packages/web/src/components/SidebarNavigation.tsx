@@ -511,7 +511,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
                         <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
-                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#94A3B8', fontWeight: isActive ? 700 : 500 }}>{module.name}</span>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#8B9BB4', fontWeight: isActive ? 800 : 500, fontSize: '0.74rem' }}>{module.name}</span>
                         {isRecommended && (
                           <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 4px', borderRadius: '3px', background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', flexShrink: 0 }}>
                             ⭐ CNAE
@@ -558,7 +558,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
                     <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{dept.icon}</span>
-                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: hasActiveChild ? 'var(--emerald-400)' : '#F1F5F9', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <span style={{ fontSize: '0.76rem', fontWeight: 700, color: hasActiveChild ? '#34D399' : '#FFFFFF', fontWeight: 800, fontSize: '0.80rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       {dept.name}
                     </span>
                     {dept.isCore && (
@@ -595,7 +595,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
                             <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
-                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#94A3B8', fontWeight: isActive ? 700 : 500 }}>
+                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#8B9BB4', fontWeight: isActive ? 800 : 500, fontSize: '0.74rem' }}>
                               <HighlightMatch text={module.name} query={searchQuery} />
                             </span>
                             {isRecommended && (
