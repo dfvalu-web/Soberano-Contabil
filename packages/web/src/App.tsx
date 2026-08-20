@@ -354,7 +354,7 @@ export const App: React.FC = () => {
               SC
             </div>
             <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#fff', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-              Soberano <span style={{ color: 'var(--emerald-400)' }}>ERP</span>
+              Soberano <span style={{ color: 'var(--emerald-400)' }}>Contábil</span>
             </span>
             <span style={{
               background: 'rgba(16, 185, 129, 0.15)',
