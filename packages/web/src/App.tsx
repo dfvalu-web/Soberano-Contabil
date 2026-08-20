@@ -317,97 +317,108 @@ export const App: React.FC = () => {
       {/* 1. TOPBAR GLOBAL CORPORATIVA (HEADER PRINCIPAL)                          */}
       {/* ========================================================================= */}
       <header className="app-topbar-global">
-        {/* FLANCO ESQUERDO: MENU + BRAND + BREADCRUMB COMPACTO */}
+        {/* FLANCO ESQUERDO: MENU + BRAND 3D + BREADCRUMB 3D */}
         <div className="topbar-left-flank">
           <button
             onClick={() => setIsSidebarOpen(prev => !prev)}
             style={{
-              background: '#131C30',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              color: '#fff',
-              padding: '4px 8px',
+              background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
+              color: '#FFFFFF',
+              padding: '5px 9px',
               borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '0.75rem',
-              fontWeight: 700,
+              fontSize: '0.74rem',
+              fontWeight: 800,
               display: 'flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '5px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.35)',
+              transition: 'all 0.15s ease'
             }}
           >
             <span>☰</span> {isSidebarOpen ? 'Recolher' : 'Menu'}
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {/* Logo 3D 4K */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '6px',
-              background: 'linear-gradient(135deg, #10B981, #06B6D4)',
+              width: '28px',
+              height: '28px',
+              borderRadius: '8px',
+              background: 'linear-gradient(135deg, #34D399 0%, #059669 50%, #0891B2 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              borderBottom: '2px solid #065F46',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 900,
-              fontSize: '0.75rem',
-              color: '#070B12'
+              fontSize: '0.78rem',
+              color: '#070B12',
+              boxShadow: '0 0 14px rgba(16, 185, 129, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)'
             }}>
               SC
             </div>
-            <span style={{ fontWeight: 800, fontSize: '0.84rem', color: '#fff', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-              Soberano <span style={{ color: 'var(--emerald-400)' }}>Contábil</span>
+            <span style={{ fontWeight: 900, fontSize: '0.88rem', color: '#FFFFFF', letterSpacing: '-0.02em', whiteSpace: 'nowrap', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' }}>
+              Soberano <span style={{ color: '#34D399', textShadow: '0 0 12px rgba(52, 211, 153, 0.6)' }}>Contábil</span>
             </span>
             <span style={{
-              background: 'rgba(16, 185, 129, 0.15)',
-              color: 'var(--emerald-400)',
-              border: '1px solid rgba(16, 185, 129, 0.3)',
-              padding: '1px 4px',
+              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)',
+              color: '#34D399',
+              border: '1px solid rgba(52, 211, 153, 0.5)',
+              borderBottom: '1.5px solid rgba(5, 150, 105, 0.6)',
+              padding: '1px 5px',
               borderRadius: '4px',
-              fontSize: '0.55rem',
-              fontWeight: 900
+              fontSize: '0.58rem',
+              fontWeight: 900,
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3)'
             }}>
               PRO
             </span>
           </div>
 
-          {/* Breadcrumb Compacto de Alto Contraste Diamante */}
+          {/* Breadcrumb 3D Glass Capsule */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
             fontSize: '0.74rem',
-            background: 'rgba(16, 185, 129, 0.12)',
-            border: '1px solid rgba(16, 185, 129, 0.35)',
+            background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.14) 0%, rgba(15, 23, 42, 0.6) 100%)',
+            border: '1px solid rgba(52, 211, 153, 0.35)',
+            borderBottom: '1.5px solid rgba(5, 150, 105, 0.5)',
             padding: '3px 10px',
             borderRadius: '8px',
             maxWidth: '320px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 6px rgba(0, 0, 0, 0.4)'
           }}>
-            <span style={{ color: 'var(--text-secondary, #94A3B8)', fontWeight: 600 }}>{activeModule.category}</span>
+            <span style={{ color: '#94A3B8', fontWeight: 600 }}>{activeModule.category}</span>
             <span style={{ color: 'rgba(255, 255, 255, 0.3)' }}>➔</span>
-            <span style={{ color: 'var(--emerald-400, #34D399)', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ color: '#34D399', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', textShadow: '0 0 8px rgba(52, 211, 153, 0.4)' }}>
               <span>{activeModule.icon}</span> {activeModule.label}
             </span>
           </div>
         </div>
 
-        {/* FLANCO CENTRAL: EMPRESA ATIVA + COMPETÊNCIA */}
+        {/* FLANCO CENTRAL: 3D LUXURY CONTROL PODS */}
         <div className="topbar-center-flank">
-          <div className="topbar-pill-card" style={{ maxWidth: '300px' }}>
-            <span style={{ fontSize: '0.80rem' }}>🏢</span>
+          <div className="control-pod-3d" style={{ maxWidth: '320px' }}>
+            <span style={{ fontSize: '0.85rem' }}>🏢</span>
             <select
               value={selectedTenant}
               onChange={(e) => setSelectedTenant(e.target.value)}
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#fff',
-                fontWeight: 700,
-                fontSize: '0.74rem',
+                color: '#FFFFFF',
+                fontWeight: 800,
+                fontSize: '0.76rem',
                 outline: 'none',
                 cursor: 'pointer',
-                maxWidth: '200px',
+                maxWidth: '210px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap'
               }}
@@ -419,29 +430,31 @@ export const App: React.FC = () => {
               ))}
             </select>
             <span style={{
-              background: 'rgba(16, 185, 129, 0.15)',
-              color: 'var(--emerald-400)',
-              padding: '1px 4px',
+              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)',
+              color: '#34D399',
+              border: '1px solid rgba(52, 211, 153, 0.5)',
+              padding: '1px 5px',
               borderRadius: '4px',
-              fontSize: '0.55rem',
+              fontSize: '0.56rem',
               fontWeight: 900,
-              flexShrink: 0
+              flexShrink: 0,
+              boxShadow: '0 0 8px rgba(16, 185, 129, 0.3)'
             }}>
               CND OK
             </span>
           </div>
 
-          <div className="topbar-pill-card">
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.70rem' }}>📅</span>
+          <div className="control-pod-3d">
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>📅</span>
             <select
               value={selectedCompetencia}
               onChange={(e) => setSelectedCompetencia(e.target.value)}
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: 'var(--emerald-400)',
-                fontWeight: 800,
-                fontSize: '0.74rem',
+                color: '#34D399',
+                fontWeight: 900,
+                fontSize: '0.76rem',
                 outline: 'none',
                 cursor: 'pointer'
               }}
@@ -454,54 +467,42 @@ export const App: React.FC = () => {
           </div>
         </div>
 
-        {/* FLANCO DIREITO: STATUS GOV + BOTÕES DE AÇÃO */}
+        {/* FLANCO DIREITO: 3D STATUS GOV + BOTÕES 3D 4K */}
         <div className="topbar-right-flank">
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '6px',
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.06)',
-            padding: '3px 7px',
-            borderRadius: '6px',
-            fontSize: '0.64rem',
-            fontWeight: 700
+            gap: '8px',
+            background: 'linear-gradient(180deg, #141E32 0%, #0C1220 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
+            padding: '4px 9px',
+            borderRadius: '8px',
+            fontSize: '0.66rem',
+            fontWeight: 800,
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.35)'
           }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--emerald-400)' }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981' }}></span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#34D399' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)' }}></span>
               SEFAZ
             </span>
             <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--cyan-400)' }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#06B6D4' }}></span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#38BDF8' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#06B6D4', boxShadow: '0 0 8px rgba(6, 182, 212, 0.8)' }}></span>
               eSocial
             </span>
           </div>
 
           <button
             onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
-            className="btn-primary-action"
-            style={{ borderRadius: '8px', padding: '4px 9px', fontSize: '0.72rem' }}
+            className="btn-1click-3d"
           >
             <span>🚀</span> 1-Click
           </button>
 
           <button
             onClick={() => setIsRightDeckOpen(prev => !prev)}
-            style={{
-              background: isRightDeckOpen ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.1))' : '#131C30',
-              border: isRightDeckOpen ? '1px solid var(--emerald-500)' : '1px solid rgba(255, 255, 255, 0.1)',
-              color: isRightDeckOpen ? 'var(--emerald-400)' : '#fff',
-              padding: '4px 9px',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '0.72rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              transition: 'all 0.15s ease'
-            }}
+            className={`btn-copilot-3d ${isRightDeckOpen ? 'active' : ''}`}
           >
             <span>🤖</span> {isRightDeckOpen ? 'Copiloto' : 'Copiloto'}
           </button>
