@@ -42,6 +42,15 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "defaultCollapsed": true,
     "modules": [
       {
+        "id": "office_login_security_governance",
+        "name": "Governança de Login & Criptografia Real",
+        "label": "Governança de Login & Criptografia Real",
+        "icon": "🛡️",
+        "file": "OfficeLoginSecurityGovernanceView",
+        "departmentId": "gestao",
+        "isCore": true
+      },
+      {
         "id": "office_integrated_closing_pipeline",
         "name": "Esteira de Fechamento Integrada (Pipeline)",
         "label": "Esteira de Fechamento Integrada (Pipeline)",

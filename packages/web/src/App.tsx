@@ -1,3 +1,4 @@
+import { OfficeLoginSecurityGovernanceView } from './views/OfficeLoginSecurityGovernanceView.js';
 import { OfficeBusinessPartnersRegistryView } from './views/OfficeBusinessPartnersRegistryView.js';
 import { OfficeIntangiblesAmortizationView } from './views/OfficeIntangiblesAmortizationView.js';
 import { OfficeIntegratedClosingPipelineView } from './views/OfficeIntegratedClosingPipelineView.js';
@@ -636,6 +637,7 @@ export const App: React.FC = () => {
           {currentModuleId === 'office_predictive_tax_audit_radar' && <OfficePredictiveTaxAuditRadarView tenant={currentTenantObj} />}
           {currentModuleId === 'office_monthly_consolidated_book' && <OfficeMonthlyConsolidatedBookView tenant={currentTenantObj} />}
           {currentModuleId === 'office_strategic_tax_regime_comparison' && <OfficeStrategicTaxRegimeComparisonView tenant={currentTenantObj} />}
+          {currentModuleId === 'office_login_security_governance' && <OfficeLoginSecurityGovernanceView />}
           {currentModuleId === 'office_multi_client_grid' && <OfficeMultiClientClosingGridView />}
           {currentModuleId === 'office_universal_dropzone_ocr' && <OfficeUniversalDropzoneOcrView />}
           {currentModuleId === 'office_batch_dispatch_bundle' && <OfficeBatchDispatchBundleView />}

@@ -20,3 +20,4 @@ export * from './notifications/multichannel-tax-alerts-whatsapp-dispatcher.js';
 export * from './audit/soc2-iso27001-continuous-compliance-auditor.js';
 export * from './corporate-sso-saml-oidc-engine.js';
 export * from './govbr-login-fido2-webauthn-engine.js';
+export * from './real-web-crypto.js';

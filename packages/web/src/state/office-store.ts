@@ -1,4 +1,45 @@
 
+export interface LoginMethodSecurityPolicy {
+  id: 'CERTIFICATE_ICP_BRASIL' | 'EMAIL_PASSWORD_HASH' | 'FIDO2_PASSKEYS' | 'MAGIC_LINK';
+  name: string;
+  description: string;
+  icon: string;
+  isEnabled: boolean;
+  requiresMasterApproval: boolean;
+  securityStandard: string;
+  encryptionEngine: string;
+}
+
+export interface UserAccessApprovalRequest {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+  loginMethod: string;
+  requestedAt: string;
+  ipAddress: string;
+  deviceFingerprint: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  approvedBy?: string;
+  approvedAt?: string;
+  rejectionReason?: string;
+}
+
+export interface AuthSecurityAuditLog {
+  id: string;
+  timestamp: string;
+  userEmail: string;
+  userName: string;
+  method: string;
+  ipAddress: string;
+  deviceInfo: string;
+  status: 'SUCCESS' | 'BLOCKED_BY_GOVERNANCE' | 'FAILED_CREDENTIALS' | 'PENDING_APPROVAL';
+  hashSha256: string;
+  encryptionTag: string;
+}
+
+
 export type StagingDepartmentType = 'DP' | 'FISCAL';
 export type StagingReleaseStatus = 
   | 'PENDENTE_ENVIO'
@@ -709,6 +750,167 @@ class OfficeStateStore {
   // =========================================================================
   // MOTOR DE CÁLCULO DA RESCISÃO TRABALHISTA (TRCT 1-CLICK)
   // =========================================================================
+
+  // =========================================================================
+  // GOVERNANÇA DE SEGURANÇA DE ACESSO & CRIPTOGRAFIA REAL (LOGIN CONTROL)
+  // =========================================================================
+  private loginPolicies: LoginMethodSecurityPolicy[] = [
+    {
+      id: 'CERTIFICATE_ICP_BRASIL',
+      name: 'Certificado Digital ICP-Brasil (e-CPF / e-CNPJ A1/A3)',
+      description: 'Autenticação de alto nível via chave privada e validação de PIN em hardware/software.',
+      icon: '🔑',
+      isEnabled: true,
+      requiresMasterApproval: false,
+      securityStandard: 'ICP-Brasil DOC-ICP-05 / mTLS',
+      encryptionEngine: 'HMAC-SHA256 Challenge-Response'
+    },
+    {
+      id: 'EMAIL_PASSWORD_HASH',
+      name: 'Credenciais Corporativas (E-mail + Senha SHA-256/PBKDF2)',
+      description: 'Senha fortificada criptografada no cliente com salt aleatório e envelope AES-256-GCM.',
+      icon: '🔒',
+      isEnabled: true,
+      requiresMasterApproval: false,
+      securityStandard: 'FIPS 140-3 / OWASP ASVS Level 3',
+      encryptionEngine: 'PBKDF2 (100.000 iterações) + SHA-256 + AES-GCM'
+    },
+    {
+      id: 'FIDO2_PASSKEYS',
+      name: 'Biometria Hardware FIDO2 & WebAuthn / Gov.br',
+      description: 'Acesso sem senha utilizando biometria facial, TouchID ou Chaves de Segurança Yubikey.',
+      icon: '🛡️',
+      isEnabled: true,
+      requiresMasterApproval: true,
+      securityStandard: 'W3C WebAuthn Level 3 / FIDO Alliance',
+      encryptionEngine: 'Assinatura Assimétrica ECDSA P-256'
+    },
+    {
+      id: 'MAGIC_LINK',
+      name: 'Acesso Rápido via Magic Link Criptografado',
+      description: 'Token temporário de uso único assinado digitalmente com validade estrita de 10 minutos.',
+      icon: '✨',
+      isEnabled: false,
+      requiresMasterApproval: true,
+      securityStandard: 'JWT HMAC-SHA256 Time-Bound Token',
+      encryptionEngine: 'SHA-256 HMAC Nonce Envelope'
+    }
+  ];
+
+  private pendingApprovals: UserAccessApprovalRequest[] = [
+    {
+      id: 'req-01',
+      name: 'MARCOS VINICIUS ANDRADE',
+      email: 'marcos.andrade@grupometalurgico.com.br',
+      role: 'Analista Fiscal Sênior',
+      department: 'Departamento Fiscal',
+      loginMethod: 'Certificado Digital e-CPF A3',
+      requestedAt: '19/08/2026 às 21:15',
+      ipAddress: '177.18.29.102 (São Paulo - SP)',
+      deviceFingerprint: 'Chrome 128 / Windows 11 (Token Safenet 5110)',
+      status: 'PENDING'
+    },
+    {
+      id: 'req-02',
+      name: 'JULIANA MENDES DA SILVA',
+      email: 'juliana.mendes@soberanocontabil.com.br',
+      role: 'Supervisora de DP & eSocial',
+      department: 'Departamento Pessoal',
+      loginMethod: 'E-mail & Senha Criptografada SHA-256',
+      requestedAt: '19/08/2026 às 22:30',
+      ipAddress: '189.40.112.55 (Campinas - SP)',
+      deviceFingerprint: 'Edge 128 / macOS Sequoia (M2 Pro)',
+      status: 'PENDING'
+    }
+  ];
+
+  private authAuditLogs: AuthSecurityAuditLog[] = [
+    {
+      id: 'log-01',
+      timestamp: '19/08/2026 às 23:10:05',
+      userEmail: 'david.valu@soberanocontabil.com.br',
+      userName: 'DAVID VALU',
+      method: 'Certificado ICP-Brasil (e-CNPJ A1)',
+      ipAddress: '201.86.192.14',
+      deviceInfo: 'Chrome 128 / Windows 11 Enterprise',
+      status: 'SUCCESS',
+      hashSha256: '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08',
+      encryptionTag: 'AES-GCM-256 / SHA-256 Salted'
+    },
+    {
+      id: 'log-02',
+      timestamp: '19/08/2026 às 22:45:18',
+      userEmail: 'beatriz.santos@soberanocontabil.com.br',
+      userName: 'DRA. BEATRIZ SANTOS',
+      method: 'E-mail & Senha Criptografada PBKDF2',
+      ipAddress: '177.105.88.22',
+      deviceInfo: 'Safari 18.0 / macOS Sonoma',
+      status: 'SUCCESS',
+      hashSha256: '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8',
+      encryptionTag: 'AES-GCM-256 / SHA-256 Salted'
+    }
+  ];
+
+  public getLoginPolicies(): LoginMethodSecurityPolicy[] {
+    return [...this.loginPolicies];
+  }
+
+  public toggleLoginPolicy(policyId: LoginMethodSecurityPolicy['id']): void {
+    const policy = this.loginPolicies.find(p => p.id === policyId);
+    if (policy) {
+      policy.isEnabled = !policy.isEnabled;
+    }
+  }
+
+  public setLoginPolicyMasterApproval(policyId: LoginMethodSecurityPolicy['id'], requiresApproval: boolean): void {
+    const policy = this.loginPolicies.find(p => p.id === policyId);
+    if (policy) {
+      policy.requiresMasterApproval = requiresApproval;
+    }
+  }
+
+  public isLoginMethodAllowed(methodId: LoginMethodSecurityPolicy['id']): { allowed: boolean; reason?: string } {
+    const policy = this.loginPolicies.find(p => p.id === methodId);
+    if (!policy) return { allowed: false, reason: 'Método de autenticação não configurado.' };
+    if (!policy.isEnabled) return { allowed: false, reason: `O método "${policy.name}" está temporariamente desabilitado pelas políticas de governança de segurança do escritório.` };
+    return { allowed: true };
+  }
+
+  public getPendingUserApprovals(): UserAccessApprovalRequest[] {
+    return [...this.pendingApprovals];
+  }
+
+  public approveUserAccess(requestId: string, approvedBy: string = 'DAVID VALU (Master Admin)'): void {
+    const req = this.pendingApprovals.find(r => r.id === requestId);
+    if (req) {
+      req.status = 'APPROVED';
+      req.approvedBy = approvedBy;
+      req.approvedAt = new Date().toLocaleString('pt-BR');
+    }
+  }
+
+  public rejectUserAccess(requestId: string, reason: string = 'Acesso não homologado pelo Master Admin'): void {
+    const req = this.pendingApprovals.find(r => r.id === requestId);
+    if (req) {
+      req.status = 'REJECTED';
+      req.rejectionReason = reason;
+    }
+  }
+
+  public logAuthSecurityEvent(event: Omit<AuthSecurityAuditLog, 'id' | 'timestamp'>): void {
+    const newLog: AuthSecurityAuditLog = {
+      ...event,
+      id: 'log-' + Date.now(),
+      timestamp: new Date().toLocaleString('pt-BR')
+    };
+    this.authAuditLogs.unshift(newLog);
+    if (this.authAuditLogs.length > 50) this.authAuditLogs.pop();
+  }
+
+  public getAuthSecurityAuditLogs(): AuthSecurityAuditLog[] {
+    return [...this.authAuditLogs];
+  }
+
   public calculateTermination(
     employee: Employee,
     terminationDate: string,
