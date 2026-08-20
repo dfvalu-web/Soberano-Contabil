@@ -210,6 +210,15 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     });
   };
 
+  // 5.1 Permissão Modular RBAC por Usuário/Empresa
+  const userEmail = currentUser?.email || 'dfvalu@gmail.com';
+  const isMasterOwner = !currentUser || userEmail.toLowerCase() === 'dfvalu@gmail.com' || userEmail.toLowerCase() === 'david.valu@soberanocontabil.com.br';
+  const isModulePermitted = (m: NavigationModule) => {
+    if (isMasterOwner) return true;
+    if (m.id === 'office_login_security_governance') return false;
+    return officeStore.isModuleAllowedForUser(userEmail, m.id, m.departmentId);
+  };
+
   // 6. Universal Multi-Word Tokenized Filter & Search Logic
   const filteredDepartments = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
