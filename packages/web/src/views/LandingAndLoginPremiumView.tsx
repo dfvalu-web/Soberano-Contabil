@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import {
   ShieldCheck,
+  ChevronDown,
+  ChevronsDown,
   Phone,
   MapPin,
   MessageSquare,
@@ -1228,6 +1230,87 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </div>
           </div>
         </div>
+
+        {/* ===================================================================== */}
+        {/* CORTINA DE TRANSIÇÃO 3D 4K COM LASER PRISMÁTICO & INDICADOR DE ROLAGEM */}
+        {/* ===================================================================== */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            zIndex: 30,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            pointerEvents: 'none'
+          }}
+        >
+          {/* Drapeado Curvo de Cortina 3D (SVG Holográfico com Degradê Gradual) */}
+          <div style={{ width: '100%', overflow: 'hidden', lineHeight: 0 }}>
+            <svg
+              viewBox="0 0 1440 120"
+              preserveAspectRatio="none"
+              style={{ width: '100%', height: '80px', display: 'block' }}
+            >
+              <defs>
+                <linearGradient id="curtainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#070B14" stopOpacity="0" />
+                  <stop offset="40%" stopColor="#070B14" stopOpacity="0.75" />
+                  <stop offset="100%" stopColor="#070B14" stopOpacity="1" />
+                </linearGradient>
+                <linearGradient id="curtainWaveFill" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#0E172A" stopOpacity="0.4" />
+                  <stop offset="50%" stopColor="#131E35" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#0E172A" stopOpacity="0.4" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0,40 C320,120 420,0 720,60 C1020,120 1120,0 1440,40 L1440,120 L0,120 Z"
+                fill="url(#curtainWaveFill)"
+              />
+              <path
+                d="M0,60 C360,130 540,10 720,75 C900,130 1080,10 1440,60 L1440,120 L0,120 Z"
+                fill="url(#curtainGradient)"
+              />
+            </svg>
+          </div>
+
+          {/* Feixe Laser Neon Prismático Animado */}
+          <div className="curtain-laser-beam" />
+
+          {/* Pod Central Flutuante com Seta Animada e Ação de Revelação */}
+          <div style={{ position: 'absolute', bottom: '14px', zIndex: 35 }}>
+            <a
+              href="#pilares"
+              className="curtain-trigger-pod"
+              style={{
+                pointerEvents: 'auto',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '7px 20px',
+                borderRadius: '30px',
+                background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%)',
+                backdropFilter: 'blur(16px)',
+                border: '1.5px solid rgba(52, 211, 153, 0.6)',
+                borderBottom: '2.5px solid #059669',
+                color: '#FFFFFF',
+                textDecoration: 'none',
+                fontSize: '0.72rem',
+                fontWeight: 900,
+                letterSpacing: '0.04em',
+                cursor: 'pointer'
+              }}
+            >
+              <span style={{ color: '#34D399', fontSize: '0.76rem' }}>✨</span>
+              <span style={{ textShadow: '0 0 10px rgba(52, 211, 153, 0.5)' }}>EXPLORAR PILARES & RECURSOS</span>
+              <ChevronsDown size={15} style={{ color: '#34D399' }} />
+            </a>
+          </div>
+        </div>
+
       </section>
 
       {/* ========================================================================= */}

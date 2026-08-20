@@ -1262,3 +1262,61 @@ html, body {
   color: #FFFFFF !important;
   border-color: rgba(255, 255, 255, 0.22) !important;
 }
+
+
+/* ========================================================================= */
+/* CORTINA DE TRANSIÇÃO 3D 4K HOLOGRÁFICA (HERO SECTION DIVIDER)            */
+/* ========================================================================= */
+
+@keyframes curtainLaserShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes curtainBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 18px rgba(16, 185, 129, 0.3);
+  }
+  50% {
+    transform: translateY(6px) scale(1.02);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 12px 30px rgba(0, 0, 0, 0.85), 0 0 30px rgba(56, 189, 248, 0.55);
+  }
+}
+
+@keyframes curtainPulseGlow {
+  0%, 100% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.5));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 24px rgba(56, 189, 248, 0.85));
+  }
+}
+
+.curtain-laser-beam {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.3) 15%, #34D399 35%, #38BDF8 50%, #A78BFA 65%, rgba(16, 185, 129, 0.3) 85%, transparent 100%);
+  background-size: 200% 100%;
+  animation: curtainLaserShimmer 5s infinite linear;
+  box-shadow: 0 0 20px rgba(52, 211, 153, 0.7), 0 0 40px rgba(56, 189, 248, 0.5);
+  position: relative;
+  z-index: 25;
+}
+
+.curtain-trigger-pod {
+  animation: curtainBounce 2.5s infinite ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.curtain-trigger-pod:hover {
+  transform: translateY(2px) scale(1.05) !important;
+  border-color: #38BDF8 !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5), 0 0 35px rgba(56, 189, 248, 0.7) !important;
+}
