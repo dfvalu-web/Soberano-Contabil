@@ -42,6 +42,15 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "defaultCollapsed": false,
     "modules": [
       {
+        "id": "office_integrated_closing_pipeline",
+        "name": "Esteira de Fechamento Integrada (Pipeline)",
+        "label": "Esteira de Fechamento Integrada (Pipeline)",
+        "icon": "🚀",
+        "file": "OfficeIntegratedClosingPipelineView",
+        "departmentId": "gestao",
+        "isCore": true
+      },
+      {
         "id": "office_multi_client_grid",
         "name": "Cockpit Multi-Empresa em Grade",
         "label": "Cockpit Multi-Empresa em Grade",

@@ -1,4 +1,8 @@
 import { OfficeIntangiblesAmortizationView } from './views/OfficeIntangiblesAmortizationView.js';
+import { OfficeIntegratedClosingPipelineView } from './views/OfficeIntegratedClosingPipelineView.js';
+import { OfficePredictiveTaxAuditRadarView } from './views/OfficePredictiveTaxAuditRadarView.js';
+import { OfficeMonthlyConsolidatedBookView } from './views/OfficeMonthlyConsolidatedBookView.js';
+import { OfficeStrategicTaxRegimeComparisonView } from './views/OfficeStrategicTaxRegimeComparisonView.js';
 
 import { OfficeProductsServicesStockView } from './views/OfficeProductsServicesStockView.js';
 import { OfficeInvoiceBillingIssuerView } from './views/OfficeInvoiceBillingIssuerView.js';
@@ -553,6 +557,10 @@ export const App: React.FC = () => {
           {/* Renderização do Módulo Ativo */}
           <CnaeSectorBanner tenant={currentTenantObj} onSelectModule={setCurrentModuleId} currentModuleId={currentModuleId} />
           <div className="view-card-container">
+          {currentModuleId === 'office_integrated_closing_pipeline' && <OfficeIntegratedClosingPipelineView tenant={currentTenantObj} />}
+          {currentModuleId === 'office_predictive_tax_audit_radar' && <OfficePredictiveTaxAuditRadarView tenant={currentTenantObj} />}
+          {currentModuleId === 'office_monthly_consolidated_book' && <OfficeMonthlyConsolidatedBookView tenant={currentTenantObj} />}
+          {currentModuleId === 'office_strategic_tax_regime_comparison' && <OfficeStrategicTaxRegimeComparisonView tenant={currentTenantObj} />}
           {currentModuleId === 'office_multi_client_grid' && <OfficeMultiClientClosingGridView />}
           {currentModuleId === 'office_universal_dropzone_ocr' && <OfficeUniversalDropzoneOcrView />}
           {currentModuleId === 'office_batch_dispatch_bundle' && <OfficeBatchDispatchBundleView />}
