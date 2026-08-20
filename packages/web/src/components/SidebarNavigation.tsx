@@ -219,7 +219,9 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       const tokens = normalizeText(query).split(/[\s,;+&|/\-]+/).filter(Boolean);
 
       return DEPARTMENT_CATEGORIES.map(dept => {
-        const matchingModules = dept.modules.filter(m => {
+        const matchingModules = dept.modules
+          .filter(m => m.id !== 'office_login_security_governance' || isMasterOwner)
+          .filter(m => {
           const searchCorpus = normalizeText(`${m.name} ${m.label} ${m.id} ${m.badge || ''} ${m.file || ''} ${dept.name}`);
           return tokens.every(token => searchCorpus.includes(token));
         });
@@ -247,7 +249,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         return { ...dept, visibleModules: [] };
       }
 
-      let modulesToFilter = dept.modules;
+      let modulesToFilter = dept.modules.filter(m => m.id !== 'office_login_security_governance' || isMasterOwner);
       if (activeFilter === 'cnae' && tenant) {
         modulesToFilter = modulesToFilter.filter(m => isModuleRecommendedForTenant(m.id, tenant));
       }

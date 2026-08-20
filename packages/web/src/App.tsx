@@ -219,6 +219,7 @@ export const App: React.FC = () => {
     return PRESET_PROFILES[0];
   });
   const [currentModuleId, setCurrentModuleId] = useState<string>('office_integrated_closing_pipeline');
+  const isMasterOwner = currentUser?.email?.toLowerCase() === 'dfvalu@gmail.com' || currentUser?.email?.toLowerCase() === 'david.valu@soberanocontabil.com.br';
 
   const handleLoginSuccess = (profile: UserProfile) => {
     setCurrentUser(profile);
@@ -560,23 +561,25 @@ export const App: React.FC = () => {
             </span>
           </div>
 
-          <button
-            onClick={() => setCurrentModuleId('office_login_security_governance')}
-            className="btn-copilot-3d"
-            style={{
-              background: currentModuleId === 'office_login_security_governance'
-                ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.2) 100%)'
-                : 'linear-gradient(180deg, #18263D 0%, #0F172A 100%)',
-              border: currentModuleId === 'office_login_security_governance'
-                ? '1.5px solid #34D399'
-                : '1px solid rgba(52, 211, 153, 0.45)',
-              color: '#34D399',
-              fontWeight: 800
-            }}
-            title="Central de Controle de Login, Aprovação de Acessos & Criptografia"
-          >
-            <span>🛡️</span> Controle de Acesso
-          </button>
+          {isMasterOwner && (
+            <button
+              onClick={() => setCurrentModuleId('office_login_security_governance')}
+              className="btn-copilot-3d"
+              style={{
+                background: currentModuleId === 'office_login_security_governance'
+                  ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.2) 100%)'
+                  : 'linear-gradient(180deg, #18263D 0%, #0F172A 100%)',
+                border: currentModuleId === 'office_login_security_governance'
+                  ? '1.5px solid #34D399'
+                  : '1px solid rgba(52, 211, 153, 0.45)',
+                color: '#34D399',
+                fontWeight: 800
+              }}
+              title="Central de Controle de Login, Aprovação de Acessos & Criptografia"
+            >
+              <span>🛡️</span> Controle de Acesso
+            </button>
+          )}
           <button
             onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
             className="btn-1click-3d"
@@ -654,7 +657,19 @@ export const App: React.FC = () => {
           {currentModuleId === 'office_predictive_tax_audit_radar' && <OfficePredictiveTaxAuditRadarView tenant={currentTenantObj} />}
           {currentModuleId === 'office_monthly_consolidated_book' && <OfficeMonthlyConsolidatedBookView tenant={currentTenantObj} />}
           {currentModuleId === 'office_strategic_tax_regime_comparison' && <OfficeStrategicTaxRegimeComparisonView tenant={currentTenantObj} />}
-          {currentModuleId === 'office_login_security_governance' && <OfficeLoginSecurityGovernanceView />}
+          {currentModuleId === 'office_login_security_governance' && (
+            isMasterOwner ? (
+              <OfficeLoginSecurityGovernanceView />
+            ) : (
+              <div style={{ padding: '40px', textAlign: 'center', background: '#111827', borderRadius: '12px', border: '1.5px solid rgba(239,68,68,0.4)', color: '#FFFFFF' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>🛡️ 🚫</div>
+                <h2 style={{ color: '#EF4444', fontSize: '1.3rem', fontWeight: 900, margin: 0 }}>Acesso Restrito ao Proprietário</h2>
+                <p style={{ color: '#94A3B8', fontSize: '0.84rem', marginTop: '8px', maxWidth: '600px', marginInline: 'auto' }}>
+                  Este módulo de Governança Criptográfica e Controle de Logins é confidencial e de acesso exclusivo do Administrador Geral e Proprietário do Soberano Contábil (dfvalu@gmail.com).
+                </p>
+              </div>
+            )
+          )}
           {currentModuleId === 'office_multi_client_grid' && <OfficeMultiClientClosingGridView />}
           {currentModuleId === 'office_universal_dropzone_ocr' && <OfficeUniversalDropzoneOcrView />}
           {currentModuleId === 'office_batch_dispatch_bundle' && <OfficeBatchDispatchBundleView />}
