@@ -197,6 +197,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
   // Calculadora Interativa de ROI
   const [clientsCount, setClientsCount] = useState<number>(60);
+  const [landingSelectedSoftware, setLandingSelectedSoftware] = useState<string>('DOMINIO');
   const hoursSavedPerMonth = Math.round(clientsCount * 5.5);
   const monthlyCostSavings = Math.round(hoursSavedPerMonth * 45); // R$ 45/hora
 
@@ -585,6 +586,35 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             }}
           >
             Diferenciais
+          </a>
+
+          <a
+            href="#migracao"
+            style={{
+              color: '#34D399',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              boxShadow: '0 0 10px rgba(16, 185, 129, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.35) 0%, rgba(16, 185, 129, 0.2) 100%)';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 16px rgba(16, 185, 129, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)';
+              e.currentTarget.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.25)';
+            }}
+          >
+            <span>🔄</span> Migração Sem Trauma
           </a>
 
           <a
@@ -1915,6 +1945,457 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </tbody>
             </table>
           </div>
+        </div>
+      </section>
+
+
+      {/* ========================================================================= */}
+      {/* 4.5 SEÇÃO EXCLUSIVA 3D 4K: MIGRAÇÃO UNIVERSAL SEM TRAUMA                  */}
+      {/* ========================================================================= */}
+      <section id="migracao" style={{ padding: '90px 24px', background: 'radial-gradient(ellipse at center, rgba(16, 185, 129, 0.08) 0%, rgba(7, 11, 20, 1) 75%)', borderTop: '1px solid rgba(52, 211, 153, 0.25)', borderBottom: '1px solid rgba(52, 211, 153, 0.25)' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+          
+          {/* Header da Seção */}
+          <div style={{ textAlign: 'center', marginBottom: '44px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 18px', borderRadius: '30px', background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.1) 100%)', color: '#34D399', fontSize: '0.74rem', fontWeight: 900, border: '1.5px solid rgba(52, 211, 153, 0.45)', boxShadow: '0 0 20px rgba(16, 185, 129, 0.35)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <span>🔄</span> TRANSIÇÃO 100% AUTOMATIZADA • ZERO DIGITAÇÃO MANUAL
+            </div>
+            <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#FFFFFF', marginTop: '16px', letterSpacing: '-0.02em', textShadow: '0 2px 12px rgba(0,0,0,0.9)' }}>
+              Migre Seu Escritório Para o Soberano <span style={{ color: '#34D399', textShadow: '0 0 24px rgba(52, 211, 153, 0.7)' }}>Sem Trauma e Sem Perda de Histórico</span>
+            </h2>
+            <p style={{ fontSize: '0.92rem', color: '#94A3B8', maxWidth: '780px', margin: '10px auto 0 auto', lineHeight: 1.6 }}>
+              Seu escritório usa Domínio, Alterdata, Fortes, Senior, Prosoft, Contmatic, Questor, SCI ou TOTVS? 
+              Nosso motor inteligente com Inteligência Artificial realiza a importação de Plano de Contas, Lançamentos, Clientes, Fornecedores e Colaboradores em menos de 24 horas com garantia total de conciliação patrimonial.
+            </p>
+          </div>
+
+          {/* Grid Principal com os 12 Cards 3D de Softwares Legados */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #10192C 0%, #080D1A 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.4)',
+              borderBottom: '3.5px solid #059669',
+              borderRadius: '20px',
+              padding: '28px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(16, 185, 129, 0.25)'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', fontSize: '0.78rem', color: '#34D399', fontWeight: 900, textTransform: 'uppercase' }}>
+              <span style={{ fontSize: '1.1rem' }}>🏢</span>
+              <span>PASSO 1: SELECIONE O SOFTWARE DE ORIGEM DO ESCRITÓRIO OU CLIENTE QUE ESTÁ MIGRANDO:</span>
+            </div>
+
+            {/* Grid 3x4 dos Softwares Legados */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '14px' }}>
+              
+              {/* 1. Domínio */}
+              <div
+                onClick={() => setLandingSelectedSoftware('DOMINIO')}
+                style={{
+                  background: landingSelectedSoftware === 'DOMINIO' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'DOMINIO' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'DOMINIO' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🏢</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'DOMINIO' ? '#34D399' : '#FFFFFF' }}>Domínio Sistemas</strong>
+                  </div>
+                  {landingSelectedSoftware === 'DOMINIO' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Thomson Reuters</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.xml', '.zip'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 2. Alterdata */}
+              <div
+                onClick={() => setLandingSelectedSoftware('ALTERDATA')}
+                style={{
+                  background: landingSelectedSoftware === 'ALTERDATA' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'ALTERDATA' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'ALTERDATA' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>⚡</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'ALTERDATA' ? '#34D399' : '#FFFFFF' }}>Alterdata Pack</strong>
+                  </div>
+                  {landingSelectedSoftware === 'ALTERDATA' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Alterdata Software</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.xml', '.csv'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Fortes */}
+              <div
+                onClick={() => setLandingSelectedSoftware('FORTES')}
+                style={{
+                  background: landingSelectedSoftware === 'FORTES' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'FORTES' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'FORTES' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🛡️</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'FORTES' ? '#34D399' : '#FFFFFF' }}>Fortes Tecnologia</strong>
+                  </div>
+                  {landingSelectedSoftware === 'FORTES' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Fortes Tecnologia em Sistemas</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.xml'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 4. Senior */}
+              <div
+                onClick={() => setLandingSelectedSoftware('SENIOR')}
+                style={{
+                  background: landingSelectedSoftware === 'SENIOR' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'SENIOR' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'SENIOR' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>💼</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'SENIOR' ? '#34D399' : '#FFFFFF' }}>Senior Sistemas</strong>
+                  </div>
+                  {landingSelectedSoftware === 'SENIOR' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Senior Sistemas S/A</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.json'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 5. Prosoft */}
+              <div
+                onClick={() => setLandingSelectedSoftware('PROSOFT')}
+                style={{
+                  background: landingSelectedSoftware === 'PROSOFT' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'PROSOFT' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'PROSOFT' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>📊</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'PROSOFT' ? '#34D399' : '#FFFFFF' }}>Prosoft</strong>
+                  </div>
+                  {landingSelectedSoftware === 'PROSOFT' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Wolters Kluwer</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.zip'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 6. Contmatic */}
+              <div
+                onClick={() => setLandingSelectedSoftware('CONTMATIC')}
+                style={{
+                  background: landingSelectedSoftware === 'CONTMATIC' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'CONTMATIC' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'CONTMATIC' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🦅</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'CONTMATIC' ? '#34D399' : '#FFFFFF' }}>Contmatic Phoenix</strong>
+                  </div>
+                  {landingSelectedSoftware === 'CONTMATIC' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Contmatic Phoenix</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 7. Questor */}
+              <div
+                onClick={() => setLandingSelectedSoftware('QUESTOR')}
+                style={{
+                  background: landingSelectedSoftware === 'QUESTOR' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'QUESTOR' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'QUESTOR' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🔍</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'QUESTOR' ? '#34D399' : '#FFFFFF' }}>Questor Sistemas</strong>
+                  </div>
+                  {landingSelectedSoftware === 'QUESTOR' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Questor Sistemas Inteligentes</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.xml'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 8. SCI */}
+              <div
+                onClick={() => setLandingSelectedSoftware('SCI')}
+                style={{
+                  background: landingSelectedSoftware === 'SCI' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'SCI' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'SCI' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🔬</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'SCI' ? '#34D399' : '#FFFFFF' }}>SCI Sistemas Contábeis</strong>
+                  </div>
+                  {landingSelectedSoftware === 'SCI' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>SCI Sistemas Contábeis</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.xml'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 9. TOTVS */}
+              <div
+                onClick={() => setLandingSelectedSoftware('TOTVS')}
+                style={{
+                  background: landingSelectedSoftware === 'TOTVS' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'TOTVS' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'TOTVS' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🌐</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'TOTVS' ? '#34D399' : '#FFFFFF' }}>TOTVS Protheus / RM</strong>
+                  </div>
+                  {landingSelectedSoftware === 'TOTVS' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>TOTVS S/A</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.csv', '.json', '.xml'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 10. SPED ECD */}
+              <div
+                onClick={() => setLandingSelectedSoftware('SPED')}
+                style={{
+                  background: landingSelectedSoftware === 'SPED' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'SPED' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'SPED' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>🇧🇷</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'SPED' ? '#34D399' : '#FFFFFF' }}>SPED Contábil (ECD Oficial)</strong>
+                  </div>
+                  {landingSelectedSoftware === 'SPED' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Receita Federal do Brasil / CFC</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.txt', '.sped', '.rec'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 11. eSocial */}
+              <div
+                onClick={() => setLandingSelectedSoftware('ESOCIAL')}
+                style={{
+                  background: landingSelectedSoftware === 'ESOCIAL' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'ESOCIAL' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'ESOCIAL' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>👥</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'ESOCIAL' ? '#34D399' : '#FFFFFF' }}>eSocial (Pacote XMLs)</strong>
+                  </div>
+                  {landingSelectedSoftware === 'ESOCIAL' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Governo Federal / eSocial</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.xml', '.zip'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+              {/* 12. Excel/CSV */}
+              <div
+                onClick={() => setLandingSelectedSoftware('EXCEL')}
+                style={{
+                  background: landingSelectedSoftware === 'EXCEL' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)' : 'rgba(15, 23, 42, 0.6)',
+                  border: landingSelectedSoftware === 'EXCEL' ? '2px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  boxShadow: landingSelectedSoftware === 'EXCEL' ? '0 0 20px rgba(16, 185, 129, 0.35), inset 0 1px 0 rgba(255,255,255,0.2)' : 'none'
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontSize: '1.4rem' }}>📑</span>
+                    <strong style={{ fontSize: '0.94rem', color: landingSelectedSoftware === 'EXCEL' ? '#34D399' : '#FFFFFF' }}>Planilhas Excel / CSV com IA</strong>
+                  </div>
+                  {landingSelectedSoftware === 'EXCEL' && <span style={{ color: '#34D399', fontWeight: 900 }}>✓</span>}
+                </div>
+                <div style={{ fontSize: '0.72rem', color: '#94A3B8', marginBottom: '8px' }}>Universal / Personalizado</div>
+                <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                  {['.xlsx', '.xls', '.csv'].map(ext => (
+                    <span key={ext} style={{ background: 'rgba(255,255,255,0.06)', padding: '2px 6px', borderRadius: '4px', fontSize: '0.62rem', fontFamily: 'var(--font-mono)', color: '#CBD5E1' }}>{ext}</span>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Banner de Garantias & 4 Passos da Migração 3D */}
+            <div style={{ marginTop: '28px', background: '#090E1B', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '14px', padding: '20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', color: '#34D399', flexShrink: 0 }}>
+                  ⏱️
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#FFFFFF' }}>Transição em &lt; 24h</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Sem paralisação do escritório</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid #38BDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', color: '#38BDF8', flexShrink: 0 }}>
+                  🧠
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#FFFFFF' }}>De-Para 98.6% com IA</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Mapeamento IFRS / RFB</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(251, 191, 36, 0.15)', border: '1px solid #FBBF24', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', color: '#FBBF24', flexShrink: 0 }}>
+                  ⚖️
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#FFFFFF' }}>Equação Patrimonial</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Débito = Crédito sem erro</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(168, 85, 247, 0.15)', border: '1px solid #C084FC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem', color: '#C084FC', flexShrink: 0 }}>
+                  📜
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.78rem', fontWeight: 900, color: '#FFFFFF' }}>Laudo Homologado A4</div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8' }}>Assinatura Digital ICP-Brasil</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Chamada para Ação (CTA) */}
+            <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <a
+                href="#contato"
+                style={{
+                  background: 'linear-gradient(180deg, #10B981 0%, #059669 60%, #047857 100%)',
+                  border: '1.5px solid #6EE7B7',
+                  borderBottom: '3px solid #064E3B',
+                  color: '#FFFFFF',
+                  padding: '12px 28px',
+                  borderRadius: '10px',
+                  fontSize: '0.88rem',
+                  fontWeight: 900,
+                  textDecoration: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 6px 24px rgba(16, 185, 129, 0.5), 0 0 30px rgba(16, 185, 129, 0.35)',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <span>🚀</span> Quero Migrar Meu Escritório com Suporte Especializado Gratuito
+              </a>
+            </div>
+
+          </div>
+
         </div>
       </section>
 

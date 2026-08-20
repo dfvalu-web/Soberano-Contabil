@@ -215,7 +215,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   const isMasterOwner = !currentUser || userEmail.toLowerCase() === 'dfvalu@gmail.com' || userEmail.toLowerCase() === 'david.valu@soberanocontabil.com.br';
   const isModulePermitted = (m: NavigationModule) => {
     if (isMasterOwner) return true;
-    if (m.id === 'office_login_security_governance') return false;
+    if (m.id === 'office_login_security_governance' || m.id === 'office_sandbox_isolation_lab') return isMasterOwner;
     return officeStore.isModuleAllowedForUser(userEmail, m.id, m.departmentId);
   };
 

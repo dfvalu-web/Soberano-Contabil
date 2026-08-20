@@ -42,6 +42,16 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "defaultCollapsed": true,
     "modules": [
       {
+        "id": "office_sandbox_isolation_lab",
+        "name": "Laboratório Sandbox & Quarentena de Empresas",
+        "label": "Laboratório Sandbox & Quarentena de Empresas",
+        "icon": "🧪",
+        "badge": "Quarentena",
+        "file": "OfficeSandboxIsolationLabView",
+        "departmentId": "gestao",
+        "isCore": true
+      },
+      {
         "id": "office_login_security_governance",
         "name": "Controle de Acesso & Governança de Login",
         "label": "Controle de Acesso & Governança de Login",

@@ -58,23 +58,37 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
     expect(html).toContain('CNPJ da Empresa');
     expect(html).toContain('Número Estimado de Funcionários');
     expect(html).toContain('Telefone Celular / WhatsApp');
-    expect(html).toContain('WhatsApp Corporativo Oficial');
-    expect(html).toContain('(11) 98765-4321');
-    expect(html).toContain('atendimento@soberanocontabil.com.br');
   });
 
-  it('5. Renderiza o sistema de autenticação corporativo e CTAs de alta conversão', () => {
+  it('5. Renderiza o sistema de autenticação corporativo e garantias de qualidade', () => {
     const html = renderToStaticMarkup(
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
 
-    expect(html).toContain('E-mail Corporativo');
-    expect(html).toContain('Senha de Acesso');
+    expect(html).toContain('Entrar no Soberano Contábil');
     expect(html).toContain('Solicitar Proposta');
-    expect(html).toContain('Acessar Plataforma');
-    expect(html).toContain('Falar com Especialista');
-    expect(html).toContain('IFRS Full &amp; ECD/ECF');
-    expect(html).toContain('Reforma IBS/CBS 2026');
-    expect(html).toContain('CALCULADORA DE ECONOMIA OPERACIONAL');
+    expect(html).toContain('Compromisso Soberano de Qualidade');
+    expect(html).toContain('NBC TG / IFRS Full');
+    expect(html).toContain('SOBERANO CONTÁBIL PLATINUM SUITE');
+  });
+
+  it('6. Renderiza a seção de Migração Sem Trauma 3D 4K (#migracao) com os 10 softwares legados', () => {
+    const html = renderToStaticMarkup(
+      React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
+    );
+
+    expect(html).toContain('id="migracao"');
+    expect(html).toContain('Migração Sem Trauma');
+    expect(html).toContain('Migre Seu Escritório Para o Soberano');
+    expect(html).toContain('Domínio Sistemas');
+    expect(html).toContain('Alterdata Pack');
+    expect(html).toContain('Fortes Tecnologia');
+    expect(html).toContain('Senior Sistemas');
+    expect(html).toContain('Prosoft');
+    expect(html).toContain('Contmatic Phoenix');
+    expect(html).toContain('Questor Sistemas');
+    expect(html).toContain('SCI Sistemas Contábeis');
+    expect(html).toContain('TOTVS Protheus / RM');
+    expect(html).toContain('Transição em &lt; 24h');
   });
 });

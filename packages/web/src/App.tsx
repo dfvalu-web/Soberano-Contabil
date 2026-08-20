@@ -1,4 +1,5 @@
 import { OfficeLoginSecurityGovernanceView } from './views/OfficeLoginSecurityGovernanceView.js';
+import { OfficeSandboxIsolationLabView } from './views/OfficeSandboxIsolationLabView.js';
 import { OfficeBusinessPartnersRegistryView } from './views/OfficeBusinessPartnersRegistryView.js';
 import { OfficeIntangiblesAmortizationView } from './views/OfficeIntangiblesAmortizationView.js';
 import { OfficeIntegratedClosingPipelineView } from './views/OfficeIntegratedClosingPipelineView.js';
@@ -653,6 +654,19 @@ export const App: React.FC = () => {
           {/* Renderização do Módulo Ativo */}
           <CnaeSectorBanner tenant={currentTenantObj} onSelectModule={setCurrentModuleId} currentModuleId={currentModuleId} />
           <div className="view-card-container">
+          {currentModuleId === 'office_sandbox_isolation_lab' && (
+            isMasterOwner ? (
+              <OfficeSandboxIsolationLabView />
+            ) : (
+              <div style={{ padding: '40px', textAlign: 'center', background: '#111827', borderRadius: '12px', border: '1.5px solid rgba(239,68,68,0.4)', color: '#FFFFFF' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>🧪 🚫</div>
+                <h2 style={{ color: '#EF4444', fontSize: '1.3rem', fontWeight: 900, margin: 0 }}>Acesso Restrito ao Master Owner</h2>
+                <p style={{ color: '#94A3B8', fontSize: '0.84rem', marginTop: '8px', maxWidth: '600px', marginInline: 'auto' }}>
+                  Este módulo de Laboratório Sandbox & Quarentena Empresarial é confidencial e de acesso exclusivo do Administrador Geral e Proprietário do Soberano Contábil (dfvalu@gmail.com).
+                </p>
+              </div>
+            )
+          )}
           {currentModuleId === 'office_integrated_closing_pipeline' && <OfficeIntegratedClosingPipelineView tenant={currentTenantObj} />}
           {currentModuleId === 'office_predictive_tax_audit_radar' && <OfficePredictiveTaxAuditRadarView tenant={currentTenantObj} />}
           {currentModuleId === 'office_monthly_consolidated_book' && <OfficeMonthlyConsolidatedBookView tenant={currentTenantObj} />}
