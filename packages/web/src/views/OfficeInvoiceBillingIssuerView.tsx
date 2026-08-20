@@ -1,5 +1,5 @@
 // SOBERANO CONTÁBIL — EMISSOR INTELIGENTE DE NOTAS FISCAIS (NF-e, NFS-e, NFC-e)
-// Integração Completa com Cadastro de Clientes/Fornecedores e Seletores Inteligentes de Natureza de Operação
+// Integração Completa com Cadastro de Clientes/Fornecedores, Catálogo de Produtos e Motor Fiscal de CFOP/CST/NCM
 
 import React, { useState, useMemo } from 'react';
 import {
@@ -16,12 +16,148 @@ import {
   Package,
   Layers,
   ChevronDown,
-  Plus
+  Plus,
+  Sparkles,
+  Zap,
+  ShieldCheck,
+  Scale
 } from 'lucide-react';
 import { officeStore } from '../state/office-store.js';
 import { INITIAL_PARTNERS, BusinessPartner } from './OfficeBusinessPartnersRegistryView';
 
 export type InvoiceDocModel = 'NFE_55' | 'NFSE_SERVICOS' | 'NFCE_65';
+
+export interface CatalogProductItem {
+  id: string;
+  code: string;
+  name: string;
+  category: string;
+  ncm: string;
+  origin: '0' | '1' | '2';
+  cfopInterno: string;
+  cfopInterstadual: string;
+  icmsCst: string;
+  icmsRate: number;
+  pisCst: string;
+  pisRate: number;
+  cofinsCst: string;
+  cofinsRate: number;
+  issRate: number;
+  standardPrice: number;
+  isMonofasico?: boolean;
+}
+
+export const PRODUCT_CATALOG: CatalogProductItem[] = [
+  {
+    id: 'prod-01',
+    code: 'IND-ACAB-01',
+    name: 'Válvula Esfero-Industrial 2" em Aço Inox',
+    category: 'Indústria Metalúrgica',
+    ncm: '8481.80.95',
+    origin: '0',
+    cfopInterno: '5.101',
+    cfopInterstadual: '6.101',
+    icmsCst: '00 (Tributado Integralmente)',
+    icmsRate: 18,
+    pisCst: '01 (Tributável)',
+    pisRate: 1.65,
+    cofinsCst: '01 (Tributável)',
+    cofinsRate: 7.6,
+    issRate: 0,
+    standardPrice: 480.00
+  },
+  {
+    id: 'prod-02',
+    code: 'MED-MONO-02',
+    name: 'Dipirona Sódica 500mg Cx c/ 20 Comprimidos',
+    category: 'Farmacêutico (Monofásico)',
+    ncm: '3004.90.99',
+    origin: '0',
+    cfopInterno: '5.102',
+    cfopInterstadual: '6.102',
+    icmsCst: '60 (Cobrado por ST)',
+    icmsRate: 0,
+    pisCst: '04 (Monofásico - Alíquota Zero)',
+    pisRate: 0,
+    cofinsCst: '04 (Monofásico - Alíquota Zero)',
+    cofinsRate: 0,
+    issRate: 0,
+    standardPrice: 15.00,
+    isMonofasico: true
+  },
+  {
+    id: 'prod-03',
+    code: 'MAT-ACO-03',
+    name: 'Perfil de Aço Galvanizado 6 Metros',
+    category: 'Material de Construção',
+    ncm: '7216.50.00',
+    origin: '0',
+    cfopInterno: '5.101',
+    cfopInterstadual: '6.101',
+    icmsCst: '00 (Tributado Integralmente)',
+    icmsRate: 18,
+    pisCst: '01 (Tributável)',
+    pisRate: 1.65,
+    cofinsCst: '01 (Tributável)',
+    cofinsRate: 7.6,
+    issRate: 0,
+    standardPrice: 294.50
+  },
+  {
+    id: 'prod-04',
+    code: 'SRV-TI-04',
+    name: 'Licenciamento de Software SaaS & Cloud Analytics',
+    category: 'Serviço de Tecnologia',
+    ncm: '1.0101 (NBS)',
+    origin: '0',
+    cfopInterno: '1.07',
+    cfopInterstadual: '1.07',
+    icmsCst: 'Isento',
+    icmsRate: 0,
+    pisCst: '01 (Tributável)',
+    pisRate: 0.65,
+    cofinsCst: '01 (Tributável)',
+    cofinsRate: 3.0,
+    issRate: 5,
+    standardPrice: 1850.00
+  },
+  {
+    id: 'prod-05',
+    code: 'SRV-CONT-05',
+    name: 'Consultoria Tributária & Auditoria IFRS Contábil',
+    category: 'Serviço Profissional',
+    ncm: '1.0501 (NBS)',
+    origin: '0',
+    cfopInterno: '17.19',
+    cfopInterstadual: '17.19',
+    icmsCst: 'Isento',
+    icmsRate: 0,
+    pisCst: '01 (Tributável)',
+    pisRate: 0.65,
+    cofinsCst: '01 (Tributável)',
+    cofinsRate: 3.0,
+    issRate: 5,
+    standardPrice: 3500.00
+  },
+  {
+    id: 'prod-06',
+    code: 'ALIM-CAFE-06',
+    name: 'Café Gourmet Especial Torrado e Moído 500g',
+    category: 'Alimentos / Varejo',
+    ncm: '0901.21.00',
+    origin: '0',
+    cfopInterno: '5.102',
+    cfopInterstadual: '6.102',
+    icmsCst: '20 (Com Redução de Base)',
+    icmsRate: 7,
+    pisCst: '01 (Tributável)',
+    pisRate: 1.65,
+    cofinsCst: '01 (Tributável)',
+    cofinsRate: 7.6,
+    issRate: 0,
+    standardPrice: 32.00
+  }
+];
 
 export const NATURE_OPTIONS: Record<InvoiceDocModel, string[]> = {
   NFE_55: [
@@ -67,31 +203,47 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
 
   const [paymentMethod, setPaymentMethod] = useState<'PIX' | 'BOLETO' | 'CARTAO_CREDITO' | 'A_PRAZO_30_DIAS'>('PIX');
 
-  // Item Selecionado
+  // Produto Selecionado do Catálogo
+  const [selectedProductId, setSelectedProductId] = useState<string>(PRODUCT_CATALOG[0].id);
   const [quantity, setQuantity] = useState<number>(10);
-  const [unitPrice, setUnitPrice] = useState<number>(480.00);
+  const [unitPrice, setUnitPrice] = useState<number>(PRODUCT_CATALOG[0].standardPrice);
   const [discount, setDiscount] = useState<number>(0);
   const [feedback, setFeedback] = useState<{ message: string; isSuccess: boolean } | null>(null);
 
-  const demoProduct = {
-    id: 'prod-ind-01',
-    code: 'IND-ACAB-01',
-    name: 'Válvula Esfero-Industrial 2" em Aço Inox',
-    ncm: '8481.80.95',
-    origin: '0' as const,
-    cfop: docModel === 'NFE_55' ? '5.101' : '5.102',
-    icmsCst: '00',
-    icmsRate: 18,
-    ipiRate: 5,
-    pisRate: 1.65,
-    cofinsRate: 7.6,
-    issRate: docModel === 'NFSE_SERVICOS' ? 5 : 0
+  // Produto atual selecionado
+  const currentProduct = useMemo(() => {
+    return PRODUCT_CATALOG.find(p => p.id === selectedProductId) || PRODUCT_CATALOG[0];
+  }, [selectedProductId]);
+
+  // Inteligência de CFOP Geográfico (Interna vs Interestadual)
+  const isInterestadual = destUf.toUpperCase() !== 'SP';
+  const effectiveCfop = docModel === 'NFSE_SERVICOS'
+    ? currentProduct.cfopInterno
+    : isInterestadual
+      ? currentProduct.cfopInterstadual
+      : currentProduct.cfopInterno;
+
+  const handleProductSelect = (productId: string) => {
+    setSelectedProductId(productId);
+    const prod = PRODUCT_CATALOG.find(p => p.id === productId);
+    if (prod) {
+      setUnitPrice(prod.standardPrice);
+    }
   };
 
   const handleDocModelChange = (model: InvoiceDocModel) => {
     setDocModel(model);
     setNatureOfOperation(NATURE_OPTIONS[model][0]);
     setIsCustomNature(false);
+
+    // Ajustar produto padrão de acordo com o modelo
+    if (model === 'NFSE_SERVICOS') {
+      setSelectedProductId('prod-04');
+      setUnitPrice(1850.00);
+    } else {
+      setSelectedProductId('prod-01');
+      setUnitPrice(480.00);
+    }
   };
 
   const handlePartnerSelect = (partnerId: string) => {
@@ -124,21 +276,21 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
       paymentMethod,
       items: [
         {
-          productId: demoProduct.id,
-          code: demoProduct.code,
-          name: demoProduct.name,
-          ncm: demoProduct.ncm,
-          origin: demoProduct.origin,
-          cfop: demoProduct.cfop,
+          productId: currentProduct.id,
+          code: currentProduct.code,
+          name: currentProduct.name,
+          ncm: currentProduct.ncm,
+          origin: currentProduct.origin,
+          cfop: effectiveCfop,
           quantity,
           unitPrice,
           discountAmount: discount,
-          icmsCst: demoProduct.icmsCst,
-          icmsRate: demoProduct.icmsRate,
-          ipiRate: demoProduct.ipiRate,
-          pisRate: demoProduct.pisRate,
-          cofinsRate: demoProduct.cofinsRate,
-          issRate: demoProduct.issRate
+          icmsCst: currentProduct.icmsCst,
+          icmsRate: currentProduct.icmsRate,
+          ipiRate: 5,
+          pisRate: currentProduct.pisRate,
+          cofinsRate: currentProduct.cofinsRate,
+          issRate: currentProduct.issRate
         }
       ]
     });
@@ -171,7 +323,7 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
             </span>
           </div>
           <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.78rem' }}>
-            Emissão integrada com amarrações do Cadastro de Clientes/Fornecedores, cálculo fiscal determinístico e lançamento contábil em 1-Click.
+            Emissão integrada com amarrações do Cadastro de Clientes/Fornecedores, catálogo de produtos com CFOP/CST/NCM e lançamento contábil em 1-Click.
           </p>
         </div>
 
@@ -179,145 +331,142 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
           <div
             className="control-pod-3d"
             style={{
-              padding: '4px 10px',
-              background: 'linear-gradient(180deg, #18233C 0%, #0E1528 100%)',
-              border: '1px solid rgba(52, 211, 153, 0.4)',
-              borderBottom: '2px solid rgba(5, 150, 105, 0.6)'
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '4px 8px'
             }}
           >
-            <span style={{ fontSize: '0.85rem' }}>🏢</span>
+            <span style={{ fontSize: '0.70rem', color: '#94A3B8', fontWeight: 700 }}>Empresa Emissora:</span>
             <select
               value={selectedTenantId}
               onChange={(e) => setSelectedTenantId(e.target.value)}
-              style={{ background: 'transparent', border: 'none', color: '#FFFFFF', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#34D399',
+                fontSize: '0.78rem',
+                fontWeight: 900,
+                cursor: 'pointer',
+                outline: 'none'
+              }}
             >
               {tenants.map(t => (
-                <option key={t.id} value={t.id} style={{ background: '#0F172A', color: '#FFFFFF', fontWeight: 700 }}>
-                  {t.name} ({t.regime.replace('_', ' ')})
+                <option key={t.id} value={t.id} style={{ background: '#0B1120', color: '#fff' }}>
+                  {t.name} (CNPJ: {t.cnpj})
                 </option>
               ))}
             </select>
           </div>
-
-          <button onClick={() => window.print()} className="btn-1click-3d" style={{ padding: '6px 14px', fontSize: '0.76rem' }}>
-            <Printer size={14} />
-            <span>Imprimir DANFE Diamante (A4)</span>
-          </button>
         </div>
       </div>
 
+      {/* Modelo de Documento Fiscal (Abas 3D) */}
+      <div className="no-print" style={{ display: 'flex', gap: '10px' }}>
+        <button
+          type="button"
+          onClick={() => handleDocModelChange('NFE_55')}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: '10px',
+            border: docModel === 'NFE_55' ? '1.5px solid #34D399' : '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: docModel === 'NFE_55' ? '3px solid #059669' : '1px solid rgba(255, 255, 255, 0.08)',
+            background: docModel === 'NFE_55' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.12) 100%)' : 'rgba(15, 23, 42, 0.6)',
+            color: docModel === 'NFE_55' ? '#FFFFFF' : '#94A3B8',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            fontWeight: 800,
+            fontSize: '0.85rem',
+            boxShadow: docModel === 'NFE_55' ? '0 0 16px rgba(16, 185, 129, 0.3)' : 'none',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <FileText size={18} color={docModel === 'NFE_55' ? '#34D399' : '#94A3B8'} />
+          <span>NF-e Modelo 55 (Mercadorias & Indústria)</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleDocModelChange('NFSE_SERVICOS')}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: '10px',
+            border: docModel === 'NFSE_SERVICOS' ? '1.5px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: docModel === 'NFSE_SERVICOS' ? '3px solid #0284C7' : '1px solid rgba(255, 255, 255, 0.08)',
+            background: docModel === 'NFSE_SERVICOS' ? 'linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(2, 132, 199, 0.12) 100%)' : 'rgba(15, 23, 42, 0.6)',
+            color: docModel === 'NFSE_SERVICOS' ? '#FFFFFF' : '#94A3B8',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            fontWeight: 800,
+            fontSize: '0.85rem',
+            boxShadow: docModel === 'NFSE_SERVICOS' ? '0 0 16px rgba(56, 189, 248, 0.3)' : 'none',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <Receipt size={18} color={docModel === 'NFSE_SERVICOS' ? '#38BDF8' : '#94A3B8'} />
+          <span>NFS-e Padrão Nacional (Serviços & Retenções)</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => handleDocModelChange('NFCE_65')}
+          style={{
+            flex: 1,
+            padding: '12px 16px',
+            borderRadius: '10px',
+            border: docModel === 'NFCE_65' ? '1.5px solid #FBBF24' : '1px solid rgba(255, 255, 255, 0.08)',
+            borderBottom: docModel === 'NFCE_65' ? '3px solid #D97706' : '1px solid rgba(255, 255, 255, 0.08)',
+            background: docModel === 'NFCE_65' ? 'linear-gradient(180deg, rgba(251, 191, 36, 0.25) 0%, rgba(217, 119, 6, 0.12) 100%)' : 'rgba(15, 23, 42, 0.6)',
+            color: docModel === 'NFCE_65' ? '#FFFFFF' : '#94A3B8',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            fontWeight: 800,
+            fontSize: '0.85rem',
+            boxShadow: docModel === 'NFCE_65' ? '0 0 16px rgba(245, 158, 11, 0.3)' : 'none',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <QrCode size={18} color={docModel === 'NFCE_65' ? '#FBBF24' : '#94A3B8'} />
+          <span>NFC-e Modelo 65 (Varejo & Cupom Fiscal)</span>
+        </button>
+      </div>
+
       {feedback && (
-        <div className="no-print" style={{ background: feedback.isSuccess ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', border: '1px solid ' + (feedback.isSuccess ? '#10B981' : '#EF4444'), padding: '12px 16px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          {feedback.isSuccess ? <CheckCircle2 size={18} color="#34D399" /> : <AlertCircle size={18} color="#EF4444" />}
-          <span style={{ fontSize: '0.84rem', color: '#fff', fontWeight: 700 }}>{feedback.message}</span>
+        <div style={{ background: feedback.isSuccess ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)', border: feedback.isSuccess ? '1px solid #10B981' : '1px solid #EF4444', padding: '12px 16px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {feedback.isSuccess ? <CheckCircle2 size={20} color="#10B981" /> : <AlertCircle size={20} color="#EF4444" />}
+          <span style={{ fontSize: '0.82rem', color: '#FFFFFF', fontWeight: 600 }}>{feedback.message}</span>
         </div>
       )}
 
-      {/* Model Selector & Inputs */}
-      <div className="no-print" style={{ background: 'linear-gradient(180deg, #131E35 0%, #0C1220 100%)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.12)', boxShadow: '0 4px 16px rgba(0, 0, 0, 0.4)' }}>
+      {/* Formulário Principal de Emissão */}
+      <div style={{ background: 'linear-gradient(180deg, #131E35 0%, #0A0F1E 100%)', border: '1.5px solid rgba(52, 211, 153, 0.35)', borderBottom: '3.5px solid #059669', borderRadius: '16px', padding: '24px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 12px 36px rgba(0, 0, 0, 0.7)' }}>
         
-        {/* Seletor de Modelo de Documento */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px', marginBottom: '20px' }}>
-          <button
-            type="button"
-            onClick={() => handleDocModelChange('NFE_55')}
-            style={{
-              padding: '12px 18px',
-              borderRadius: '10px',
-              fontSize: '0.85rem',
-              fontWeight: docModel === 'NFE_55' ? 800 : 600,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              background: docModel === 'NFE_55' ? 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)' : 'rgba(15, 23, 42, 0.65)',
-              color: docModel === 'NFE_55' ? '#ffffff' : '#94A3B8',
-              border: docModel === 'NFE_55' ? '2px solid #38BDF8' : '1.5px solid rgba(255, 255, 255, 0.12)',
-              boxShadow: docModel === 'NFE_55' ? '0 6px 20px -2px rgba(2, 132, 199, 0.45)' : 'none'
-            }}
-          >
-            <Receipt size={18} color={docModel === 'NFE_55' ? '#ffffff' : '#38BDF8'} />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ lineHeight: 1.2 }}>NF-e Modelo 55</div>
-              <div style={{ fontSize: '0.68rem', opacity: docModel === 'NFE_55' ? 0.95 : 0.7 }}>Produtos & Indústria</div>
-            </div>
-            {docModel === 'NFE_55' && (
-              <span style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.25)', borderRadius: '999px', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 900, color: '#fff' }}>SELECIONADO</span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleDocModelChange('NFSE_SERVICOS')}
-            style={{
-              padding: '12px 18px',
-              borderRadius: '10px',
-              fontSize: '0.85rem',
-              fontWeight: docModel === 'NFSE_SERVICOS' ? 800 : 600,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              background: docModel === 'NFSE_SERVICOS' ? 'linear-gradient(135deg, #059669 0%, #047857 100%)' : 'rgba(15, 23, 42, 0.65)',
-              color: docModel === 'NFSE_SERVICOS' ? '#ffffff' : '#94A3B8',
-              border: docModel === 'NFSE_SERVICOS' ? '2px solid #34D399' : '1.5px solid rgba(255, 255, 255, 0.12)',
-              boxShadow: docModel === 'NFSE_SERVICOS' ? '0 6px 20px -2px rgba(5, 150, 105, 0.45)' : 'none'
-            }}
-          >
-            <FileText size={18} color={docModel === 'NFSE_SERVICOS' ? '#ffffff' : '#34D399'} />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ lineHeight: 1.2 }}>NFS-e Padrão Nacional</div>
-              <div style={{ fontSize: '0.68rem', opacity: docModel === 'NFSE_SERVICOS' ? 0.95 : 0.7 }}>Serviços Municipais</div>
-            </div>
-            {docModel === 'NFSE_SERVICOS' && (
-              <span style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.25)', borderRadius: '999px', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 900, color: '#fff' }}>SELECIONADO</span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleDocModelChange('NFCE_65')}
-            style={{
-              padding: '12px 18px',
-              borderRadius: '10px',
-              fontSize: '0.85rem',
-              fontWeight: docModel === 'NFCE_65' ? 800 : 600,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              cursor: 'pointer',
-              background: docModel === 'NFCE_65' ? 'linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%)' : 'rgba(15, 23, 42, 0.65)',
-              color: docModel === 'NFCE_65' ? '#ffffff' : '#94A3B8',
-              border: docModel === 'NFCE_65' ? '2px solid #A78BFA' : '1.5px solid rgba(255, 255, 255, 0.12)',
-              boxShadow: docModel === 'NFCE_65' ? '0 6px 20px -2px rgba(124, 58, 237, 0.45)' : 'none'
-            }}
-          >
-            <QrCode size={18} color={docModel === 'NFCE_65' ? '#ffffff' : '#A78BFA'} />
-            <div style={{ textAlign: 'left' }}>
-              <div style={{ lineHeight: 1.2 }}>NFC-e Modelo 65</div>
-              <div style={{ fontSize: '0.68rem', opacity: docModel === 'NFCE_65' ? 0.95 : 0.7 }}>Varejo Cupom Fiscal</div>
-            </div>
-            {docModel === 'NFCE_65' && (
-              <span style={{ marginLeft: 'auto', background: 'rgba(255,255,255,0.25)', borderRadius: '999px', padding: '2px 8px', fontSize: '0.62rem', fontWeight: 900, color: '#fff' }}>SELECIONADO</span>
-            )}
-          </button>
-        </div>
-
-        {/* Form Grid 3D */}
+        {/* Grid de Configurações da Operação */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
           
-          {/* 1. Natureza da Operação com Seletor Inteligente */}
+          {/* 1. Natureza da Operação */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <label style={{ fontSize: '0.70rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase' }}>
-                Natureza da Operação (Fiscal) *
+                Natureza da Operação (Fiscal)
               </label>
               <button
                 type="button"
-                onClick={() => setIsCustomNature(prev => !prev)}
-                style={{ background: 'transparent', border: 'none', color: '#38BDF8', fontSize: '0.64rem', fontWeight: 700, cursor: 'pointer' }}
+                onClick={() => setIsCustomNature(!isCustomNature)}
+                style={{ background: 'transparent', border: 'none', color: '#38BDF8', fontSize: '0.68rem', cursor: 'pointer', fontWeight: 700 }}
               >
-                {isCustomNature ? '← Usar Lista Padrão' : '✎ Digitar Outra'}
+                {isCustomNature ? '« Selecionar Sugestão' : '+ Digitar Livre'}
               </button>
             </div>
 
@@ -326,53 +475,63 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
                 type="text"
                 value={natureOfOperation}
                 onChange={(e) => setNatureOfOperation(e.target.value)}
-                placeholder="Informe a natureza customizada..."
-                style={{ width: '100%', background: '#0B1120', border: '1px solid #34D399', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 700, outline: 'none' }}
+                placeholder="Digite a natureza da operação..."
+                style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#fff', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
               />
             ) : (
               <select
                 value={natureOfOperation}
                 onChange={(e) => setNatureOfOperation(e.target.value)}
-                style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#34D399', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+                style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#fff', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 700, outline: 'none', cursor: 'pointer' }}
               >
-                {NATURE_OPTIONS[docModel].map((nat, idx) => (
-                  <option key={idx} value={nat} style={{ background: '#0F172A', color: '#FFFFFF', fontWeight: 600 }}>
-                    {nat}
-                  </option>
+                {NATURE_OPTIONS[docModel].map((opt, idx) => (
+                  <option key={idx} value={opt}>{opt}</option>
                 ))}
               </select>
             )}
           </div>
 
-          {/* 2. Destinatário Conectado ao Cadastro de Clientes e Fornecedores */}
+          {/* 2. Destinatário / Tomador (Conectado ao Cadastro Central) */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <label style={{ fontSize: '0.70rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase' }}>
-              Destinatário / Tomador (Do Cadastro Central) *
-            </label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ fontSize: '0.70rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase' }}>
+                Destinatário / Tomador (Do Cadastro Central)
+              </label>
+              <span style={{ fontSize: '0.65rem', color: '#34D399', fontWeight: 800 }}>✓ VINCULADO AO CADASTRO</span>
+            </div>
+
             <select
               value={selectedPartnerId}
               onChange={(e) => handlePartnerSelect(e.target.value)}
-              style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+              style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#34D399', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
             >
               {INITIAL_PARTNERS.map(p => (
-                <option key={p.id} value={p.id} style={{ background: '#0F172A', color: '#FFFFFF' }}>
-                  {p.partnerType === 'CLIENTE' ? '🏢' : '🏭'} {p.name} ({p.documentNumber})
+                <option key={p.id} value={p.id}>
+                  {p.name} ({p.documentNumber} • {p.address.state})
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 3. CNPJ / CPF Auto-Preenchido */}
+          {/* 3. Documento e UF do Destinatário */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             <label style={{ fontSize: '0.70rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase' }}>
-              CNPJ / CPF do Destinatário
+              CNPJ / CPF & Localidade
             </label>
-            <input
-              type="text"
-              readOnly
-              value={destCnpj}
-              style={{ width: '100%', background: '#0A0E18', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#38BDF8', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}
-            />
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <input
+                type="text"
+                readOnly
+                value={destCnpj}
+                style={{ flex: 2, background: '#0A0E18', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#38BDF8', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, fontFamily: 'var(--font-mono)' }}
+              />
+              <input
+                type="text"
+                readOnly
+                value={`${destCity} / ${destUf}`}
+                style={{ flex: 1, background: '#0A0E18', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 10px', fontSize: '0.74rem', fontWeight: 800, textAlign: 'center' }}
+              />
+            </div>
           </div>
 
           {/* 4. Forma de Pagamento */}
@@ -393,18 +552,64 @@ export const OfficeInvoiceBillingIssuerView: React.FC = () => {
           </div>
         </div>
 
-        {/* Item Selection Card */}
-        <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(10, 15, 28, 0.8)', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <div style={{ fontSize: '0.84rem', fontWeight: 800, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Package size={16} color="#34D399" />
-              <span>Item Selecionado: {demoProduct.name}</span>
+        {/* Seletor de Produto do Catálogo Expandido */}
+        <div style={{ marginTop: '20px', padding: '16px', background: 'rgba(10, 15, 28, 0.85)', borderRadius: '12px', border: '1.5px solid rgba(56, 189, 248, 0.35)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+            <div style={{ fontSize: '0.86rem', fontWeight: 900, color: '#fff', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Package size={18} color="#38BDF8" />
+              <span>Catálogo de Produtos & Serviços (Ficha Cadastral Fiscal)</span>
             </div>
-            <span style={{ fontSize: '0.68rem', color: '#94A3B8', fontFamily: 'var(--font-mono)' }}>
-              NCM: {demoProduct.ncm} • CFOP: {demoProduct.cfop}
-            </span>
+            
+            {isInterestadual ? (
+              <span style={{ background: 'rgba(56, 189, 248, 0.2)', border: '1px solid rgba(56, 189, 248, 0.4)', color: '#38BDF8', padding: '2px 8px', borderRadius: '4px', fontSize: '0.66rem', fontWeight: 900 }}>
+                ⚡ Operação Interestadual (SP ➔ {destUf}) • CFOP {effectiveCfop}
+              </span>
+            ) : (
+              <span style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid rgba(52, 211, 153, 0.4)', color: '#34D399', padding: '2px 8px', borderRadius: '4px', fontSize: '0.66rem', fontWeight: 900 }}>
+                ✓ Operação Interna (SP ➔ SP) • CFOP {effectiveCfop}
+              </span>
+            )}
           </div>
 
+          {/* Dropdown do Catálogo de Produtos */}
+          <div style={{ marginBottom: '14px' }}>
+            <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+              Selecione o Item Cadastrado
+            </label>
+            <select
+              value={selectedProductId}
+              onChange={(e) => handleProductSelect(e.target.value)}
+              style={{ width: '100%', background: '#080D1A', border: '1.5px solid rgba(56, 189, 248, 0.4)', borderRadius: '8px', color: '#FFFFFF', padding: '9px 12px', fontSize: '0.82rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+            >
+              {PRODUCT_CATALOG.map(prod => (
+                <option key={prod.id} value={prod.id}>
+                  [{prod.code}] {prod.name} — NCM: {prod.ncm} — R$ {prod.standardPrice.toFixed(2)} ({prod.category})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Tags Fiscais Extraídas do Produto Selecionado */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', marginBottom: '16px', background: '#070B14', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div>
+              <span style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', fontWeight: 800 }}>NCM / NBS:</span>
+              <strong style={{ fontSize: '0.78rem', color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>{currentProduct.ncm}</strong>
+            </div>
+            <div>
+              <span style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', fontWeight: 800 }}>CFOP APLICADO:</span>
+              <strong style={{ fontSize: '0.78rem', color: '#34D399', fontFamily: 'var(--font-mono)' }}>{effectiveCfop}</strong>
+            </div>
+            <div>
+              <span style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', fontWeight: 800 }}>CST ICMS:</span>
+              <strong style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>{currentProduct.icmsCst}</strong>
+            </div>
+            <div>
+              <span style={{ fontSize: '0.62rem', color: '#64748B', display: 'block', fontWeight: 800 }}>CST PIS/COFINS:</span>
+              <strong style={{ fontSize: '0.74rem', color: currentProduct.isMonofasico ? '#34D399' : '#CBD5E1' }}>{currentProduct.pisCst}</strong>
+            </div>
+          </div>
+
+          {/* Quantidades e Valores */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '14px' }}>
             <div>
               <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
