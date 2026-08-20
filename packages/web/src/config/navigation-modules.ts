@@ -490,6 +490,15 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
         "isCore": true
 },
       {
+        "id": "office_business_partners_registry",
+        "name": "Cadastro de Clientes, Fornecedores & Parceiros",
+        "label": "Cadastro de Clientes, Fornecedores & Parceiros",
+        "icon": "👥",
+        "file": "OfficeBusinessPartnersRegistryView",
+        "departmentId": "fiscal",
+        "isCore": true
+      },
+      {
         "id": "office_invoice_billing_issuer",
         "name": "Emissor de Notas Fiscais (NF-e/NFS-e/NFC-e)",
         "label": "Emissor de Notas Fiscais (NF-e/NFS-e/NFC-e)",
@@ -497,7 +506,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
         "file": "OfficeInvoiceBillingIssuerView",
         "departmentId": "fiscal",
         "isCore": true
-},
+      },
       {
         "id": "office_monophasic_tax",
         "name": "Monofásicos PIS/COFINS (Farmácias)",

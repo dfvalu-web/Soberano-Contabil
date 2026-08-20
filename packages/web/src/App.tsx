@@ -1,3 +1,4 @@
+import { OfficeBusinessPartnersRegistryView } from './views/OfficeBusinessPartnersRegistryView.js';
 import { OfficeIntangiblesAmortizationView } from './views/OfficeIntangiblesAmortizationView.js';
 import { OfficeIntegratedClosingPipelineView } from './views/OfficeIntegratedClosingPipelineView.js';
 import { OfficePredictiveTaxAuditRadarView } from './views/OfficePredictiveTaxAuditRadarView.js';
@@ -657,6 +658,7 @@ export const App: React.FC = () => {
           
           {currentModuleId === 'office_products_services_stock' && <OfficeProductsServicesStockView />}
           {currentModuleId === 'office_invoice_billing_issuer' && <OfficeInvoiceBillingIssuerView />}
+          {currentModuleId === 'office_business_partners_registry' && <OfficeBusinessPartnersRegistryView />}
           {(currentModuleId === 'office_fixed_assets_ciap' || currentModuleId === 'office_fixed_assets_cpc27') && <OfficeFixedAssetsCiapView />}
           {currentModuleId === 'office_intangibles_amortization' && <OfficeIntangiblesAmortizationView />}
 
