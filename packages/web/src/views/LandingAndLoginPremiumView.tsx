@@ -263,76 +263,227 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '12px 32px',
-          background: 'rgba(9, 15, 28, 0.88)',
-          backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)'
+          padding: '10px 28px',
+          background: 'linear-gradient(180deg, rgba(14, 23, 42, 0.95) 0%, rgba(8, 14, 27, 0.98) 100%)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '2px solid rgba(52, 211, 153, 0.4)',
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 32px rgba(0, 0, 0, 0.75), 0 0 24px rgba(16, 185, 129, 0.2)'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        {/* Logo & Marca Diamond 3D */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div
             style={{
-              width: '34px',
-              height: '34px',
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 50%, #0284C7 100%)',
-              border: '2px solid rgba(52, 211, 153, 0.9)',
+              width: '38px',
+              height: '38px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #34D399 0%, #059669 45%, #0284C7 100%)',
+              border: '1.5px solid #6EE7B7',
+              borderBottom: '2.5px solid #064E3B',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 900,
-              fontSize: '0.82rem',
+              fontSize: '0.86rem',
               color: '#070B12',
-              boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.8), 0 0 16px rgba(16, 185, 129, 0.6)'
+              boxShadow: 'inset 0 2px 2px rgba(255, 255, 255, 0.9), inset 0 -2px 4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(52, 211, 153, 0.8)',
+              textShadow: '0 1px 0 rgba(255,255,255,0.4)',
+              transform: 'perspective(500px) translateZ(5px)'
             }}
           >
             SC
           </div>
           <div>
-            <div style={{ fontSize: '1.02rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em' }}>
-              Soberano <span style={{ color: '#34D399', textShadow: '0 0 12px rgba(52, 211, 153, 0.5)' }}>Contábil</span>
+            <div style={{ fontSize: '1.08rem', fontWeight: 900, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.1, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+              Soberano <span style={{ color: '#34D399', textShadow: '0 0 16px rgba(52, 211, 153, 0.75)' }}>Contábil</span>
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#94A3B8', fontWeight: 700, letterSpacing: '0.04em' }}>
-              PLATINUM SUITE ENTERPRISE v4.5
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', marginTop: '2px', background: 'rgba(56, 189, 248, 0.12)', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '1px 6px', borderRadius: '4px', fontSize: '0.58rem', color: '#38BDF8', fontWeight: 900, letterSpacing: '0.04em' }}>
+              <span>💎</span> PLATINUM SUITE ENTERPRISE v4.5
             </div>
           </div>
         </div>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '22px', fontSize: '0.78rem', fontWeight: 700 }}>
-          <a href="#diferenciais" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Diferenciais</a>
-          <a href="#comparativo" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Comparativo</a>
-          <a href="#pilares" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Pilares</a>
-          <a href="#roi" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Calculadora ROI</a>
+        {/* Links de Navegação em Cápsula Pod 3D */}
+        <nav
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'linear-gradient(180deg, rgba(20, 30, 52, 0.75) 0%, rgba(10, 16, 30, 0.9) 100%)',
+            padding: '4px 8px',
+            borderRadius: '10px',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+            borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 2px 10px rgba(0, 0, 0, 0.3)'
+          }}
+        >
+          <a
+            href="#diferenciais"
+            style={{
+              color: '#E2E8F0',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)';
+              e.currentTarget.style.color = '#34D399';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(16, 185, 129, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#E2E8F0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Diferenciais
+          </a>
+
+          <a
+            href="#comparativo"
+            style={{
+              color: '#E2E8F0',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)';
+              e.currentTarget.style.color = '#34D399';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(16, 185, 129, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#E2E8F0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Comparativo
+          </a>
+
+          <a
+            href="#pilares"
+            style={{
+              color: '#E2E8F0',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)';
+              e.currentTarget.style.color = '#34D399';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(16, 185, 129, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#E2E8F0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Pilares
+          </a>
+
+          <a
+            href="#roi"
+            style={{
+              color: '#E2E8F0',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)';
+              e.currentTarget.style.color = '#34D399';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(16, 185, 129, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#E2E8F0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Calculadora ROI
+          </a>
         </nav>
 
+        {/* Botões de Ação Master 3D 4K */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
             onClick={() => handleDirectLoginWithProfile(PRESET_PROFILES[0])}
-            className="btn-1click-3d"
-            style={{ padding: '6px 16px', fontSize: '0.76rem' }}
+            style={{
+              background: 'linear-gradient(180deg, #10B981 0%, #059669 60%, #047857 100%)',
+              border: '1.5px solid #6EE7B7',
+              borderBottom: '2.5px solid #064E3B',
+              color: '#FFFFFF',
+              padding: '7px 18px',
+              borderRadius: '8px',
+              fontSize: '0.78rem',
+              fontWeight: 900,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.7), 0 4px 16px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.35)',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 6px 20px rgba(16, 185, 129, 0.65), 0 0 28px rgba(16, 185, 129, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 1px rgba(255, 255, 255, 0.7), 0 4px 16px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.35)';
+            }}
           >
-            <Zap size={14} /> Entrar em 1-Click
+            <Zap size={14} /> <span>Entrar em 1-Click</span>
           </button>
+
           <a
             href="#login-card-anchor"
             style={{
               background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
+              border: '1.5px solid rgba(56, 189, 248, 0.45)',
+              borderBottom: '2.5px solid rgba(0, 0, 0, 0.6)',
               color: '#FFFFFF',
-              padding: '6px 14px',
+              padding: '7px 16px',
               borderRadius: '8px',
-              fontSize: '0.76rem',
+              fontSize: '0.78rem',
               fontWeight: 800,
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 0, 0, 0.5)',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.8)';
+              e.currentTarget.style.transform = 'translateY(-1px)';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 6px 18px rgba(56, 189, 248, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.45)';
+              e.currentTarget.style.transform = 'none';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 0, 0, 0.5)';
             }}
           >
-            <Lock size={13} style={{ color: '#38BDF8' }} /> Autenticação
+            <Lock size={13} style={{ color: '#38BDF8' }} /> <span>Autenticação</span>
           </a>
         </div>
       </header>
