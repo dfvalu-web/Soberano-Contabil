@@ -511,7 +511,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
                         <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
-                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{module.name}</span>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#94A3B8', fontWeight: isActive ? 700 : 500 }}>{module.name}</span>
                         {isRecommended && (
                           <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 4px', borderRadius: '3px', background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', flexShrink: 0 }}>
                             ⭐ CNAE
@@ -595,7 +595,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: '7px', minWidth: 0, flex: 1 }}>
                             <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{module.icon}</span>
-                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: isActive ? '#34D399' : '#94A3B8', fontWeight: isActive ? 700 : 500 }}>
                               <HighlightMatch text={module.name} query={searchQuery} />
                             </span>
                             {isRecommended && (
