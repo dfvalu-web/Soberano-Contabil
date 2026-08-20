@@ -169,8 +169,8 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
   const [authMode, setAuthMode] = useState<'LOGIN' | 'REGISTER' | 'RECOVERY' | 'CERTIFICATE'>('LOGIN');
 
   // Login Form States
-  const [emailInput, setEmailInput] = useState<string>('david.valu@soberanocontabil.com.br');
-  const [passwordInput, setPasswordInput] = useState<string>('Soberano@2026');
+  const [emailInput, setEmailInput] = useState<string>('');
+  const [passwordInput, setPasswordInput] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
 
@@ -1140,48 +1140,12 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                     <span>🔐 Entrar no Soberano Contábil</span>
                   )}
                 </button>
-
-                {/* Seletor Rápido de Acesso Master / Proprietário */}
-                <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontSize: '0.64rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', marginBottom: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Perfis Pré-Configurados:</span>
-                    <span style={{ color: '#FBBF24' }}>👑 Master Ativo</span>
-                  </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-                    {PRESET_PROFILES.slice(0, 4).map(prof => (
-                      <button
-                        key={prof.id}
-                        type="button"
-                        onClick={() => {
-                          setEmailInput(prof.email);
-                          setPasswordInput(prof.email === 'dfvalu@gmail.com' ? 'Soberano@Master2026!' : 'Soberano@2026');
-                          setErrorMessage('');
-                        }}
-                        style={{
-                          background: prof.email === 'dfvalu@gmail.com' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(255,255,255,0.04)',
-                          border: prof.email === 'dfvalu@gmail.com' ? '1px solid #F59E0B' : '1px solid rgba(255,255,255,0.08)',
-                          borderRadius: '6px',
-                          padding: '5px 8px',
-                          textAlign: 'left',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        <span style={{ fontSize: '0.9rem' }}>{prof.avatarIcon}</span>
-                        <div style={{ overflow: 'hidden' }}>
-                          <div style={{ fontSize: '0.68rem', fontWeight: 800, color: prof.email === 'dfvalu@gmail.com' ? '#FBBF24' : '#FFFFFF', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                            {prof.name}
-                          </div>
-                          <div style={{ fontSize: '0.58rem', color: '#94A3B8', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
-                            {prof.email}
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                <div style={{ marginTop: '10px', textAlign: 'center', fontSize: '0.62rem', color: '#64748B', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                  <span style={{ color: '#10B981' }}>🔒</span>
+                  <span>Criptografia de Hardware AES-256 • Conforme LGPD & ICP-Brasil</span>
                 </div>
+
+
               </form>
             )}
 
