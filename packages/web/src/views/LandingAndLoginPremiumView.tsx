@@ -1,6 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import {
   ShieldCheck,
+  Phone,
+  MapPin,
+  MessageSquare,
+  Send,
+  Clock,
   Lock,
   Zap,
   Building2,
@@ -180,6 +185,61 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
   const [clientsCount, setClientsCount] = useState<number>(60);
   const hoursSavedPerMonth = Math.round(clientsCount * 5.5);
   const monthlyCostSavings = Math.round(hoursSavedPerMonth * 45); // R$ 45/hora
+
+  
+  // Contact Form States (PJ vs PF & 3D 4K Form)
+  const [contactPersonType, setContactPersonType] = useState<'PJ' | 'PF'>('PJ');
+  const [contactName, setContactName] = useState<string>('');
+  const [contactCompany, setContactCompany] = useState<string>('');
+  const [contactDoc, setContactDoc] = useState<string>('');
+  const [contactEmployees, setContactEmployees] = useState<string>('6-20');
+  const [contactPhone, setContactPhone] = useState<string>('');
+  const [contactPhoneAlt, setContactPhoneAlt] = useState<string>('');
+  const [contactEmail, setContactEmail] = useState<string>('');
+  const [contactCity, setContactCity] = useState<string>('São Paulo');
+  const [contactState, setContactState] = useState<string>('SP');
+  const [contactMessage, setContactMessage] = useState<string>('');
+  const [contactInterests, setContactInterests] = useState<string[]>([
+    'Esteira Contábil IFRS',
+    'Emissor & Fiscal SPED'
+  ]);
+  const [isSubmittingContact, setIsSubmittingContact] = useState<boolean>(false);
+  const [contactFeedback, setContactFeedback] = useState<{ success: boolean; message: string; protocol: string } | null>(null);
+
+  const toggleContactInterest = (interest: string) => {
+    setContactInterests(prev => 
+      prev.includes(interest) ? prev.filter(i => i !== interest) : [...prev, interest]
+    );
+  };
+
+  const handleSendContactForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactName.trim() || !contactDoc.trim() || !contactPhone.trim() || !contactEmail.trim()) {
+      alert('Por favor, preencha os campos obrigatórios (Nome, Documento, Telefone e E-mail).');
+      return;
+    }
+
+    setIsSubmittingContact(true);
+    const protocolNum = 'SOB-' + Math.floor(100000 + Math.random() * 900000);
+
+    setTimeout(() => {
+      setIsSubmittingContact(false);
+      setContactFeedback({
+        success: true,
+        protocol: protocolNum,
+        message: `Sua solicitação (${contactPersonType}) foi registrada com sucesso sob o protocolo ${protocolNum}. Nosso consultor sênior entrará em contato via WhatsApp/Telefone em até 15 minutos!`
+      });
+
+      // Limpar campos
+      setContactName('');
+      setContactCompany('');
+      setContactDoc('');
+      setContactPhone('');
+      setContactPhoneAlt('');
+      setContactEmail('');
+      setContactMessage('');
+    }, 900);
+  };
 
   // Password strength calculation
   const passwordStrength = useMemo(() => {
@@ -511,6 +571,32 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             }}
           >
             Calculadora ROI
+          </a>
+
+          <a
+            href="#contato"
+            style={{
+              color: '#E2E8F0',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'transparent'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(52, 211, 153, 0.25) 0%, rgba(16, 185, 129, 0.1) 100%)';
+              e.currentTarget.style.color = '#34D399';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 0 10px rgba(16, 185, 129, 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.color = '#E2E8F0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            Contato
           </a>
         </nav>
 
@@ -1680,6 +1766,438 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </button>
             </div>
           </div>
+        </div>
+      </section>
+
+
+      {/* ========================================================================= */}
+      {/* 5.5. SEÇÃO DE CONTATO & FORMULÁRIO COMPLETO PJ / PF 3D 4K                */}
+      {/* ========================================================================= */}
+      <section id="contato" style={{ padding: '80px 24px', maxWidth: '1280px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 14px', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontSize: '0.70rem', fontWeight: 900, border: '1px solid rgba(52, 211, 153, 0.4)', boxShadow: '0 0 16px rgba(16, 185, 129, 0.25)', marginBottom: '12px' }}>
+            <span>📞</span> CANAL DIRETO & CONSULTORIA CORPORATIVA
+          </div>
+          <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
+            Fale com Nossos Especialistas & Solicite uma Proposta
+          </h2>
+          <p style={{ color: '#94A3B8', fontSize: '0.92rem', maxWidth: '720px', margin: '12px auto 0', lineHeight: 1.6 }}>
+            Atendimento sob medida para escritórios de contabilidade, empresas de todos os portes e profissionais. Preencha o formulário para atendimento prioritário.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(320px, 1.4fr) minmax(300px, 1fr)', gap: '28px', alignItems: 'start' }}>
+          
+          {/* Coluna 1: Formulário 3D 4K Interativo */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A0F1E 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.45)',
+              borderBottom: '3.5px solid #059669',
+              borderRadius: '18px',
+              padding: '32px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 16px 44px rgba(0, 0, 0, 0.7), 0 0 30px rgba(16, 185, 129, 0.18)'
+            }}
+          >
+            {/* Seletor 3D: Pessoa Jurídica vs Pessoa Física */}
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '24px', background: '#080D1A', padding: '6px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+              <button
+                type="button"
+                onClick={() => setContactPersonType('PJ')}
+                style={{
+                  flex: 1,
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  border: contactPersonType === 'PJ' ? '1.5px solid #34D399' : '1px solid transparent',
+                  borderBottom: contactPersonType === 'PJ' ? '2.5px solid #059669' : 'none',
+                  background: contactPersonType === 'PJ' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.28) 0%, rgba(5, 150, 105, 0.14) 100%)' : 'transparent',
+                  color: contactPersonType === 'PJ' ? '#FFFFFF' : '#94A3B8',
+                  fontWeight: 900,
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
+                  boxShadow: contactPersonType === 'PJ' ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 12px rgba(16, 185, 129, 0.3)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Building2 size={16} color={contactPersonType === 'PJ' ? '#34D399' : '#94A3B8'} />
+                <span>Pessoa Jurídica (PJ / Empresa)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setContactPersonType('PF')}
+                style={{
+                  flex: 1,
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  border: contactPersonType === 'PF' ? '1.5px solid #38BDF8' : '1px solid transparent',
+                  borderBottom: contactPersonType === 'PF' ? '2.5px solid #0284C7' : 'none',
+                  background: contactPersonType === 'PF' ? 'linear-gradient(180deg, rgba(56, 189, 248, 0.28) 0%, rgba(2, 132, 199, 0.14) 100%)' : 'transparent',
+                  color: contactPersonType === 'PF' ? '#FFFFFF' : '#94A3B8',
+                  fontWeight: 900,
+                  fontSize: '0.82rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
+                  boxShadow: contactPersonType === 'PF' ? 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 12px rgba(56, 189, 248, 0.3)' : 'none',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <User size={16} color={contactPersonType === 'PF' ? '#38BDF8' : '#94A3B8'} />
+                <span>Pessoa Física (PF / Autônomo)</span>
+              </button>
+            </div>
+
+            {contactFeedback && (
+              <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1.5px solid #10B981', padding: '16px', borderRadius: '10px', marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <CheckCircle2 size={20} color="#34D399" />
+                  <span style={{ fontSize: '0.90rem', fontWeight: 900, color: '#FFFFFF' }}>Solicitação Enviada com Sucesso!</span>
+                </div>
+                <p style={{ fontSize: '0.78rem', color: '#E2E8F0', margin: 0, lineHeight: 1.5 }}>
+                  {contactFeedback.message}
+                </p>
+              </div>
+            )}
+
+            <form onSubmit={handleSendContactForm} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              
+              {/* Linha 1: Dados Principais (PJ vs PF) */}
+              {contactPersonType === 'PJ' ? (
+                <>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        Razão Social ou Nome Fantasia *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactCompany}
+                        onChange={(e) => setContactCompany(e.target.value)}
+                        placeholder="Ex: Soberano Indústria & Comércio S/A"
+                        style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        CNPJ da Empresa *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactDoc}
+                        onChange={(e) => setContactDoc(e.target.value)}
+                        placeholder="00.000.000/0000-00"
+                        style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#34D399', padding: '8px 12px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', fontWeight: 700, outline: 'none' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        Nome do Responsável / Solicitante *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactName}
+                        onChange={(e) => setContactName(e.target.value)}
+                        placeholder="Ex: David Valu"
+                        style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                      />
+                    </div>
+                    <div>
+                      <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        Número Estimado de Funcionários
+                      </label>
+                      <select
+                        value={contactEmployees}
+                        onChange={(e) => setContactEmployees(e.target.value)}
+                        style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#38BDF8', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+                      >
+                        <option value="1-5">👥 1 a 5 colaboradores</option>
+                        <option value="6-20">👥 6 a 20 colaboradores</option>
+                        <option value="21-50">👥 21 a 50 colaboradores</option>
+                        <option value="51-100">👥 51 a 100 colaboradores</option>
+                        <option value="100+">🏢 Mais de 100 colaboradores (Enterprise)</option>
+                      </select>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Nome Completo *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={contactName}
+                      onChange={(e) => setContactName(e.target.value)}
+                      placeholder="Ex: David Valu"
+                      style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      CPF (Pessoa Física) *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={contactDoc}
+                      onChange={(e) => setContactDoc(e.target.value)}
+                      placeholder="000.000.000-00"
+                      style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#38BDF8', padding: '8px 12px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', fontWeight: 700, outline: 'none' }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Telefones & E-mail */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    Telefone Celular / WhatsApp *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={contactPhone}
+                    onChange={(e) => setContactPhone(e.target.value)}
+                    placeholder="(11) 99999-9999"
+                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', outline: 'none' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    Telefone Fixo / Comercial (Opcional)
+                  </label>
+                  <input
+                    type="tel"
+                    value={contactPhoneAlt}
+                    onChange={(e) => setContactPhoneAlt(e.target.value)}
+                    placeholder="(11) 3333-3333"
+                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', outline: 'none' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    E-mail Corporativo *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={contactEmail}
+                    onChange={(e) => setContactEmail(e.target.value)}
+                    placeholder="contato@empresa.com.br"
+                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                  />
+                </div>
+              </div>
+
+              {/* Localização */}
+              <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    Cidade
+                  </label>
+                  <input
+                    type="text"
+                    value={contactCity}
+                    onChange={(e) => setContactCity(e.target.value)}
+                    placeholder="São Paulo"
+                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    UF
+                  </label>
+                  <select
+                    value={contactState}
+                    onChange={(e) => setContactState(e.target.value)}
+                    style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+                  >
+                    <option value="SP">SP</option>
+                    <option value="RJ">RJ</option>
+                    <option value="MG">MG</option>
+                    <option value="PR">PR</option>
+                    <option value="RS">RS</option>
+                    <option value="SC">SC</option>
+                    <option value="BA">BA</option>
+                    <option value="GO">GO</option>
+                    <option value="DF">DF</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Módulos de Interesse */}
+              <div>
+                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>
+                  Módulos e Soluções de Maior Interesse
+                </label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                  {[
+                    'Esteira Contábil IFRS',
+                    'Emissor & Fiscal SPED',
+                    'Folha CLT & eSocial',
+                    'BPO Financeiro & CFO Virtual',
+                    'Reforma Tributária 2026',
+                    'Dropzone Massivo OCR'
+                  ].map(mod => {
+                    const isSelected = contactInterests.includes(mod);
+                    return (
+                      <button
+                        key={mod}
+                        type="button"
+                        onClick={() => toggleContactInterest(mod)}
+                        style={{
+                          background: isSelected ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)' : '#080D1A',
+                          border: isSelected ? '1.5px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
+                          color: isSelected ? '#34D399' : '#94A3B8',
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          fontSize: '0.70rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          boxShadow: isSelected ? '0 0 10px rgba(16, 185, 129, 0.25)' : 'none'
+                        }}
+                      >
+                        <span>{isSelected ? '✓' : '+'}</span> {mod}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Mensagem Opcional */}
+              <div>
+                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                  Mensagem ou Detalhes Específicos da sua Operação
+                </label>
+                <textarea
+                  rows={3}
+                  value={contactMessage}
+                  onChange={(e) => setContactMessage(e.target.value)}
+                  placeholder="Descreva brevemente o volume de notas, colaboradores ou necessidades específicas do seu negócio..."
+                  style={{ width: '100%', background: '#080D1A', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '8px', color: '#FFFFFF', padding: '8px 12px', fontSize: '0.78rem', outline: 'none', resize: 'vertical' }}
+                />
+              </div>
+
+              {/* Botão de Envio Master 3D 4K */}
+              <button
+                type="submit"
+                disabled={isSubmittingContact}
+                className="btn-1click-3d"
+                style={{ width: '100%', padding: '12px 20px', fontSize: '0.90rem', marginTop: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+              >
+                <Send size={16} />
+                <span>{isSubmittingContact ? 'Enviando Solicitação...' : '⚡ Enviar Proposta & Falar com Consultor Especialista'}</span>
+              </button>
+            </form>
+          </div>
+
+          {/* Coluna 2: Cards 3D de Contato Imediato e Credenciais */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            
+            {/* Card 1: WhatsApp Corporativo */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, #152438 0%, #0A1220 100%)',
+                border: '1.5px solid rgba(52, 211, 153, 0.45)',
+                borderBottom: '3.5px solid #059669',
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', border: '1.5px solid #6EE7B7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', boxShadow: '0 0 16px rgba(16, 185, 129, 0.5)' }}>
+                  <Phone size={22} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.98rem', fontWeight: 900, color: '#FFFFFF' }}>WhatsApp Corporativo Oficial</div>
+                  <div style={{ fontSize: '0.70rem', color: '#34D399', fontWeight: 800 }}>Atendimento Prioritário em Tempo Real</div>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 14px 0' }}>
+                Converse diretamente com nosso time comercial e tire dúvidas sobre integração e planos.
+              </p>
+              <div style={{ background: '#080D1A', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(52, 211, 153, 0.3)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <strong style={{ fontSize: '0.95rem', color: '#34D399', fontFamily: 'var(--font-mono)' }}>(11) 98765-4321</strong>
+                <span style={{ fontSize: '0.62rem', background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', padding: '2px 6px', borderRadius: '4px', fontWeight: 800 }}>ONLINE AGORA</span>
+              </div>
+            </div>
+
+            {/* Card 2: E-mail e Sede */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+                border: '1.5px solid rgba(56, 189, 248, 0.35)',
+                borderBottom: '3.5px solid #0284C7',
+                borderRadius: '16px',
+                padding: '24px',
+                boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)', border: '1.5px solid #7DD3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', boxShadow: '0 0 16px rgba(2, 132, 199, 0.5)' }}>
+                  <Mail size={22} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '0.98rem', fontWeight: 900, color: '#FFFFFF' }}>E-mail & Sede Corporativa</div>
+                  <div style={{ fontSize: '0.70rem', color: '#38BDF8', fontWeight: 800 }}>São Paulo / SP • Brasil</div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.76rem', color: '#CBD5E1' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Mail size={14} color="#38BDF8" />
+                  <span>atendimento@soberanocontabil.com.br</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <MapPin size={14} color="#38BDF8" />
+                  <span>Av. Paulista, 1000 - Bela Vista, São Paulo/SP</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Garantias e SLA */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, #18233C 0%, #0D1426 100%)',
+                border: '1.5px solid rgba(251, 191, 36, 0.35)',
+                borderBottom: '3.5px solid #D97706',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 8px 24px rgba(0, 0, 0, 0.5)'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <ShieldCheck size={18} color="#FBBF24" />
+                <span style={{ fontSize: '0.84rem', fontWeight: 900, color: '#FFFFFF' }}>Compromisso Soberano de Qualidade</span>
+              </div>
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.72rem', color: '#94A3B8', lineHeight: 1.6 }}>
+                <li>Tempo de resposta inicial em menos de 15 minutos;</li>
+                <li>Conformidade integral com LGPD & Criptografia AES-256;</li>
+                <li>Onboarding técnico conduzido por Contadores com CRC Ativo.</li>
+              </ul>
+            </div>
+
+          </div>
+
         </div>
       </section>
 

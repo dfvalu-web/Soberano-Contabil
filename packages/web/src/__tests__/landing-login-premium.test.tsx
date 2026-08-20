@@ -44,7 +44,26 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
     expect(html).toContain('4. Governança &amp; CFO Virtual');
   });
 
-  it('4. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
+  it('4. Renderiza o formulário de contato completo 3D 4K com Pessoa Jurídica (CNPJ) e Pessoa Física (CPF)', () => {
+    const html = renderToStaticMarkup(
+      React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
+    );
+
+    expect(html).toContain('id="contato"');
+    expect(html).toContain('CANAL DIRETO &amp; CONSULTORIA CORPORATIVA');
+    expect(html).toContain('Fale com Nossos Especialistas &amp; Solicite uma Proposta');
+    expect(html).toContain('Pessoa Jurídica (PJ / Empresa)');
+    expect(html).toContain('Pessoa Física (PF / Autônomo)');
+    expect(html).toContain('Razão Social ou Nome Fantasia');
+    expect(html).toContain('CNPJ da Empresa');
+    expect(html).toContain('Número Estimado de Funcionários');
+    expect(html).toContain('Telefone Celular / WhatsApp');
+    expect(html).toContain('WhatsApp Corporativo Oficial');
+    expect(html).toContain('(11) 98765-4321');
+    expect(html).toContain('atendimento@soberanocontabil.com.br');
+  });
+
+  it('5. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
     const html = renderToStaticMarkup(
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
