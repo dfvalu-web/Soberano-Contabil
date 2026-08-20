@@ -993,6 +993,172 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       </section>
 
       {/* ========================================================================= */}
+      {/* 4.5. OS 4 PILARES ARQUITETURAIS DO SOBERANO CONTÁBIL                      */}
+      {/* ========================================================================= */}
+      <section id="pilares" style={{ padding: '80px 24px', maxWidth: '1280px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 12px', borderRadius: '20px', background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', fontSize: '0.68rem', fontWeight: 900, border: '1px solid rgba(56, 189, 248, 0.3)', marginBottom: '10px' }}>
+            <span>🏛️</span> OS 4 PILARES ARQUITETURAIS DO SOBERANO CONTÁBIL
+          </div>
+          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em' }}>
+            Engenharia de Alta Precisão para o Escritório do Futuro
+          </h2>
+          <p style={{ color: '#94A3B8', fontSize: '0.92rem', maxWidth: '750px', margin: '12px auto 0', lineHeight: 1.5 }}>
+            Uma plataforma holística projetada para unificar Contabilidade IFRS, Inteligência Fiscal, Departamento Pessoal e Governança Corporativa em perfeita harmonia.
+          </p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+          
+          {/* Pilar 1 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.35)',
+              borderBottom: '3px solid #059669',
+              borderRadius: '14px',
+              padding: '24px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+                  🏛️
+                </div>
+                <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                  NBC TG • IFRS
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+                1. Contabilidade & IFRS
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                Partidas dobradas automáticas, conciliação bancária OFX em lote, Balanço Patrimonial em tempo real, DRE gerencial, DFC e encerramento anual ARE com 1-Click.
+              </p>
+            </div>
+            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
+              ✓ Plano de Contas Referencial SPED ECD/ECF
+            </div>
+          </div>
+
+          {/* Pilar 2 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(56, 189, 248, 0.35)',
+              borderBottom: '3px solid #0284C7',
+              borderRadius: '14px',
+              padding: '24px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid #38BDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+                  ⚡
+                </div>
+                <span style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                  SPED • REFORMA IBS/CBS
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+                2. Fiscal & Tributário
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                Dropzone OCR massivo, captura direta SEFAZ WebService, apuração PGDAS-D, segregação de monofásicos PIS/COFINS, Reinf R-4000 e prontidão total para a Reforma Tributária.
+              </p>
+            </div>
+            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
+              ✓ Emissor de NF-e, NFS-e, NFC-e Integrado
+            </div>
+          </div>
+
+          {/* Pilar 3 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(167, 139, 250, 0.35)',
+              borderBottom: '3px solid #7C3AED',
+              borderRadius: '14px',
+              padding: '24px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.15)', border: '1px solid #A78BFA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+                  👥
+                </div>
+                <span style={{ background: 'rgba(124, 58, 237, 0.15)', color: '#A78BFA', border: '1px solid rgba(167, 139, 250, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                  CLT • eSOCIAL S-1.2
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+                3. Departamento Pessoal
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                Cálculo determinístico de Folha CLT, rescisões TRCT com aviso prévio proporcional, gestão de férias e ponto eletrônico com validação estrita do eSocial e FGTS Digital.
+              </p>
+            </div>
+            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
+              ✓ Recibos e Holerites Assinados em 1-Click
+            </div>
+          </div>
+
+          {/* Pilar 4 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(251, 191, 36, 0.35)',
+              borderBottom: '3px solid #D97706',
+              borderRadius: '14px',
+              padding: '24px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              transition: 'all 0.2s ease'
+            }}
+          >
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid #FBBF24', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+                  🛡️
+                </div>
+                <span style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24', border: '1px solid rgba(251, 191, 36, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                  HSM • ICP-BRASIL
+                </span>
+              </div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+                4. Governança & CFO Virtual
+              </h3>
+              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+                Cofre seguro de Certificados Digitais A1/A3, trilha forense imutável, análise financeira com modelo DuPont em 5 estágios, liquidez, solvência e pareceres de IA.
+              </p>
+            </div>
+            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
+              ✓ Dossiês Executivos A4 Oficiais para Bancos
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+      {/* ========================================================================= */}
       {/* 3. SEÇÃO DOS 6 GRANDES DIFERENCIAIS COMPETITIVOS                          */}
       {/* ========================================================================= */}
       <section id="diferenciais" style={{ padding: '80px 24px', maxWidth: '1280px', margin: '0 auto' }}>

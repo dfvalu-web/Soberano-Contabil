@@ -31,7 +31,20 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
     expect(html).toContain('Por que o Soberano Contábil é Líder Absoluto?');
   });
 
-  it('3. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
+  it('3. Renderiza a seção dos 4 Pilares Arquiteturais (#pilares)', () => {
+    const html = renderToStaticMarkup(
+      React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
+    );
+
+    expect(html).toContain('id="pilares"');
+    expect(html).toContain('OS 4 PILARES ARQUITETURAIS DO SOBERANO CONTÁBIL');
+    expect(html).toContain('1. Contabilidade &amp; IFRS');
+    expect(html).toContain('2. Fiscal &amp; Tributário');
+    expect(html).toContain('3. Departamento Pessoal');
+    expect(html).toContain('4. Governança &amp; CFO Virtual');
+  });
+
+  it('4. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
     const html = renderToStaticMarkup(
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
