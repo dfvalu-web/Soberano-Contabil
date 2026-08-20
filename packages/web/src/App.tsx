@@ -378,28 +378,51 @@ export const App: React.FC = () => {
             </span>
           </div>
 
-          {/* Breadcrumb 3D Glass Capsule */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '6px',
-            fontSize: '0.74rem',
-            background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.14) 0%, rgba(15, 23, 42, 0.6) 100%)',
-            border: '1px solid rgba(52, 211, 153, 0.35)',
-            borderBottom: '1.5px solid rgba(5, 150, 105, 0.5)',
-            padding: '3px 10px',
-            borderRadius: '8px',
-            maxWidth: '320px',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 6px rgba(0, 0, 0, 0.4)'
-          }}>
-            <span style={{ color: '#94A3B8', fontWeight: 600 }}>{activeModule.category}</span>
-            <span style={{ color: 'rgba(255, 255, 255, 0.3)' }}>➔</span>
-            <span style={{ color: '#34D399', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px', textShadow: '0 0 8px rgba(52, 211, 153, 0.4)' }}>
-              <span>{activeModule.icon}</span> {activeModule.label}
-            </span>
+          {/* Breadcrumb 3D Interactive Module Switcher Pod */}
+          <div
+            className="control-pod-3d"
+            style={{
+              maxWidth: '360px',
+              padding: '3px 9px',
+              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.16) 0%, rgba(15, 23, 42, 0.75) 100%)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              borderBottom: '2px solid rgba(5, 150, 105, 0.6)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 3px 8px rgba(0, 0, 0, 0.45)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <span style={{ fontSize: '0.85rem', flexShrink: 0 }}>{activeModule.icon}</span>
+            <select
+              value={currentModuleId}
+              onChange={(e) => setCurrentModuleId(e.target.value)}
+              title="Clique para alternar para qualquer módulo do sistema"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#34D399',
+                fontWeight: 800,
+                fontSize: '0.74rem',
+                outline: 'none',
+                cursor: 'pointer',
+                maxWidth: '280px',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                textShadow: '0 0 8px rgba(52, 211, 153, 0.4)'
+              }}
+            >
+              {CATEGORIES.map(dept => (
+                <optgroup key={dept.id} label={`${dept.icon} ${dept.name}`} style={{ background: '#0F172A', color: '#94A3B8', fontWeight: 700 }}>
+                  {dept.modules.map(mod => (
+                    <option key={mod.id} value={mod.id} style={{ background: '#111726', color: '#FFFFFF', fontWeight: 600 }}>
+                      {mod.icon} {mod.name}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
+            <span style={{ color: '#34D399', fontSize: '0.62rem', pointerEvents: 'none', opacity: 0.8 }}>▼</span>
           </div>
         </div>
 
