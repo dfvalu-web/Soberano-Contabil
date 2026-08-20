@@ -31,18 +31,17 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
     expect(html).toContain('Por que o Soberano Contábil é Líder Absoluto?');
   });
 
-  it('3. Renderiza a calculadora de ROI e a seção de login corporativo com perfis', () => {
+  it('3. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
     const html = renderToStaticMarkup(
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
 
-    expect(html).toContain('CALCULADORA DE ECONOMIA OPERACIONAL');
-    expect(html).toContain('Acesso Corporativo Seguro');
+    expect(html).toContain('E-mail Corporativo');
+    expect(html).toContain('Senha de Acesso');
     expect(html).toContain('David Valu');
     expect(html).toContain('Dra. Beatriz Santos');
     expect(html).toContain('Carlos Mendes');
     expect(html).toContain('Diretoria Executiva');
-    expect(html).toContain('Certificado Digital (e-CNPJ / e-CPF A1 &amp; A3)');
-    expect(html).toContain('Criptografia AES-256');
+    expect(html).toContain('CALCULADORA DE ECONOMIA OPERACIONAL');
   });
 });

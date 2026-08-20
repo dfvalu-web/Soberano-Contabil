@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ShieldCheck,
   Lock,
@@ -11,20 +11,20 @@ import {
   Sparkles,
   KeyRound,
   CheckCircle2,
-  Award,
+  AlertCircle,
   FileSpreadsheet,
   Workflow,
   Radar,
   Calendar,
-  Clock,
-  TrendingUp,
-  Check,
-  X,
-  FileText,
   Sliders,
-  DollarSign,
-  Layers,
-  ChevronDown
+  Eye,
+  EyeOff,
+  UserPlus,
+  LogIn,
+  RefreshCw,
+  Mail,
+  User,
+  Check
 } from 'lucide-react';
 
 export interface UserProfile {
@@ -84,46 +84,173 @@ interface LandingAndLoginPremiumViewProps {
 }
 
 export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProps> = ({ onLoginSuccess }) => {
-  const [selectedProfile, setSelectedProfile] = useState<UserProfile>(PRESET_PROFILES[0]);
-  const [emailInput, setEmailInput] = useState<string>(PRESET_PROFILES[0].email);
-  const [passwordInput, setPasswordInput] = useState<string>('••••••••••••');
+  // Auth Modes: 'LOGIN' | 'REGISTER' | 'RECOVERY' | 'CERTIFICATE'
+  const [authMode, setAuthMode] = useState<'LOGIN' | 'REGISTER' | 'RECOVERY' | 'CERTIFICATE'>('LOGIN');
+
+  // Login Form States
+  const [emailInput, setEmailInput] = useState<string>('david.valu@soberanocontabil.com.br');
+  const [passwordInput, setPasswordInput] = useState<string>('Soberano@2026');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [rememberMe, setRememberMe] = useState<boolean>(true);
+
+  // Register Form States
+  const [regName, setRegName] = useState<string>('');
+  const [regEmail, setRegEmail] = useState<string>('');
+  const [regPassword, setRegPassword] = useState<string>('');
+  const [regOfficeName, setRegOfficeName] = useState<string>('');
+  const [regRole, setRegRole] = useState<'MASTER_ACCOUNTANT' | 'TAX_SPECIALIST' | 'PAYROLL_SPECIALIST'>('MASTER_ACCOUNTANT');
+
+  // Recovery Form States
+  const [recoveryEmail, setRecoveryEmail] = useState<string>('');
+  const [recoverySent, setRecoverySent] = useState<boolean>(false);
+
+  // UI Status States
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
-  const [authSuccess, setAuthSuccess] = useState<boolean>(false);
-  const [showCertificateModal, setShowCertificateModal] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string>('');
 
   // Calculadora Interativa de ROI
   const [clientsCount, setClientsCount] = useState<number>(60);
   const hoursSavedPerMonth = Math.round(clientsCount * 5.5);
-  const monthlyCostSavings = Math.round(hoursSavedPerMonth * 45); // R$ 45/hora de analista
+  const monthlyCostSavings = Math.round(hoursSavedPerMonth * 45); // R$ 45/hora
 
-  const handleSelectProfile = (profile: UserProfile) => {
-    setSelectedProfile(profile);
-    setEmailInput(profile.email);
+  // Password strength calculation
+  const passwordStrength = useMemo(() => {
+    const pwd = authMode === 'REGISTER' ? regPassword : passwordInput;
+    if (!pwd) return 0;
+    let score = 0;
+    if (pwd.length >= 6) score += 25;
+    if (pwd.length >= 10) score += 25;
+    if (/[A-Z]/.test(pwd)) score += 25;
+    if (/[0-9!@#$%^&*]/.test(pwd)) score += 25;
+    return score;
+  }, [authMode, regPassword, passwordInput]);
+
+  const handleSelectPresetProfile = (prof: UserProfile) => {
+    setEmailInput(prof.email);
+    setPasswordInput('Soberano@2026');
+    setAuthMode('LOGIN');
+    setErrorMessage('');
   };
 
-  const handleExecuteLogin = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
+  const handleDirectLoginWithProfile = (prof: UserProfile) => {
+    setIsAuthenticating(true);
+    setErrorMessage('');
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      onLoginSuccess(prof);
+    }, 500);
+  };
+
+  const handleExecuteLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setSuccessMessage('');
+
+    // Validações robustas de email
+    const trimmedEmail = emailInput.trim().toLowerCase();
+    if (!trimmedEmail || !trimmedEmail.includes('@') || !trimmedEmail.includes('.')) {
+      setErrorMessage('Por favor, informe um endereço de e-mail corporativo válido.');
+      return;
+    }
+
+    if (!passwordInput || passwordInput.length < 4) {
+      setErrorMessage('A senha informada deve possuir no mínimo 6 caracteres.');
+      return;
+    }
+
     setIsAuthenticating(true);
 
     setTimeout(() => {
       setIsAuthenticating(false);
-      setAuthSuccess(true);
-      setTimeout(() => {
-        onLoginSuccess(selectedProfile);
-      }, 600);
+
+      // Verificar se é algum perfil pré-configurado
+      const foundPreset = PRESET_PROFILES.find(p => p.email.toLowerCase() === trimmedEmail);
+      if (foundPreset) {
+        setSuccessMessage(`Bem-vindo(a), ${foundPreset.name}! Acessando cockpit...`);
+        setTimeout(() => onLoginSuccess(foundPreset), 400);
+        return;
+      }
+
+      // Se for um novo usuário autenticado
+      const customUser: UserProfile = {
+        id: 'user-' + Date.now(),
+        name: trimmedEmail.split('@')[0].toUpperCase(),
+        role: 'MASTER_ACCOUNTANT',
+        roleLabel: 'Contador Responsável • ' + (trimmedEmail.split('@')[1] || 'Empresa'),
+        email: trimmedEmail,
+        avatarIcon: '🏛️',
+        initialModuleId: 'office_integrated_closing_pipeline'
+      };
+
+      setSuccessMessage(`Autenticação autorizada com sucesso! Redirecionando...`);
+      setTimeout(() => onLoginSuccess(customUser), 400);
+    }, 700);
+  };
+
+  const handleExecuteRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+
+    if (!regName.trim()) {
+      setErrorMessage('Por favor, informe o seu nome completo.');
+      return;
+    }
+
+    const trimmedEmail = regEmail.trim().toLowerCase();
+    if (!trimmedEmail || !trimmedEmail.includes('@') || !trimmedEmail.includes('.')) {
+      setErrorMessage('Informe um e-mail corporativo válido para criar sua conta.');
+      return;
+    }
+
+    if (!regPassword || regPassword.length < 6) {
+      setErrorMessage('A senha deve conter no mínimo 6 caracteres.');
+      return;
+    }
+
+    setIsAuthenticating(true);
+
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      const newUser: UserProfile = {
+        id: 'user-' + Date.now(),
+        name: regName.trim(),
+        role: regRole,
+        roleLabel: regRole === 'MASTER_ACCOUNTANT' ? 'Sócio & Contador' : regRole === 'TAX_SPECIALIST' ? 'Especialista Fiscal' : 'Especialista DP',
+        crc: regRole === 'MASTER_ACCOUNTANT' ? 'CRC Ativo' : undefined,
+        email: trimmedEmail,
+        avatarIcon: regRole === 'MASTER_ACCOUNTANT' ? '🏛️' : regRole === 'TAX_SPECIALIST' ? '⚖️' : '👥',
+        initialModuleId: regRole === 'TAX_SPECIALIST' ? 'office_predictive_tax_audit_radar' : regRole === 'PAYROLL_SPECIALIST' ? 'payroll' : 'office_integrated_closing_pipeline'
+      };
+
+      setSuccessMessage('Conta corporativa criada com sucesso! Acessando...');
+      setTimeout(() => onLoginSuccess(newUser), 500);
     }, 800);
   };
 
-  const handleCertificateLogin = () => {
-    setShowCertificateModal(true);
+  const handleExecuteRecovery = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recoveryEmail || !recoveryEmail.includes('@')) {
+      setErrorMessage('Informe um e-mail válido para envio das instruções.');
+      return;
+    }
+    setIsAuthenticating(true);
     setTimeout(() => {
-      setShowCertificateModal(false);
-      handleExecuteLogin();
-    }, 1200);
+      setIsAuthenticating(false);
+      setRecoverySent(true);
+    }, 800);
+  };
+
+  const handleExecuteCertificate = () => {
+    setIsAuthenticating(true);
+    setTimeout(() => {
+      setIsAuthenticating(false);
+      onLoginSuccess(PRESET_PROFILES[0]);
+    }, 1000);
   };
 
   return (
-    <div className="landing-marketing-container" style={{ minHeight: '100vh', background: '#070B14', color: '#FFFFFF', overflowX: 'hidden' }}>
+    <div className="landing-marketing-container" style={{ minHeight: '100vh', background: '#070B14', color: '#FFFFFF', position: 'relative' }}>
       
       {/* ========================================================================= */}
       {/* 1. TOPBAR INSTITUCIONAL FIXA COM GLASSMORPHISM                            */}
@@ -137,10 +264,10 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
           justifyContent: 'space-between',
           alignItems: 'center',
           padding: '12px 32px',
-          background: 'rgba(9, 15, 28, 0.85)',
+          background: 'rgba(9, 15, 28, 0.88)',
           backdropFilter: 'blur(16px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.6)'
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -172,7 +299,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
           </div>
         </div>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.76rem', fontWeight: 700 }}>
+        <nav style={{ display: 'flex', alignItems: 'center', gap: '22px', fontSize: '0.78rem', fontWeight: 700 }}>
           <a href="#diferenciais" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Diferenciais</a>
           <a href="#comparativo" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Comparativo</a>
           <a href="#pilares" style={{ color: '#CBD5E1', textDecoration: 'none', transition: 'color 0.2s' }}>Pilares</a>
@@ -181,40 +308,41 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
-            onClick={() => handleExecuteLogin()}
+            onClick={() => handleDirectLoginWithProfile(PRESET_PROFILES[0])}
             className="btn-1click-3d"
-            style={{ padding: '6px 14px', fontSize: '0.74rem' }}
+            style={{ padding: '6px 16px', fontSize: '0.76rem' }}
           >
-            <Zap size={13} /> Testar em 1-Click
+            <Zap size={14} /> Entrar em 1-Click
           </button>
           <a
-            href="#login-section"
+            href="#login-card-anchor"
             style={{
               background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
               border: '1px solid rgba(255, 255, 255, 0.15)',
               borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
               color: '#FFFFFF',
-              padding: '6px 12px',
+              padding: '6px 14px',
               borderRadius: '8px',
-              fontSize: '0.74rem',
+              fontSize: '0.76rem',
               fontWeight: 800,
               textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
-              gap: '6px'
+              gap: '6px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)'
             }}
           >
-            <Lock size={12} style={{ color: '#38BDF8' }} /> Login
+            <Lock size={13} style={{ color: '#38BDF8' }} /> Autenticação
           </a>
         </div>
       </header>
 
       {/* ========================================================================= */}
-      {/* 2. HERO SECTION COM VÍDEO BACKGROUND 4K                                  */}
+      {/* 2. HERO SECTION COM VÍDEO BACKGROUND 4K & GRID INTEGRADO                 */}
       {/* ========================================================================= */}
-      <section style={{ position: 'relative', minHeight: '88vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: '60px 24px' }}>
+      <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', alignItems: 'center', overflow: 'hidden', padding: '50px 24px' }}>
         
-        {/* Vídeo Background */}
+        {/* Vídeo Background em Alta Claridade */}
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0, overflow: 'hidden' }}>
           <video
             autoPlay
@@ -231,12 +359,14 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               height: 'auto',
               transform: 'translate(-50%, -50%)',
               objectFit: 'cover',
-              opacity: 0.72,
+              opacity: 0.75,
               filter: 'saturate(1.25) contrast(1.05) brightness(1.05)'
             }}
           >
             <source src="/hero-video.mp4" type="video/mp4" />
           </video>
+
+          {/* Overlay Leve Translúcido */}
           <div
             style={{
               position: 'absolute',
@@ -244,80 +374,469 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'radial-gradient(circle at center, rgba(10, 18, 36, 0.30) 0%, rgba(7, 11, 20, 0.65) 80%, #070B14 100%)',
+              background: 'radial-gradient(circle at center, rgba(10, 18, 36, 0.25) 0%, rgba(7, 11, 20, 0.65) 75%, #070B14 100%)',
               backdropFilter: 'blur(1px)'
             }}
           />
         </div>
 
-        {/* Conteúdo Central do Hero */}
-        <div style={{ position: 'relative', zIndex: 10, maxWidth: '1100px', margin: '0 auto', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+        {/* Grid Hero: Apresentação à Esquerda + Card de Autenticação Robusto à Direita */}
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            maxWidth: '1360px',
+            margin: '0 auto',
+            width: '100%',
+            display: 'grid',
+            gridTemplateColumns: 'minmax(320px, 1.2fr) minmax(360px, 460px)',
+            gap: '40px',
+            alignItems: 'center'
+          }}
+        >
           
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '30px', background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.15) 100%)', border: '1px solid rgba(52, 211, 153, 0.5)', boxShadow: '0 0 20px rgba(16, 185, 129, 0.3)' }}>
-            <Sparkles size={16} style={{ color: '#34D399' }} />
-            <span style={{ fontSize: '0.78rem', fontWeight: 900, color: '#34D399', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              O Futuro da Contabilidade Empresarial & Tributária
-            </span>
+          {/* Lado Esquerdo: Mensagem de Impacto & Métricas */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 16px', borderRadius: '30px', background: 'linear-gradient(90deg, rgba(16, 185, 129, 0.3) 0%, rgba(6, 182, 212, 0.2) 100%)', border: '1px solid rgba(52, 211, 153, 0.6)', boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)', width: 'fit-content' }}>
+              <Sparkles size={16} style={{ color: '#34D399' }} />
+              <span style={{ fontSize: '0.78rem', fontWeight: 900, color: '#34D399', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                Tecnologia Contábil de Elite em 4K
+              </span>
+            </div>
+
+            <h1 style={{ fontSize: '2.8rem', fontWeight: 900, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.03em', margin: 0, textShadow: '0 4px 20px rgba(0,0,0,0.85)' }}>
+              A Plataforma Definitiva de <br />
+              <span style={{ background: 'linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', textShadow: 'none' }}>
+                Inteligência Contábil, Fiscal & Trabalhista
+              </span>
+            </h1>
+
+            <p style={{ fontSize: '0.96rem', color: '#CBD5E1', lineHeight: 1.6, maxWidth: '580px', margin: 0, textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}>
+              Integração fluida em <strong>181 rotinas corporativas</strong> com rigor IFRS/CPC, folha determinística CLT, pré-auditoria contra malhas fiscais da Receita Federal e motor da Reforma Tributária 2026–2033.
+            </p>
+
+            {/* Badges Flutuantes 3D */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              <div className="control-pod-3d" style={{ padding: '6px 12px' }}>
+                <span style={{ color: '#34D399', fontWeight: 900, fontSize: '0.80rem' }}>🚀 +92%</span>
+                <span style={{ fontSize: '0.72rem', color: '#E2E8F0' }}>Produtividade Operacional</span>
+              </div>
+              <div className="control-pod-3d" style={{ padding: '6px 12px' }}>
+                <span style={{ color: '#38BDF8', fontWeight: 900, fontSize: '0.80rem' }}>🛡️ Zero</span>
+                <span style={{ fontSize: '0.72rem', color: '#E2E8F0' }}>Malhas Fiscais (Art. 138 CTN)</span>
+              </div>
+              <div className="control-pod-3d" style={{ padding: '6px 12px' }}>
+                <span style={{ color: '#FBBF24', fontWeight: 900, fontSize: '0.80rem' }}>📑 Rating AAA</span>
+                <span style={{ fontSize: '0.72rem', color: '#E2E8F0' }}>Book Contábil para Bancos</span>
+              </div>
+            </div>
+
+            {/* Acesso Instantâneo aos 4 Perfis de Demonstração */}
+            <div style={{ marginTop: '10px' }}>
+              <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
+                Acesse como um dos Perfis Corporativos (1-Click):
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                {PRESET_PROFILES.map((prof) => (
+                  <button
+                    key={prof.id}
+                    type="button"
+                    onClick={() => handleDirectLoginWithProfile(prof)}
+                    className="dept-accordion-card"
+                    style={{
+                      padding: '8px 10px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      cursor: 'pointer',
+                      textAlign: 'left'
+                    }}
+                  >
+                    <span style={{ fontSize: '1.0rem' }}>{prof.avatarIcon}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        {prof.name}
+                      </div>
+                      <div style={{ fontSize: '0.62rem', color: '#34D399', fontWeight: 700 }}>
+                        {prof.roleLabel.split('•')[0]}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <h1 style={{ fontSize: '3.2rem', fontWeight: 900, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.03em', margin: 0, textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}>
-            A Plataforma Definitiva de <br />
-            <span style={{ background: 'linear-gradient(135deg, #34D399 0%, #38BDF8 50%, #A78BFA 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', textShadow: 'none' }}>
-              Inteligência Contábil, Fiscal & Trabalhista
-            </span>
-          </h1>
+          {/* Lado Direito: CARD DE AUTENTICAÇÃO ROBUSTO 3D 4K */}
+          <div
+            id="login-card-anchor"
+            style={{
+              background: 'linear-gradient(180deg, #141F35 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.45)',
+              borderBottom: '3px solid rgba(5, 150, 105, 0.8)',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 16px 48px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 24px rgba(16, 185, 129, 0.25)',
+              position: 'relative'
+            }}
+          >
+            {/* Header com Abas de Autenticação */}
+            <div style={{ display: 'flex', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '12px', marginBottom: '16px', gap: '6px' }}>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('LOGIN'); setErrorMessage(''); setSuccessMessage(''); }}
+                style={{
+                  flex: 1,
+                  background: authMode === 'LOGIN' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.12) 100%)' : 'transparent',
+                  border: authMode === 'LOGIN' ? '1px solid #34D399' : '1px solid transparent',
+                  borderRadius: '6px',
+                  padding: '6px 8px',
+                  color: authMode === 'LOGIN' ? '#34D399' : '#94A3B8',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                🔐 Entrar
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('REGISTER'); setErrorMessage(''); setSuccessMessage(''); }}
+                style={{
+                  flex: 1,
+                  background: authMode === 'REGISTER' ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.12) 100%)' : 'transparent',
+                  border: authMode === 'REGISTER' ? '1px solid #34D399' : '1px solid transparent',
+                  borderRadius: '6px',
+                  padding: '6px 8px',
+                  color: authMode === 'REGISTER' ? '#34D399' : '#94A3B8',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                ✨ Criar Conta
+              </button>
+              <button
+                type="button"
+                onClick={() => { setAuthMode('CERTIFICATE'); setErrorMessage(''); setSuccessMessage(''); }}
+                style={{
+                  flex: 1,
+                  background: authMode === 'CERTIFICATE' ? 'linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.12) 100%)' : 'transparent',
+                  border: authMode === 'CERTIFICATE' ? '1px solid #38BDF8' : '1px solid transparent',
+                  borderRadius: '6px',
+                  padding: '6px 8px',
+                  color: authMode === 'CERTIFICATE' ? '#38BDF8' : '#94A3B8',
+                  fontSize: '0.74rem',
+                  fontWeight: 800,
+                  cursor: 'pointer'
+                }}
+              >
+                🪪 e-CNPJ
+              </button>
+            </div>
 
-          <p style={{ fontSize: '1.05rem', color: '#94A3B8', maxWidth: '780px', lineHeight: 1.6, margin: '6px 0 10px 0' }}>
-            Unificamos <strong>181 rotinas corporativas</strong>, rigor IFRS/CPC, folha determinística CLT, pré-auditoria contra malhas fiscais da Receita Federal e simulador da Reforma Tributária 2026–2033 em uma experiência 3D 4K sem precedentes.
-          </p>
+            {/* Mensagens de Alerta e Sucesso */}
+            {errorMessage && (
+              <div style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', borderRadius: '6px', padding: '8px 10px', fontSize: '0.72rem', color: '#FCA5A5', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <AlertCircle size={14} style={{ flexShrink: 0 }} />
+                <span>{errorMessage}</span>
+              </div>
+            )}
 
-          {/* Badges Flutuantes 3D */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', marginTop: '10px' }}>
-            <div className="control-pod-3d" style={{ padding: '6px 14px' }}>
-              <span style={{ color: '#34D399', fontWeight: 900, fontSize: '0.84rem' }}>🚀 +92%</span>
-              <span style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>Produtividade Operacional</span>
-            </div>
-            <div className="control-pod-3d" style={{ padding: '6px 14px' }}>
-              <span style={{ color: '#38BDF8', fontWeight: 900, fontSize: '0.84rem' }}>🛡️ Zero</span>
-              <span style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>Malhas Fiscais (Art. 138 CTN)</span>
-            </div>
-            <div className="control-pod-3d" style={{ padding: '6px 14px' }}>
-              <span style={{ color: '#FBBF24', fontWeight: 900, fontSize: '0.84rem' }}>📑 Rating AAA</span>
-              <span style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>Book Contábil para Bancos</span>
-            </div>
-            <div className="control-pod-3d" style={{ padding: '6px 14px' }}>
-              <span style={{ color: '#A78BFA', fontWeight: 900, fontSize: '0.84rem' }}>⚖️ 2026–2033</span>
-              <span style={{ fontSize: '0.74rem', color: '#CBD5E1' }}>Reforma IBS/CBS Nativa</span>
-            </div>
-          </div>
+            {successMessage && (
+              <div style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid rgba(16, 185, 129, 0.5)', borderRadius: '6px', padding: '8px 10px', fontSize: '0.72rem', color: '#34D399', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <CheckCircle2 size={14} style={{ flexShrink: 0 }} />
+                <span>{successMessage}</span>
+              </div>
+            )}
 
-          <div style={{ display: 'flex', gap: '14px', marginTop: '20px' }}>
-            <button
-              onClick={() => handleExecuteLogin()}
-              className="btn-1click-3d"
-              style={{ padding: '12px 28px', fontSize: '0.92rem' }}
-            >
-              <Zap size={18} /> Explorar Cockpit em 1-Click
-            </button>
-            <a
-              href="#login-section"
-              style={{
-                background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
-                color: '#FFFFFF',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '0.88rem',
-                fontWeight: 800,
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              <Lock size={16} style={{ color: '#38BDF8' }} /> Acesso Corporativo
-            </a>
+            {/* FORMULÁRIO 1: LOGIN POR EMAIL */}
+            {authMode === 'LOGIN' && (
+              <form onSubmit={handleExecuteLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    E-mail Corporativo
+                  </label>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <Mail size={14} style={{ position: 'absolute', left: '10px', color: '#64748B' }} />
+                    <input
+                      type="email"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      placeholder="seu.nome@escritorio.com.br"
+                      required
+                      style={{
+                        width: '100%',
+                        background: '#0B1120',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '6px',
+                        color: '#FFFFFF',
+                        padding: '8px 10px 8px 32px',
+                        fontSize: '0.80rem',
+                        fontWeight: 700,
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase' }}>
+                      Senha de Acesso
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('RECOVERY')}
+                      style={{ background: 'transparent', border: 'none', color: '#38BDF8', fontSize: '0.66rem', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                      Esqueceu a senha?
+                    </button>
+                  </div>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <Lock size={14} style={{ position: 'absolute', left: '10px', color: '#64748B' }} />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                      placeholder="••••••••••••"
+                      required
+                      style={{
+                        width: '100%',
+                        background: '#0B1120',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        borderRadius: '6px',
+                        color: '#FFFFFF',
+                        padding: '8px 34px 8px 32px',
+                        fontSize: '0.80rem',
+                        fontWeight: 700,
+                        outline: 'none'
+                      }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(prev => !prev)}
+                      style={{ position: 'absolute', right: '10px', background: 'transparent', border: 'none', color: '#64748B', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+                    >
+                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.70rem', color: '#94A3B8' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      style={{ accentColor: '#10B981' }}
+                    />
+                    Lembrar neste navegador
+                  </label>
+                  <span style={{ color: '#34D399', fontWeight: 700 }}>Conexão Segura SSL</span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isAuthenticating}
+                  className="btn-1click-3d"
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    fontSize: '0.86rem',
+                    justifyContent: 'center',
+                    marginTop: '6px'
+                  }}
+                >
+                  {isAuthenticating ? (
+                    <span>🔄 Autenticando...</span>
+                  ) : (
+                    <span>🔐 Entrar no Soberano Contábil</span>
+                  )}
+                </button>
+              </form>
+            )}
+
+            {/* FORMULÁRIO 2: REGISTRO DE NOVO USUÁRIO */}
+            {authMode === 'REGISTER' && (
+              <form onSubmit={handleExecuteRegister} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
+                    Nome Completo
+                  </label>
+                  <input
+                    type="text"
+                    value={regName}
+                    onChange={(e) => setRegName(e.target.value)}
+                    placeholder="Ex: João da Silva"
+                    required
+                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
+                    E-mail Corporativo
+                  </label>
+                  <input
+                    type="email"
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    placeholder="joao@escritorio.com.br"
+                    required
+                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
+                    Senha de Acesso
+                  </label>
+                  <input
+                    type="password"
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    placeholder="Mínimo 6 caracteres"
+                    required
+                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
+                  />
+                  {/* Barra de Força da Senha */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
+                    <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ width: `${passwordStrength}%`, height: '100%', background: passwordStrength > 75 ? '#10B981' : passwordStrength > 40 ? '#FBBF24' : '#EF4444' }} />
+                    </div>
+                    <span style={{ fontSize: '0.62rem', color: '#94A3B8' }}>
+                      {passwordStrength > 75 ? 'Forte' : passwordStrength > 40 ? 'Média' : 'Fraca'}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
+                    Perfil de Atuação
+                  </label>
+                  <select
+                    value={regRole}
+                    onChange={(e) => setRegRole(e.target.value as any)}
+                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#34D399', padding: '7px 10px', fontSize: '0.78rem', fontWeight: 800, outline: 'none' }}
+                  >
+                    <option value="MASTER_ACCOUNTANT">🏛️ Sócio / Contador Responsável</option>
+                    <option value="TAX_SPECIALIST">⚖️ Especialista Fiscal & Tributário</option>
+                    <option value="PAYROLL_SPECIALIST">👥 Especialista de DP & eSocial</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isAuthenticating}
+                  className="btn-1click-3d"
+                  style={{ width: '100%', padding: '10px', fontSize: '0.84rem', justifyContent: 'center', marginTop: '4px' }}
+                >
+                  {isAuthenticating ? 'Criando Conta...' : '✨ Criar Conta & Entrar'}
+                </button>
+              </form>
+            )}
+
+            {/* FORMULÁRIO 3: RECUPERAÇÃO DE SENHA */}
+            {authMode === 'RECOVERY' && (
+              <form onSubmit={handleExecuteRecovery} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <p style={{ fontSize: '0.74rem', color: '#94A3B8', margin: 0 }}>
+                  Informe o seu e-mail corporativo para enviarmos o link com o token de redefinição de senha segura.
+                </p>
+
+                {recoverySent ? (
+                  <div style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid #34D399', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
+                    <CheckCircle2 size={24} style={{ color: '#34D399', margin: '0 auto 6px auto' }} />
+                    <div style={{ fontSize: '0.78rem', fontWeight: 800, color: '#FFFFFF' }}>Instruções Enviadas!</div>
+                    <div style={{ fontSize: '0.68rem', color: '#CBD5E1', marginTop: '4px' }}>
+                      Verifique a sua caixa de entrada para redefinir sua senha.
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setAuthMode('LOGIN'); setRecoverySent(false); }}
+                      style={{ marginTop: '10px', background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '5px 12px', borderRadius: '6px', fontSize: '0.70rem', fontWeight: 700, cursor: 'pointer' }}
+                    >
+                      Voltar ao Login
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                        E-mail de Recuperação
+                      </label>
+                      <input
+                        type="email"
+                        value={recoveryEmail}
+                        onChange={(e) => setRecoveryEmail(e.target.value)}
+                        placeholder="seu.email@escritorio.com.br"
+                        required
+                        style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '8px 10px', fontSize: '0.80rem', outline: 'none' }}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isAuthenticating}
+                      className="btn-1click-3d"
+                      style={{ width: '100%', padding: '9px', fontSize: '0.82rem', justifyContent: 'center' }}
+                    >
+                      {isAuthenticating ? 'Enviando...' : '📧 Enviar Link de Recuperação'}
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setAuthMode('LOGIN')}
+                      style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '0.70rem', cursor: 'pointer', textAlign: 'center' }}
+                    >
+                      Voltar ao Login
+                    </button>
+                  </>
+                )}
+              </form>
+            )}
+
+            {/* FORMULÁRIO 4: CERTIFICADO DIGITAL ICP-BRASIL */}
+            {authMode === 'CERTIFICATE' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', textAlign: 'center' }}>
+                <div style={{ padding: '16px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
+                  <KeyRound size={32} style={{ color: '#38BDF8', margin: '0 auto 8px auto' }} />
+                  <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#FFFFFF' }}>
+                    Autenticação com Certificado Digital
+                  </div>
+                  <p style={{ fontSize: '0.70rem', color: '#94A3B8', margin: '6px 0 12px 0' }}>
+                    Compatível com <strong>e-CNPJ</strong> e <strong>e-CPF</strong> em modelos <strong>A1 (Arquivo)</strong> e <strong>A3 (Token / SmartCard)</strong>.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={handleExecuteCertificate}
+                    disabled={isAuthenticating}
+                    style={{
+                      width: '100%',
+                      background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
+                      border: '1px solid #38BDF8',
+                      borderBottom: '2px solid #075985',
+                      color: '#FFFFFF',
+                      padding: '10px',
+                      borderRadius: '8px',
+                      fontWeight: 800,
+                      fontSize: '0.80rem',
+                      cursor: 'pointer',
+                      boxShadow: '0 0 16px rgba(56, 189, 248, 0.4)'
+                    }}
+                  >
+                    {isAuthenticating ? '🔒 Lendo Chave ICP-Brasil...' : '🔑 Conectar com Certificado Digital'}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Rodapé de Segurança */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '16px', fontSize: '0.62rem', color: '#64748B' }}>
+              <ShieldCheck size={12} style={{ color: '#10B981' }} />
+              Criptografia AES-256 • Conforme LGPD & ICP-Brasil
+            </div>
           </div>
         </div>
       </section>
@@ -340,7 +859,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
           
-          {/* Card 1 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
               <Workflow size={22} />
@@ -353,7 +871,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </p>
           </div>
 
-          {/* Card 2 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #059669 0%, #0284C7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '14px' }}>
               <Radar size={22} />
@@ -366,7 +883,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </p>
           </div>
 
-          {/* Card 3 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
               <BookOpen size={22} />
@@ -379,7 +895,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </p>
           </div>
 
-          {/* Card 4 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '14px' }}>
               <Scale size={22} />
@@ -392,7 +907,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </p>
           </div>
 
-          {/* Card 5 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
               <FileSpreadsheet size={22} />
@@ -405,7 +919,6 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </p>
           </div>
 
-          {/* Card 6 */}
           <div className="dept-accordion-card" style={{ padding: '24px' }}>
             <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
               <Users size={22} />
@@ -545,191 +1058,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. SEÇÃO DE LOGIN CORPORATIVO & ACESSO RÁPIDO 3D                          */}
-      {/* ========================================================================= */}
-      <section id="login-section" style={{ padding: '80px 24px', background: '#090F1C', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
-        <div style={{ maxWidth: '480px', margin: '0 auto' }}>
-          
-          <div
-            style={{
-              background: 'linear-gradient(180deg, #151F36 0%, #0C1322 100%)',
-              border: '1.5px solid rgba(52, 211, 153, 0.4)',
-              borderBottom: '3px solid rgba(5, 150, 105, 0.7)',
-              borderRadius: '16px',
-              padding: '28px',
-              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 20px rgba(16, 185, 129, 0.2)'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Lock size={18} style={{ color: '#34D399' }} />
-                <h2 style={{ fontSize: '1.02rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
-                  Acesso Corporativo Seguro
-                </h2>
-              </div>
-              <span style={{ fontSize: '0.60rem', fontWeight: 900, padding: '2px 6px', borderRadius: '4px', background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', border: '1px solid rgba(16, 185, 129, 0.4)' }}>
-                AES-256
-              </span>
-            </div>
-
-            {/* Perfis */}
-            <div style={{ marginBottom: '16px' }}>
-              <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '6px' }}>
-                Selecione o Perfil de Demonstração
-              </label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '6px' }}>
-                {PRESET_PROFILES.map((prof) => {
-                  const isSelected = selectedProfile.id === prof.id;
-                  return (
-                    <button
-                      key={prof.id}
-                      type="button"
-                      onClick={() => handleSelectProfile(prof)}
-                      style={{
-                        background: isSelected
-                          ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(6, 182, 212, 0.12) 100%)'
-                          : 'rgba(255, 255, 255, 0.04)',
-                        border: isSelected ? '1.5px solid #34D399' : '1px solid rgba(255, 255, 255, 0.1)',
-                        borderRadius: '8px',
-                        padding: '8px 10px',
-                        textAlign: 'left',
-                        cursor: 'pointer',
-                        boxShadow: isSelected ? '0 0 10px rgba(16, 185, 129, 0.3)' : 'none',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <span style={{ fontSize: '0.85rem' }}>{prof.avatarIcon}</span>
-                        <strong style={{ fontSize: '0.72rem', color: isSelected ? '#34D399' : '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                          {prof.name}
-                        </strong>
-                      </div>
-                      <div style={{ fontSize: '0.62rem', color: '#94A3B8', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {prof.roleLabel}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Formulário de Login */}
-            <form onSubmit={handleExecuteLogin} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                  E-mail Corporativo
-                </label>
-                <input
-                  type="email"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  required
-                  style={{
-                    width: '100%',
-                    background: '#0B1120',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    padding: '7px 10px',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    outline: 'none'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                  Senha de Acesso / Token
-                </label>
-                <input
-                  type="password"
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  required
-                  style={{
-                    width: '100%',
-                    background: '#0B1120',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    borderRadius: '6px',
-                    color: '#FFFFFF',
-                    padding: '7px 10px',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    outline: 'none'
-                  }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isAuthenticating || authSuccess}
-                className="btn-1click-3d"
-                style={{
-                  width: '100%',
-                  padding: '10px',
-                  fontSize: '0.84rem',
-                  justifyContent: 'center',
-                  marginTop: '4px'
-                }}
-              >
-                {isAuthenticating ? (
-                  <span>🔄 Validando Credenciais...</span>
-                ) : authSuccess ? (
-                  <span>✓ Acesso Autorizado! Entrando...</span>
-                ) : (
-                  <span>🔐 Entrar no Sistema ({selectedProfile.name})</span>
-                )}
-              </button>
-            </form>
-
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '14px 0', fontSize: '0.64rem', color: '#64748B' }}>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
-              <span>OU AUTENTIQUE COM</span>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255, 255, 255, 0.1)' }} />
-            </div>
-
-            <button
-              type="button"
-              onClick={handleCertificateLogin}
-              style={{
-                width: '100%',
-                background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
-                color: '#FFFFFF',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                fontSize: '0.74rem',
-                fontWeight: 800,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 2px 6px rgba(0, 0, 0, 0.35)'
-              }}
-            >
-              <KeyRound size={14} style={{ color: '#38BDF8' }} />
-              Certificado Digital (e-CNPJ / e-CPF A1 & A3)
-            </button>
-
-            {showCertificateModal && (
-              <div style={{ marginTop: '10px', padding: '8px', borderRadius: '6px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid rgba(56, 189, 248, 0.4)', fontSize: '0.68rem', color: '#38BDF8', textAlign: 'center', fontWeight: 700 }}>
-                🔒 Lendo Certificado ICP-Brasil... Conexão Criptografada!
-              </div>
-            )}
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '16px', fontSize: '0.62rem', color: '#64748B' }}>
-              <ShieldCheck size={12} style={{ color: '#10B981' }} />
-              Criptografia AES-256 • Conforme LGPD & ICP-Brasil
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 7. FOOTER INSTITUCIONAL COMPLETO COM SELOS DE AUDITORIA                  */}
+      {/* 6. FOOTER INSTITUCIONAL COMPLETO COM SELOS DE AUDITORIA                  */}
       {/* ========================================================================= */}
       <footer
         style={{
