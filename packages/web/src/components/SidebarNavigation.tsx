@@ -67,32 +67,38 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
   if (!query || !query.trim()) {
     return <span>{text}</span>;
   }
-  const cleanQuery = query.trim();
-  const escaped = cleanQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp('(' + escaped + ')', 'gi');
-  const parts = text.split(regex);
-  return (
-    <span>
-      {parts.map((part, i) =>
-        part.toLowerCase() === cleanQuery.toLowerCase() ? (
-          <mark
-            key={i}
-            style={{
-              background: 'rgba(245, 158, 11, 0.25)',
-              color: '#FBBF24',
-              borderRadius: '4px',
-              padding: '1px 4px',
-              fontWeight: 800
-            }}
-          >
-            {part}
-          </mark>
-        ) : (
-          part
-        )
-      )}
-    </span>
-  );
+  const tokens = query.trim().split(/[\s,;+&|/\-]+/).filter(Boolean);
+  if (tokens.length === 0) return <span>{text}</span>;
+  
+  try {
+    const escapedTokens = tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, (m) => "\\" + m)).join("|");
+    const regex = new RegExp("(" + escapedTokens + ")", "gi");
+    const parts = text.split(regex);
+    return (
+      <span>
+        {parts.map((part, i) =>
+          tokens.some(t => t.toLowerCase() === part.toLowerCase()) ? (
+            <mark
+              key={i}
+              style={{
+                background: "rgba(245, 158, 11, 0.3)",
+                color: "#FBBF24",
+                borderRadius: "4px",
+                padding: "1px 4px",
+                fontWeight: 800
+              }}
+            >
+              {part}
+            </mark>
+          ) : (
+            <span key={i}>{part}</span>
+          )
+        )}
+      </span>
+    );
+  } catch {
+    return <span>{text}</span>;
+  }
 }
 
 export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
@@ -195,10 +201,25 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
     });
   };
 
-  // 6. Filter & Search Logic
+  // 6. Universal Multi-Word Tokenized Filter & Search Logic
   const filteredDepartments = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
 
+    // Se houver busca digitada, pesquisa em TODOS os módulos de TODOS os departamentos
+    if (query) {
+      const tokens = normalizeText(query).split(/[\s,;+&|/\-]+/).filter(Boolean);
+
+      return DEPARTMENT_CATEGORIES.map(dept => {
+        const matchingModules = dept.modules.filter(m => {
+          const searchCorpus = normalizeText(`${m.name} ${m.label} ${m.id} ${m.badge || ''} ${m.file || ''} ${dept.name}`);
+          return tokens.every(token => searchCorpus.includes(token));
+        });
+
+        return { ...dept, visibleModules: matchingModules };
+      }).filter(dept => dept.visibleModules.length > 0);
+    }
+
+    // Se NÃO houver busca, respeita as abas de filtro
     return DEPARTMENT_CATEGORIES.map(dept => {
       let matchesFilter = true;
       if (activeFilter === 'core') {
@@ -213,7 +234,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         matchesFilter = dept.id === 'setoriais';
       }
 
-      if (!matchesFilter && !query) {
+      if (!matchesFilter) {
         return { ...dept, visibleModules: [] };
       }
 
@@ -222,25 +243,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         modulesToFilter = modulesToFilter.filter(m => isModuleRecommendedForTenant(m.id, tenant));
       }
 
-      if (!query) {
-        return { ...dept, visibleModules: modulesToFilter };
-      }
-
-      const normQuery = normalizeText(query);
-      const matchingModules = modulesToFilter.filter(m => {
-        const normName = normalizeText(m.name);
-        const normLabel = normalizeText(m.label);
-        const normId = normalizeText(m.id);
-        const normBadge = m.badge ? normalizeText(m.badge) : '';
-        const normFile = m.file ? normalizeText(m.file) : '';
-        return normName.includes(normQuery) || 
-               normLabel.includes(normQuery) || 
-               normId.includes(normQuery) || 
-               normBadge.includes(normQuery) ||
-               normFile.includes(normQuery);
-      });
-
-      return { ...dept, visibleModules: matchingModules };
+      return { ...dept, visibleModules: modulesToFilter };
     }).filter(dept => dept.visibleModules.length > 0);
   }, [searchQuery, activeFilter, tenant]);
 

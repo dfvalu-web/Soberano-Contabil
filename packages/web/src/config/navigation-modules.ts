@@ -453,6 +453,24 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "defaultCollapsed": false,
     "modules": [
       {
+        "id": "office_predictive_tax_audit_radar",
+        "name": "Radar de Malhas Fiscais & Auditoria RFB",
+        "label": "Radar de Malhas Fiscais & Auditoria RFB",
+        "icon": "🛡️",
+        "file": "OfficePredictiveTaxAuditRadarView",
+        "departmentId": "fiscal",
+        "isCore": true
+      },
+      {
+        "id": "office_strategic_tax_regime_comparison",
+        "name": "Simulador Reforma Tributária 2026–2033 (IBS/CBS)",
+        "label": "Simulador Reforma Tributária 2026–2033 (IBS/CBS)",
+        "icon": "⚖️",
+        "file": "OfficeStrategicTaxRegimeComparisonView",
+        "departmentId": "fiscal",
+        "isCore": true
+      },
+      {
         "id": "office_sped_batch_prevalidator",
         "name": "Geração & Validação de SPEDs (EFD/ECD/ECF)",
         "label": "Geração & Validação de SPEDs (EFD/ECD/ECF)",
@@ -726,6 +744,15 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "isCore": true,
     "defaultCollapsed": false,
     "modules": [
+      {
+        "id": "office_monthly_consolidated_book",
+        "name": "Book Contábil Mensal Consolidado (A4)",
+        "label": "Book Contábil Mensal Consolidado (A4)",
+        "icon": "📑",
+        "file": "OfficeMonthlyConsolidatedBookView",
+        "departmentId": "contabil",
+        "isCore": true
+      },
       {
         "id": "office_intangibles_amortization",
         "name": "Ativos Intangíveis, Softwares & Amortização CPC 04",
