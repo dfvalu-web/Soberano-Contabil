@@ -292,34 +292,53 @@ export const OfficeProductsServicesStockView: React.FC = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', color: 'var(--text-primary)' }}>
       {/* Top Header & Actions */}
-      <div className="no-print" style={{ background: 'var(--bg-surface-elevated)', padding: '20px', borderRadius: '12px', border: '1px solid var(--border-medium)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+      <div className="no-print" style={{ background: 'linear-gradient(180deg, #131E35 0%, #0C1220 100%)', padding: '16px 20px', borderRadius: '12px', border: '1px solid rgba(255, 255, 255, 0.12)', borderBottom: '2px solid rgba(0, 0, 0, 0.4)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '14px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 4px 14px rgba(0, 0, 0, 0.4)' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '1.5rem' }}>📦</span>
-            <h1 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 800, color: '#fff' }}>
+            <span style={{ fontSize: '1.4rem' }}>📦</span>
+            <h1 style={{ margin: 0, fontSize: '1.25rem', fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
               Catálogo Inteligente de Produtos, Estoques & Serviços
             </h1>
-            <span style={{ background: 'rgba(16, 185, 129, 0.2)', color: 'var(--emerald-400)', border: '1px solid rgba(16, 185, 129, 0.4)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800 }}>
+            <span style={{ background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.66rem', fontWeight: 900 }}>
               CPC 16 • SPED BLOCO 0200/K200 • LC 116
             </span>
           </div>
-          <p style={{ margin: '4px 0 0', color: 'var(--text-secondary)', fontSize: '0.82rem' }}>
+          <p style={{ margin: '4px 0 0', color: '#94A3B8', fontSize: '0.78rem' }}>
             Cadastro mestre unificado de matérias-primas, produtos acabados, mercadorias para revenda e serviços com amarração fiscal determinística.
           </p>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <select
-            value={selectedTenantId}
-            onChange={(e) => setSelectedTenantId(e.target.value)}
-            style={{ background: 'var(--bg-surface-card)', border: '1px solid var(--border-medium)', color: '#fff', padding: '8px 12px', borderRadius: '8px', fontSize: '0.8rem', fontWeight: 700 }}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Seletor 3D de Empresa */}
+          <div
+            className="control-pod-3d"
+            style={{
+              padding: '4px 10px',
+              background: 'linear-gradient(180deg, #18233C 0%, #0E1528 100%)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
+              borderBottom: '2px solid rgba(5, 150, 105, 0.6)'
+            }}
           >
-            {tenants.map(t => (
-              <option key={t.id} value={t.id}>{t.name} ({t.regime.replace('_', ' ')})</option>
-            ))}
-          </select>
-          <button onClick={() => window.print()} className="btn-primary-action" style={{ padding: '8px 14px', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Printer size={15} />
+            <span style={{ fontSize: '0.85rem' }}>🏢</span>
+            <select
+              value={selectedTenantId}
+              onChange={(e) => setSelectedTenantId(e.target.value)}
+              style={{ background: 'transparent', border: 'none', color: '#FFFFFF', fontSize: '0.78rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+            >
+              {tenants.map(t => (
+                <option key={t.id} value={t.id} style={{ background: '#0F172A', color: '#FFFFFF', fontWeight: 700 }}>
+                  {t.name} ({t.regime.replace('_', ' ')})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            onClick={() => window.print()}
+            className="btn-1click-3d"
+            style={{ padding: '6px 14px', fontSize: '0.76rem' }}
+          >
+            <Printer size={14} />
             <span>Imprimir Dossiê de Inventário (A4)</span>
           </button>
         </div>
