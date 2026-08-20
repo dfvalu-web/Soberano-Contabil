@@ -336,11 +336,11 @@ describe('Suíte de Testes: Cadastros Inteligentes, Emissor de NF-e e Ativo Imob
       expect(html).toContain('CPC 16');
     });
 
-    it('OfficeInvoiceBillingIssuerView deve conter DANFE Diamante', () => {
+    it('OfficeInvoiceBillingIssuerView deve conter Emissor Inteligente e Transmissão SEFAZ', () => {
       const html = renderToStaticMarkup(<OfficeInvoiceBillingIssuerView />);
-      expect(html).toContain('diamond-paper-a4');
-      expect(html).toContain('DANFE');
-      expect(html).toContain('DOCUMENTO AUXILIAR DA NOTA FISCAL');
+      expect(html).toContain('Emissor Inteligente de Notas Fiscais');
+      expect(html).toContain('Empresa Emissora');
+      expect(html).toContain('Emitir, Transmitir SEFAZ');
     });
 
     it('OfficeFixedAssetsCiapView deve conter Dossiê Patrimonial Diamante', () => {

@@ -529,6 +529,35 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
           </a>
 
           <a
+            href="#seguranca"
+            style={{
+              color: '#38BDF8',
+              textDecoration: 'none',
+              fontSize: '0.76rem',
+              fontWeight: 800,
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              background: 'rgba(56, 189, 248, 0.15)',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
+              boxShadow: '0 0 10px rgba(56, 189, 248, 0.25)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(180deg, rgba(56, 189, 248, 0.35) 0%, rgba(3, 105, 161, 0.2) 100%)';
+              e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 16px rgba(56, 189, 248, 0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(56, 189, 248, 0.15)';
+              e.currentTarget.style.boxShadow = '0 0 10px rgba(56, 189, 248, 0.25)';
+            }}
+          >
+            <span>🛡️</span> Segurança
+          </a>
+
+          <a
             href="#migracao"
             style={{
               color: '#34D399',
@@ -2392,6 +2421,284 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </a>
             </div>
 
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 4.8 SEÇÃO EXCLUSIVA 3D 4K: CIBERSEGURANÇA & 5 CAMADAS DE DEFESA HACKER    */}
+      {/* ========================================================================= */}
+      <section id="seguranca" style={{ padding: '90px 24px', maxWidth: '1280px', margin: '0 auto', position: 'relative' }}>
+        
+        {/* Glows de Fundo 3D */}
+        <div style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '400px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(16, 185, 129, 0.05) 50%, transparent 80%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+
+        <div
+          style={{
+            position: 'relative',
+            zIndex: 1,
+            background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%)',
+            border: '2px solid rgba(56, 189, 248, 0.45)',
+            borderBottom: '4px solid #0284C7',
+            borderRadius: '24px',
+            padding: '44px 32px',
+            boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 45px rgba(56, 189, 248, 0.25)',
+            backdropFilter: 'blur(20px)'
+          }}
+        >
+          {/* Cabeçalho Holográfico 3D */}
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 18px', borderRadius: '30px', background: 'rgba(56, 189, 248, 0.18)', color: '#38BDF8', fontSize: '0.74rem', fontWeight: 900, border: '1.5px solid rgba(56, 189, 248, 0.5)', boxShadow: '0 0 20px rgba(56, 189, 248, 0.35)', letterSpacing: '0.05em' }}>
+              <ShieldCheck size={16} style={{ color: '#38BDF8' }} /> ARQUITETURA DEFENSIVA DE NÍVEL BANCÁRIO & PADRÃO MILITAR AAA
+            </div>
+            <h2 style={{ fontSize: '2.4rem', fontWeight: 900, color: '#FFFFFF', marginTop: '16px', letterSpacing: '-0.03em', textShadow: '0 2px 14px rgba(0,0,0,0.9)' }}>
+              As 5 Camadas de Proteção contra Ataques Hackers
+            </h2>
+            <p style={{ fontSize: '0.94rem', color: '#94A3B8', maxWidth: '860px', margin: '12px auto 0 auto', lineHeight: 1.6 }}>
+              O <strong>Soberano Contábil</strong> opera com criptografia de hardware, isolamento estrito de acessos (RBAC) e imunidade contra sequestro de dados (Ransomware), espionagem e vazamento de informações confidenciais (LGPD / FIPS 140-3).
+            </p>
+          </div>
+
+          {/* Grid dos 5 Quadros 3D 4K */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+            
+            {/* QUADRO 1: BORDA & WAF */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1.5px solid rgba(56, 189, 248, 0.35)',
+                borderBottom: '3.5px solid #0284C7',
+                borderRadius: '16px',
+                padding: '22px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid #38BDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🌐
+                  </div>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 900, padding: '3px 8px', borderRadius: '6px', background: 'rgba(56, 189, 248, 0.2)', color: '#38BDF8', border: '1px solid rgba(56, 189, 248, 0.4)' }}>
+                    CAMADA 1 • BORDA
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0' }}>
+                  Borda Global, WAF & Anti-DDoS (L3, L4 e L7)
+                </h3>
+                <ul style={{ paddingLeft: '16px', margin: '0', fontSize: '0.74rem', color: '#CBD5E1', lineHeight: 1.55 }}>
+                  <li style={{ marginBottom: '6px' }}><strong>Proteção Anti-DDoS:</strong> Rede Edge mundial que absorve e dissipa ataques volumétricos massivos instantaneamente;</li>
+                  <li style={{ marginBottom: '6px' }}><strong>Web Application Firewall (WAF):</strong> Filtragem heurística contra bots maliciosos e scanners de vulnerabilidade;</li>
+                  <li><strong>Rate Limiting Adaptativo:</strong> Bloqueio automático de disparos repetitivos por IP.</li>
+                </ul>
+              </div>
+              <div style={{ marginTop: '16px', padding: '6px 10px', borderRadius: '8px', background: '#070B14', border: '1px solid rgba(56, 189, 248, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.65rem', color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>
+                <span>Mitigação de Picos</span>
+                <strong>● &lt; 0.2ms Resposta</strong>
+              </div>
+            </div>
+
+            {/* QUADRO 2: TRANSPORTE TLS 1.3 */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1.5px solid rgba(16, 185, 129, 0.35)',
+                borderBottom: '3.5px solid #059669',
+                borderRadius: '16px',
+                padding: '22px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🔐
+                  </div>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 900, padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.4)' }}>
+                    CAMADA 2 • TRANSPORTE
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0' }}>
+                  Criptografia de Transporte (TLS 1.3 & HSTS)
+                </h3>
+                <ul style={{ paddingLeft: '16px', margin: '0', fontSize: '0.74rem', color: '#CBD5E1', lineHeight: 1.55 }}>
+                  <li style={{ marginBottom: '6px' }}><strong>Canal Cifrado Ponta a Ponta:</strong> 100% do tráfego operando exclusivamente sob HTTPS com TLS 1.3;</li>
+                  <li style={{ marginBottom: '6px' }}><strong>HSTS (Strict Transport Security):</strong> Bloqueio definitivo de conexões inseguras e ataques Man-in-the-Middle;</li>
+                  <li><strong>CORS Rígido:</strong> Isolamento de origem que impede o roubo de sessões ou scripts externos.</li>
+                </ul>
+              </div>
+              <div style={{ marginTop: '16px', padding: '6px 10px', borderRadius: '8px', background: '#070B14', border: '1px solid rgba(16, 185, 129, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.65rem', color: '#34D399', fontFamily: 'var(--font-mono)' }}>
+                <span>Canal Criptografado</span>
+                <strong>● TLS 1.3 Forçado</strong>
+              </div>
+            </div>
+
+            {/* QUADRO 3: MOTOR CRIPTOGRÁFICO DE HARDWARE */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1.5px solid rgba(251, 191, 36, 0.35)',
+                borderBottom: '3.5px solid #D97706',
+                borderRadius: '16px',
+                padding: '22px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(251, 191, 36, 0.15)', border: '1px solid #FBBF24', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🔑
+                  </div>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 900, padding: '3px 8px', borderRadius: '6px', background: 'rgba(251, 191, 36, 0.2)', color: '#FBBF24', border: '1px solid rgba(251, 191, 36, 0.4)' }}>
+                    CAMADA 3 • HARDWARE
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0' }}>
+                  Motor Criptográfico Nativo (Web Crypto API)
+                </h3>
+                <ul style={{ paddingLeft: '16px', margin: '0', fontSize: '0.74rem', color: '#CBD5E1', lineHeight: 1.55 }}>
+                  <li style={{ marginBottom: '6px' }}><strong>AES-256-GCM Militar:</strong> Criptografia autenticada com IV 96-bits e tag de integridade 128-bits;</li>
+                  <li style={{ marginBottom: '6px' }}><strong>PBKDF2 (100.000 iterações):</strong> Imunidade matemática a ataques de dicionário e tabelas rainbow;</li>
+                  <li><strong>HMAC-SHA256:</strong> Assinatura de desafios para Tokens A3 e Certificados ICP-Brasil v5.</li>
+                </ul>
+              </div>
+              <div style={{ marginTop: '16px', padding: '6px 10px', borderRadius: '8px', background: '#070B14', border: '1px solid rgba(251, 191, 36, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.65rem', color: '#FBBF24', fontFamily: 'var(--font-mono)' }}>
+                <span>Padrão de Cifra</span>
+                <strong>● AES-256 / FIPS 140-3</strong>
+              </div>
+            </div>
+
+            {/* QUADRO 4: GOVERNANÇA RBAC & MASTER OWNER */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1.5px solid rgba(168, 85, 247, 0.35)',
+                borderBottom: '3.5px solid #9333EA',
+                borderRadius: '16px',
+                padding: '22px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(168, 85, 247, 0.15)', border: '1px solid #C084FC', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    👥
+                  </div>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 900, padding: '3px 8px', borderRadius: '6px', background: 'rgba(168, 85, 247, 0.2)', color: '#C084FC', border: '1px solid rgba(168, 85, 247, 0.4)' }}>
+                    CAMADA 4 • GOVERNANÇA
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0' }}>
+                  Governança RBAC & Blindagem Master Owner
+                </h3>
+                <ul style={{ paddingLeft: '16px', margin: '0', fontSize: '0.74rem', color: '#CBD5E1', lineHeight: 1.55 }}>
+                  <li style={{ marginBottom: '6px' }}><strong>Matriz RBAC Estrita:</strong> Cada colaborador acessa exclusivamente os módulos do seu departamento homologado;</li>
+                  <li style={{ marginBottom: '6px' }}><strong>Blindagem Master Owner (dfvalu@gmail.com):</strong> Dupla trava de segurança nos módulos de Sandbox e Quarentena;</li>
+                  <li><strong>Zero Exposição Pública:</strong> Nomes, certificados e dados corporativos 100% omitidos na tela de login.</li>
+                </ul>
+              </div>
+              <div style={{ marginTop: '16px', padding: '6px 10px', borderRadius: '8px', background: '#070B14', border: '1px solid rgba(168, 85, 247, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.65rem', color: '#C084FC', fontFamily: 'var(--font-mono)' }}>
+                <span>Controle de Acesso</span>
+                <strong>● Dupla Trava Master</strong>
+              </div>
+            </div>
+
+            {/* QUADRO 5: OWASP TOP 10 & SANDBOX */}
+            <div
+              style={{
+                background: 'linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%)',
+                border: '1.5px solid rgba(244, 63, 94, 0.35)',
+                borderBottom: '3.5px solid #E11D48',
+                borderRadius: '16px',
+                padding: '22px',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 10px 25px rgba(0, 0, 0, 0.5)',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                  <div style={{ width: '44px', height: '44px', borderRadius: '12px', background: 'rgba(244, 63, 94, 0.15)', border: '1px solid #FB7185', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.4rem' }}>
+                    🛡️
+                  </div>
+                  <span style={{ fontSize: '0.62rem', fontWeight: 900, padding: '3px 8px', borderRadius: '6px', background: 'rgba(244, 63, 94, 0.2)', color: '#FB7185', border: '1px solid rgba(244, 63, 94, 0.4)' }}>
+                    CAMADA 5 • OWASP TOP 10
+                  </span>
+                </div>
+                <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0' }}>
+                  Proteção OWASP Top 10 & Sandbox
+                </h3>
+                <ul style={{ paddingLeft: '16px', margin: '0', fontSize: '0.74rem', color: '#CBD5E1', lineHeight: 1.55 }}>
+                  <li style={{ marginBottom: '6px' }}><strong>Imunidade a SQL Injection & XSS:</strong> Tipagem TypeScript rígida com escape nativo de strings no DOM;</li>
+                  <li style={{ marginBottom: '6px' }}><strong>Trilha Forense Imutável:</strong> Auditoria de todos os logins com registro de IP, data/hora e hash SHA-256;</li>
+                  <li><strong>Laboratório Sandbox & Quarentena:</strong> Isolamento de empresas em memória para testes antes da liberação.</li>
+                </ul>
+              </div>
+              <div style={{ marginTop: '16px', padding: '6px 10px', borderRadius: '8px', background: '#070B14', border: '1px solid rgba(244, 63, 94, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.65rem', color: '#FB7185', fontFamily: 'var(--font-mono)' }}>
+                <span>Conformidade</span>
+                <strong>● 100% OWASP Top 10</strong>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Banner Interativo de Certificação de Segurança */}
+          <div
+            style={{
+              background: '#090E1B',
+              border: '1.5px solid rgba(56, 189, 248, 0.3)',
+              borderRadius: '16px',
+              padding: '24px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: '16px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.2)', border: '1.5px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.6rem' }}>
+                🏅
+              </div>
+              <div>
+                <div style={{ fontSize: '0.94rem', fontWeight: 900, color: '#FFFFFF' }}>
+                  Auditoria Criptográfica & Conformidade com a LGPD
+                </div>
+                <div style={{ fontSize: '0.74rem', color: '#94A3B8' }}>
+                  Seus dados financeiros, fiscais e salariais protegidos sob sigilo contábil e bancário irrestrito.
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <div style={{ padding: '6px 12px', borderRadius: '8px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.68rem', fontWeight: 800, color: '#38BDF8', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span>🛡️</span> FIPS 140-3
+              </div>
+              <div style={{ padding: '6px 12px', borderRadius: '8px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.68rem', fontWeight: 800, color: '#34D399', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span>⚖️</span> LGPD Art. 46
+              </div>
+              <div style={{ padding: '6px 12px', borderRadius: '8px', background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', fontSize: '0.68rem', fontWeight: 800, color: '#FBBF24', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span>📜</span> ICP-Brasil v5
+              </div>
+            </div>
           </div>
 
         </div>

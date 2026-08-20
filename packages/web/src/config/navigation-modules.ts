@@ -39,7 +39,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Building2",
     "tag": "GESTAO",
     "isCore": true,
-    "defaultCollapsed": true,
+    "defaultCollapsed": false,
     "modules": [
       {
         "id": "office_sandbox_isolation_lab",
@@ -304,7 +304,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Users",
     "tag": "DP",
     "isCore": true,
-    "defaultCollapsed": true,
+    "defaultCollapsed": false,
     "modules": [
       {
         "id": "office_rh_executive_reports_diamond",
@@ -469,7 +469,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "Scale",
     "tag": "FISCAL",
     "isCore": true,
-    "defaultCollapsed": true,
+    "defaultCollapsed": false,
     "modules": [
       {
         "id": "office_predictive_tax_audit_radar",
@@ -770,7 +770,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "iconName": "BookOpen",
     "tag": "CONTABIL",
     "isCore": true,
-    "defaultCollapsed": true,
+    "defaultCollapsed": false,
     "modules": [
       {
         "id": "office_monthly_consolidated_book",
@@ -854,9 +854,9 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
         "isCore": true
       },
       {
-        "id": "office_sped_batch_prevalidator",
-        "name": "Pré-Validador SPED em Lote",
-        "label": "Pré-Validador SPED em Lote",
+        "id": "office_sped_ecd_ecf_auditor",
+        "name": "Auditoria & Cruzamentos SPED (ECD/ECF)",
+        "label": "Auditoria & Cruzamentos SPED (ECD/ECF)",
         "icon": "🔍",
         "file": "OfficeSpedBatchPrevalidatorView",
         "departmentId": "contabil",
