@@ -112,52 +112,7 @@ export interface DigitalCertificateItem {
   associatedProfile: UserProfile;
 }
 
-export const INSTALLED_CERTIFICATES: DigitalCertificateItem[] = [
-  {
-    id: 'cert-david',
-    type: 'e-CPF',
-    holderName: 'DAVID VALU (PROPRIETÁRIO & DEV)',
-    documentNumber: '123.456.789-00',
-    issuerAuthority: 'AC SOLUTI Multipla v5 (ICP-Brasil)',
-    model: 'A3_TOKEN_SMARTCARD',
-    validUntil: '14/10/2027',
-    crcOrOab: 'CRC 1SP999999/O-0 • OWNER',
-    associatedProfile: PRESET_PROFILES[0]
-  },
-  {
-    id: 'cert-soberano-cnpj',
-    type: 'e-CNPJ',
-    holderName: 'SOBERANO CONTABIL PLATINUM LTDA',
-    documentNumber: '12.345.678/0001-90',
-    issuerAuthority: 'AC SERPRO RFB v5 (ICP-Brasil)',
-    model: 'A1_ARQUIVO',
-    validUntil: '05/03/2027',
-    crcOrOab: 'Escritório Matriz',
-    associatedProfile: PRESET_PROFILES[0]
-  },
-  {
-    id: 'cert-beatriz',
-    type: 'e-CPF',
-    holderName: 'BEATRIZ SANTOS',
-    documentNumber: '987.654.321-11',
-    issuerAuthority: 'AC CERTISIGN v5 (ICP-Brasil)',
-    model: 'A3_TOKEN_SMARTCARD',
-    validUntil: '22/08/2026',
-    crcOrOab: 'OAB/SP 412.980 • CRC',
-    associatedProfile: PRESET_PROFILES[1]
-  },
-  {
-    id: 'cert-carlos',
-    type: 'e-CPF',
-    holderName: 'CARLOS MENDES',
-    documentNumber: '456.789.123-22',
-    issuerAuthority: 'AC VALID v5 (ICP-Brasil)',
-    model: 'A1_ARQUIVO',
-    validUntil: '18/11/2026',
-    crcOrOab: 'Coordenador DP',
-    associatedProfile: PRESET_PROFILES[2]
-  }
-];
+// Certificados gerenciados exclusivamente no cofre interno seguro (OfficeStateStore)
 
 
 interface LandingAndLoginPremiumViewProps {
@@ -371,18 +326,23 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
     }
   };
 
-  const handleExecuteRegister = (e: React.FormEvent) => {
+  const handleExecuteRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
-
-    if (!regName.trim()) {
-      setErrorMessage('Por favor, informe o seu nome completo.');
-      return;
-    }
+    setSuccessMessage('');
 
     const trimmedEmail = regEmail.trim().toLowerCase();
     if (!trimmedEmail || !trimmedEmail.includes('@') || !trimmedEmail.includes('.')) {
-      setErrorMessage('Informe um e-mail corporativo válido para criar sua conta.');
+      setErrorMessage('Informe um e-mail corporativo válido para ativar seu primeiro acesso.');
+      return;
+    }
+
+    // 1. CHECAGEM DE GOVERNANÇA: Verificar se o e-mail está pré-aprovado pelo Master Admin
+    const authCheck = officeStore.isUserAuthorizedForPasswordCreation(trimmedEmail);
+    if (!authCheck.authorized) {
+      setErrorMessage(
+        `❌ E-mail corporativo "${trimmedEmail}" não autorizado. Este formulário é exclusivo para e-mails previamente cadastrados e homologados pelo escritório. Solicite a liberação ao Administrador (dfvalu@gmail.com) ou envie uma proposta comercial no menu Contato.`
+      );
       return;
     }
 
@@ -393,22 +353,29 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
     setIsAuthenticating(true);
 
-    setTimeout(() => {
-      setIsAuthenticating(false);
-      const newUser: UserProfile = {
-        id: 'user-' + Date.now(),
-        name: regName.trim(),
-        role: regRole,
-        roleLabel: regRole === 'MASTER_ACCOUNTANT' ? 'Sócio & Contador' : regRole === 'TAX_SPECIALIST' ? 'Especialista Fiscal' : 'Especialista DP',
-        crc: regRole === 'MASTER_ACCOUNTANT' ? 'CRC Ativo' : undefined,
-        email: trimmedEmail,
-        avatarIcon: regRole === 'MASTER_ACCOUNTANT' ? '🏛️' : regRole === 'TAX_SPECIALIST' ? '⚖️' : '👥',
-        initialModuleId: regRole === 'TAX_SPECIALIST' ? 'office_predictive_tax_audit_radar' : regRole === 'PAYROLL_SPECIALIST' ? 'payroll' : 'office_integrated_closing_pipeline'
-      };
+    try {
+      // 2. Hash Criptográfico da Senha via Web Crypto API
+      const passwordHash = await RealWebCryptoEngine.hashSha256(regPassword + ':' + trimmedEmail);
+      
+      // 3. Registrar a senha no cofre seguro do escritório
+      officeStore.registerUserPassword(trimmedEmail, passwordHash);
 
-      setSuccessMessage('Conta corporativa criada com sucesso! Acessando...');
-      setTimeout(() => onLoginSuccess(newUser), 500);
-    }, 800);
+      setIsAuthenticating(false);
+      setSuccessMessage(
+        `✅ Senha corporativa criada com sucesso para ${authCheck.userName} (${authCheck.companyName || 'Soberano Contábil'})! Seu primeiro acesso foi homologado. Por favor, efetue login com suas credenciais.`
+      );
+
+      // 4. Preenche o e-mail no login e redireciona para a aba de LOGIN (SEM auto-login automático)
+      setEmailInput(trimmedEmail);
+      setPasswordInput('');
+      setRegPassword('');
+      setTimeout(() => {
+        setAuthMode('LOGIN');
+      }, 1500);
+    } catch (err: any) {
+      setIsAuthenticating(false);
+      setErrorMessage('Erro ao registrar senha criptográfica: ' + (err?.message || 'Tente novamente.'));
+    }
   };
 
   const handleExecuteRecovery = (e: React.FormEvent) => {
@@ -440,31 +407,46 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       return;
     }
 
+    // 2. Checagem de Arquivo Customizado .pfx (se enviado)
+    if (customCertFile) {
+      setErrorMessage('❌ Arquivo de Certificado A1 (.pfx) não homologado no cofre Cloud HSM do escritório. Cadastre e homologue o arquivo com o Administrador Master (dfvalu@gmail.com) antes de efetuar login.');
+      return;
+    }
+
     setIsAuthenticating(true);
-    const chosenCert = INSTALLED_CERTIFICATES.find(c => c.id === selectedCertId) || INSTALLED_CERTIFICATES[0];
+
+    // 3. Validação Rigorosa do Certificado e PIN na Base de Dados Homologada
+    const certCheck = officeStore.isCertificateAuthorizedForLogin(selectedCertId, certPin.trim());
+    if (!certCheck.authorized || !certCheck.certificate) {
+      setIsAuthenticating(false);
+      setErrorMessage(certCheck.reason || '❌ Certificado Digital ou senha PIN não autorizados.');
+      return;
+    }
+
+    const authorizedCert = certCheck.certificate;
 
     try {
-      // 2. Desafio Criptográfico Real de Assinatura com PIN (HMAC-SHA256 / Web Crypto)
-      const challenge = `ICP-BRASIL-CHALLENGE-${chosenCert.fingerprint}-${Date.now()}`;
-      const challengeSignature = await RealWebCryptoEngine.signChallengeHMAC(challenge, certPin);
+      // 4. Desafio Criptográfico Real de Assinatura com PIN (HMAC-SHA256 / Web Crypto)
+      const challenge = `ICP-BRASIL-CHALLENGE-${authorizedCert.id}-${Date.now()}`;
+      const challengeSignature = await RealWebCryptoEngine.signChallengeHMAC(challenge, certPin.trim());
       const certEnvelope = await RealWebCryptoEngine.encryptAesGcm(
         JSON.stringify({
-          certFingerprint: chosenCert.fingerprint,
-          holderName: chosenCert.holderName,
-          cnpjCpf: chosenCert.cnpjCpf,
+          certId: authorizedCert.id,
+          holderName: authorizedCert.holderName,
+          documentNumber: authorizedCert.documentNumber,
           challengeSignature,
           timestamp: Date.now()
         }),
-        certPin
+        certPin.trim()
       );
 
-      // 3. Auditoria Imutável
+      // 5. Auditoria Imutável
       officeStore.logAuthSecurityEvent({
-        userEmail: chosenCert.associatedProfile.email,
-        userName: chosenCert.holderName,
-        method: `Certificado ICP-Brasil (${chosenCert.type})`,
-        ipAddress: '177.18.29.102 (Token Hardware A3)',
-        deviceInfo: 'Cadeia ICP-Brasil v5 (SHA-256)',
+        userEmail: authorizedCert.linkedUserEmail,
+        userName: authorizedCert.holderName,
+        method: `Certificado ICP-Brasil (${authorizedCert.type})`,
+        ipAddress: '177.18.29.102 (Token Hardware A3 Homologado)',
+        deviceInfo: `Cadeia ICP-Brasil v5 • ${authorizedCert.issuerAuthority}`,
         status: 'SUCCESS',
         hashSha256: certEnvelope.hashSha256,
         encryptionTag: 'mTLS / HMAC-SHA256 Challenge'
@@ -472,25 +454,22 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
       setIsAuthenticating(false);
 
-      if (customCertFile) {
-        const customProfile: UserProfile = {
-          id: 'user-cert-' + Date.now(),
-          name: customCertFile.replace(/\.[^/.]+$/, "").toUpperCase(),
-          role: 'MASTER_ACCOUNTANT',
-          roleLabel: 'Titular de Certificado A1 (.pfx)',
-          email: 'certificado.a1@soberanocontabil.com.br',
-          avatarIcon: '🔑',
-          initialModuleId: 'office_integrated_closing_pipeline'
-        };
-        setSuccessMessage(`🔒 Assinatura digital ICP-Brasil e PIN validados com sucesso via Web Crypto API!`);
-        setTimeout(() => onLoginSuccess(customProfile), 400);
-      } else {
-        setSuccessMessage(`🔒 Assinatura digital ICP-Brasil e PIN de "${chosenCert.holderName}" autenticados com sucesso!`);
-        setTimeout(() => onLoginSuccess(chosenCert.associatedProfile), 400);
-      }
+      const authenticatedProfile: UserProfile = {
+        id: 'user-cert-' + authorizedCert.id,
+        name: authorizedCert.holderName,
+        role: authorizedCert.role as any,
+        roleLabel: authorizedCert.roleLabel,
+        email: authorizedCert.linkedUserEmail,
+        avatarIcon: authorizedCert.role === 'MASTER_ACCOUNTANT' ? '🏛️' : authorizedCert.role === 'TAX_SPECIALIST' ? '⚖️' : '👥',
+        initialModuleId: authorizedCert.role === 'TAX_SPECIALIST' ? 'office_predictive_tax_audit_radar' : authorizedCert.role === 'PAYROLL_SPECIALIST' ? 'payroll' : 'office_integrated_closing_pipeline'
+      };
+
+      setSuccessMessage(`🔒 Certificado Digital ICP-Brasil homologado com sucesso! Acessando Soberano Contábil...`);
+      setTimeout(() => onLoginSuccess(authenticatedProfile), 600);
+
     } catch (err: any) {
       setIsAuthenticating(false);
-      setErrorMessage('Falha na validação criptográfica do certificado: ' + (err?.message || 'Assinatura inválida.'));
+      setErrorMessage('Erro no handshake criptográfico do Certificado Digital: ' + (err?.message || 'Falha de comunicação com o Token.'));
     }
   };
 
@@ -1026,7 +1005,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                   cursor: 'pointer'
                 }}
               >
-                ✨ Criar Conta
+                🔑 Criar Senha
               </button>
               <button
                 type="button"
@@ -1185,83 +1164,85 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </form>
             )}
 
-            {/* FORMULÁRIO 2: REGISTRO DE NOVO USUÁRIO */}
+            {/* FORMULÁRIO 2: PRIMEIRO ACESSO / DEFINIÇÃO DE SENHA */}
             {authMode === 'REGISTER' && (
-              <form onSubmit={handleExecuteRegister} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
-                    Nome Completo
-                  </label>
-                  <input
-                    type="text"
-                    value={regName}
-                    onChange={(e) => setRegName(e.target.value)}
-                    placeholder="Ex: João da Silva"
-                    required
-                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
-                    E-mail Corporativo
-                  </label>
-                  <input
-                    type="email"
-                    value={regEmail}
-                    onChange={(e) => setRegEmail(e.target.value)}
-                    placeholder="joao@escritorio.com.br"
-                    required
-                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
-                    Senha de Acesso
-                  </label>
-                  <input
-                    type="password"
-                    value={regPassword}
-                    onChange={(e) => setRegPassword(e.target.value)}
-                    placeholder="Mínimo 6 caracteres"
-                    required
-                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '7px 10px', fontSize: '0.78rem', outline: 'none' }}
-                  />
-                  {/* Barra de Força da Senha */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '4px' }}>
-                    <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
-                      <div style={{ width: `${passwordStrength}%`, height: '100%', background: passwordStrength > 75 ? '#10B981' : passwordStrength > 40 ? '#FBBF24' : '#EF4444' }} />
-                    </div>
-                    <span style={{ fontSize: '0.62rem', color: '#94A3B8' }}>
-                      {passwordStrength > 75 ? 'Forte' : passwordStrength > 40 ? 'Média' : 'Fraca'}
-                    </span>
+              <form onSubmit={handleExecuteRegister} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                
+                {/* Banner Informativo de Governança */}
+                <div style={{ background: 'rgba(56, 189, 248, 0.10)', border: '1px solid rgba(56, 189, 248, 0.3)', borderRadius: '8px', padding: '10px 12px', fontSize: '0.72rem', color: '#BAE6FD', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                  <ShieldCheck size={16} color="#38BDF8" style={{ flexShrink: 0, marginTop: '2px' }} />
+                  <div style={{ lineHeight: 1.4 }}>
+                    <strong>Primeiro Acesso Corporativo:</strong> Destinado exclusivamente a colaboradores, contadores e clientes cujo e-mail já foi <strong>previamente cadastrado e aprovado</strong> pelo escritório.
                   </div>
                 </div>
 
                 <div>
-                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '3px' }}>
-                    Perfil de Atuação
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    E-mail Corporativo Autorizado
                   </label>
-                  <select
-                    value={regRole}
-                    onChange={(e) => setRegRole(e.target.value as any)}
-                    style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#34D399', padding: '7px 10px', fontSize: '0.78rem', fontWeight: 800, outline: 'none' }}
-                  >
-                    <option value="MASTER_ACCOUNTANT">🏛️ Sócio / Contador Responsável</option>
-                    <option value="TAX_SPECIALIST">⚖️ Especialista Fiscal & Tributário</option>
-                    <option value="PAYROLL_SPECIALIST">👥 Especialista de DP & eSocial</option>
-                  </select>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <Mail size={14} style={{ position: 'absolute', left: '10px', color: '#64748B' }} />
+                    <input
+                      type="email"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="seu.email@soberanocontabil.com.br"
+                      required
+                      style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '8px 10px 8px 32px', fontSize: '0.80rem', fontWeight: 700, outline: 'none' }}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                    Definir Nova Senha Forte
+                  </label>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <Lock size={14} style={{ position: 'absolute', left: '10px', color: '#64748B' }} />
+                    <input
+                      type="password"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="Mínimo 6 caracteres"
+                      required
+                      style={{ width: '100%', background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#FFFFFF', padding: '8px 10px 8px 32px', fontSize: '0.80rem', fontWeight: 700, outline: 'none' }}
+                    />
+                  </div>
+
+                  {/* Barra de Força da Senha */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
+                    <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ width: `${passwordStrength}%`, height: '100%', background: passwordStrength > 75 ? '#10B981' : passwordStrength > 40 ? '#FBBF24' : '#EF4444' }} />
+                    </div>
+                    <span style={{ fontSize: '0.62rem', color: '#94A3B8' }}>
+                      {passwordStrength > 75 ? 'Senha Forte' : passwordStrength > 40 ? 'Média' : 'Fraca'}
+                    </span>
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isAuthenticating}
                   className="btn-1click-3d"
-                  style={{ width: '100%', padding: '10px', fontSize: '0.84rem', justifyContent: 'center', marginTop: '4px' }}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    fontSize: '0.84rem',
+                    justifyContent: 'center',
+                    marginTop: '6px'
+                  }}
                 >
-                  {isAuthenticating ? 'Criando Conta...' : '✨ Criar Conta & Entrar'}
+                  {isAuthenticating ? (
+                    <span>🔄 Validando autorização...</span>
+                  ) : (
+                    <span>🔑 Ativar Primeiro Acesso & Criar Senha</span>
+                  )}
                 </button>
+
+                <div style={{ textAlign: 'center', fontSize: '0.68rem', color: '#64748B', marginTop: '4px' }}>
+                  Ainda não possui e-mail cadastrado? <a href="#contato" style={{ color: '#38BDF8', fontWeight: 700, textDecoration: 'none' }}>Solicitar Acesso / Proposta</a>
+                </div>
+
               </form>
             )}
 
@@ -1324,74 +1305,128 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </form>
             )}
 
-            {/* FORMULÁRIO 4: CERTIFICADO DIGITAL ICP-BRASIL */}
+            {/* FORMULÁRIO 4: CERTIFICADO DIGITAL ICP-BRASIL (100% PRIVADO SEM LISTAGEM PÚBLICA) */}
             {authMode === 'CERTIFICATE' && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ padding: '14px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.06)', border: '1px solid rgba(56, 189, 248, 0.25)' }}>
+                <div style={{ padding: '16px', borderRadius: '12px', background: 'rgba(56, 189, 248, 0.05)', border: '1px solid rgba(56, 189, 248, 0.25)' }}>
+                  
+                  {/* Cabeçalho */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                     <KeyRound size={18} style={{ color: '#38BDF8' }} />
-                    <div style={{ fontSize: '0.84rem', fontWeight: 900, color: '#FFFFFF' }}>
-                      Selecione o Certificado Digital ICP-Brasil
+                    <div style={{ fontSize: '0.86rem', fontWeight: 900, color: '#FFFFFF' }}>
+                      Autenticação por Certificado ICP-Brasil
                     </div>
                   </div>
-                  <p style={{ fontSize: '0.68rem', color: '#94A3B8', margin: '0 0 12px 0', lineHeight: 1.4 }}>
-                    Selecione um certificado detectado no repositório/token ou importe um arquivo <strong>.pfx/.p12</strong>:
+                  
+                  <p style={{ fontSize: '0.70rem', color: '#94A3B8', margin: '0 0 14px 0', lineHeight: 1.45 }}>
+                    Insira seu Token/Smartcard ou importe seu arquivo <strong>A1 (.pfx/.p12)</strong>. O acesso é restrito exclusivamente a certificados previamente homologados pelo escritório.
                   </p>
 
-                  {/* Lista de Certificados Detectados */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '12px' }}>
-                    {INSTALLED_CERTIFICATES.map(cert => {
-                      const isSelected = selectedCertId === cert.id && !customCertFile;
-                      return (
-                        <div
-                          key={cert.id}
-                          onClick={() => { setSelectedCertId(cert.id); setCustomCertFile(''); }}
-                          style={{
-                            padding: '8px 10px',
-                            borderRadius: '8px',
-                            background: isSelected ? 'linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(3, 105, 161, 0.15) 100%)' : '#0B1120',
-                            border: isSelected ? '1.5px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.08)',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            transition: 'all 0.15s ease',
-                            boxShadow: isSelected ? '0 0 10px rgba(56, 189, 248, 0.25)' : 'none'
-                          }}
-                        >
-                          <div style={{ textAlign: 'left' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <span style={{ fontSize: '0.76rem', fontWeight: 900, color: isSelected ? '#FFFFFF' : '#CBD5E1' }}>
-                                {cert.holderName}
-                              </span>
-                              <span style={{ fontSize: '0.58rem', fontWeight: 800, padding: '1px 5px', borderRadius: '3px', background: cert.type === 'e-CPF' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(167, 139, 250, 0.2)', color: cert.type === 'e-CPF' ? '#34D399' : '#A78BFA' }}>
-                                {cert.type}
-                              </span>
-                            </div>
-                            <div style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>
-                              {cert.issuerAuthority} • Val: {cert.validUntil}
-                            </div>
-                          </div>
-                          {isSelected && (
-                            <span style={{ color: '#38BDF8', fontSize: '0.76rem', fontWeight: 900 }}>●</span>
-                          )}
-                        </div>
-                      );
-                    })}
+                  {/* Seletor de Tipo de Certificado: Token A3/Nuvem vs Arquivo A1 */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '14px' }}>
+                    <button
+                      type="button"
+                      onClick={() => { setCustomCertFile(''); setSelectedCertId('cert-david'); }}
+                      style={{
+                        padding: '10px 8px',
+                        borderRadius: '8px',
+                        background: !customCertFile ? 'linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(3, 105, 161, 0.15) 100%)' : '#0B1120',
+                        border: !customCertFile ? '1.5px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.1)',
+                        color: !customCertFile ? '#FFFFFF' : '#94A3B8',
+                        fontSize: '0.72rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '4px',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <span style={{ fontSize: '1.1rem' }}>💳</span>
+                      <span>Token A3 / Nuvem</span>
+                      <span style={{ fontSize: '0.58rem', color: !customCertFile ? '#38BDF8' : '#64748B' }}>Smartcard / Hardware</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => { setCustomCertFile('meu_certificado.pfx'); setSelectedCertId('cert-a1-custom'); }}
+                      style={{
+                        padding: '10px 8px',
+                        borderRadius: '8px',
+                        background: customCertFile ? 'linear-gradient(180deg, rgba(2, 132, 199, 0.25) 0%, rgba(3, 105, 161, 0.15) 100%)' : '#0B1120',
+                        border: customCertFile ? '1.5px solid #38BDF8' : '1px solid rgba(255, 255, 255, 0.1)',
+                        color: customCertFile ? '#FFFFFF' : '#94A3B8',
+                        fontSize: '0.72rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '4px',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <span style={{ fontSize: '1.1rem' }}>📁</span>
+                      <span>Arquivo A1 (.pfx)</span>
+                      <span style={{ fontSize: '0.58rem', color: customCertFile ? '#38BDF8' : '#64748B' }}>Chave Privada</span>
+                    </button>
                   </div>
 
-                  {/* Campo de PIN / Senha do Token */}
-                  <div style={{ textAlign: 'left', marginBottom: '12px' }}>
-                    <label style={{ fontSize: '0.66rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
-                      Senha PIN do Token / Certificado
+                  {/* Área de Detecção / Upload */}
+                  {!customCertFile ? (
+                    <div style={{ background: '#0B1120', border: '1px dashed rgba(56, 189, 248, 0.35)', borderRadius: '8px', padding: '12px', textAlign: 'center', marginBottom: '12px' }}>
+                      <div style={{ fontSize: '1.3rem', marginBottom: '4px' }}>🛡️ ⚡</div>
+                      <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#E2E8F0' }}>
+                        Leitor Criptográfico de Hardware Pronto
+                      </div>
+                      <div style={{ fontSize: '0.62rem', color: '#64748B', marginTop: '2px' }}>
+                        Conecte seu Token USB / Smartcard ou autorize via NeoID / BirdID / SafeID.
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ background: '#0B1120', border: '1px dashed rgba(56, 189, 248, 0.35)', borderRadius: '8px', padding: '12px', textAlign: 'center', marginBottom: '12px' }}>
+                      <div style={{ fontSize: '1.3rem', marginBottom: '4px' }}>📂 🔒</div>
+                      <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#E2E8F0' }}>
+                        Importar Certificado A1 (.pfx / .p12)
+                      </div>
+                      <input
+                        type="file"
+                        accept=".pfx,.p12"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) setCustomCertFile(file.name);
+                        }}
+                        style={{ marginTop: '6px', fontSize: '0.68rem', color: '#94A3B8' }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Campo de Senha PIN */}
+                  <div style={{ textAlign: 'left', marginBottom: '14px' }}>
+                    <label style={{ fontSize: '0.68rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      {!customCertFile ? 'Senha PIN do Token / Smartcard' : 'Senha do Arquivo .pfx / .p12'}
                     </label>
-                    <input
-                      type="password"
-                      value={certPin}
-                      onChange={(e) => setCertPin(e.target.value)}
-                      placeholder="PIN do Certificado..."
-                      style={{ width: '100%', background: '#070B14', border: '1px solid rgba(255, 255, 255, 0.15)', borderRadius: '6px', color: '#38BDF8', padding: '6px 10px', fontSize: '0.78rem', fontFamily: 'var(--font-mono)', outline: 'none' }}
-                    />
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                      <Lock size={14} style={{ position: 'absolute', left: '10px', color: '#64748B' }} />
+                      <input
+                        type="password"
+                        value={certPin}
+                        onChange={(e) => setCertPin(e.target.value)}
+                        placeholder={!customCertFile ? "Digite o PIN do Token..." : "Digite a senha do .pfx..."}
+                        style={{
+                          width: '100%',
+                          background: '#0B1120',
+                          border: '1px solid rgba(255, 255, 255, 0.15)',
+                          borderRadius: '6px',
+                          color: '#FFFFFF',
+                          padding: '8px 10px 8px 32px',
+                          fontSize: '0.80rem',
+                          fontWeight: 700,
+                          outline: 'none'
+                        }}
+                      />
+                    </div>
                   </div>
 
                   {/* Botão de Autenticação */}
@@ -1399,23 +1434,25 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                     type="button"
                     onClick={handleExecuteCertificate}
                     disabled={isAuthenticating}
+                    className="btn-1click-3d"
                     style={{
                       width: '100%',
-                      background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
-                      border: '1.5px solid #38BDF8',
-                      borderBottom: '2.5px solid #075985',
-                      color: '#FFFFFF',
-                      padding: '9px',
-                      borderRadius: '8px',
-                      fontWeight: 900,
-                      fontSize: '0.80rem',
-                      cursor: 'pointer',
-                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.3), 0 0 16px rgba(56, 189, 248, 0.45)',
-                      transition: 'all 0.15s ease'
+                      padding: '10px',
+                      fontSize: '0.84rem',
+                      justifyContent: 'center'
                     }}
                   >
-                    {isAuthenticating ? '🔒 Validando Chave mTLS ICP-Brasil...' : '🔑 Conectar com o Certificado Selecionado'}
+                    {isAuthenticating ? (
+                      <span>🔄 Validando Chave Privada...</span>
+                    ) : (
+                      <span>🔐 Autenticar com Certificado ICP-Brasil</span>
+                    )}
                   </button>
+
+                  <div style={{ textAlign: 'center', fontSize: '0.62rem', color: '#64748B', marginTop: '8px' }}>
+                    🔒 Handshake mTLS / HMAC-SHA256 • Conforme ICP-Brasil v5 & LGPD
+                  </div>
+
                 </div>
               </div>
             )}

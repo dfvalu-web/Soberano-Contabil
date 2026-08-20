@@ -44,6 +44,23 @@ export interface UserAccessApprovalRequest {
   rejectionReason?: string;
 }
 
+
+export interface AuthorizedDigitalCertificate {
+  id: string;
+  type: 'e-CPF' | 'e-CNPJ';
+  holderName: string;
+  documentNumber: string;
+  issuerAuthority: string;
+  model: 'A3_TOKEN_SMARTCARD' | 'A1_ARQUIVO' | 'NUVEM_NEOID';
+  validUntil: string;
+  status: 'HOMOLOGADO_ATIVO' | 'REVOGADO' | 'EXPIRADO' | 'AGUARDANDO_HOMOLOGACAO';
+  authorizedPin: string;
+  linkedUserEmail: string;
+  role: string;
+  roleLabel: string;
+  isMasterOwner?: boolean;
+}
+
 export interface AuthSecurityAuditLog {
   id: string;
   timestamp: string;
@@ -1037,6 +1054,199 @@ class OfficeStateStore {
     } else {
       this.userAccessConfigs.push({ ...config });
     }
+  }
+
+    // =========================================================================
+  // COFRE DE CERTIFICADOS DIGITAIS ICP-BRASIL HOMOLOGADOS & AUTORIZADOS
+  // =========================================================================
+  private authorizedCertificates: AuthorizedDigitalCertificate[] = [
+    {
+      id: 'cert-david',
+      type: 'e-CPF',
+      holderName: 'DAVID VALU (PROPRIETÁRIO & DEV)',
+      documentNumber: '123.456.789-00',
+      issuerAuthority: 'AC SOLUTI Multipla v5 (ICP-Brasil)',
+      model: 'A3_TOKEN_SMARTCARD',
+      validUntil: '14/10/2027',
+      status: 'HOMOLOGADO_ATIVO',
+      authorizedPin: '123456',
+      linkedUserEmail: 'dfvalu@gmail.com',
+      role: 'MASTER_ACCOUNTANT',
+      roleLabel: 'Proprietário & Administrador Geral',
+      isMasterOwner: true
+    },
+    {
+      id: 'cert-soberano-cnpj',
+      type: 'e-CNPJ',
+      holderName: 'SOBERANO CONTABIL PLATINUM LTDA',
+      documentNumber: '12.345.678/0001-90',
+      issuerAuthority: 'AC SERPRO RFB v5 (ICP-Brasil)',
+      model: 'A1_ARQUIVO',
+      validUntil: '05/03/2027',
+      status: 'HOMOLOGADO_ATIVO',
+      authorizedPin: '123456',
+      linkedUserEmail: 'dfvalu@gmail.com',
+      role: 'MASTER_ACCOUNTANT',
+      roleLabel: 'Escritório Matriz • Contador Responsável',
+      isMasterOwner: true
+    },
+    {
+      id: 'cert-beatriz',
+      type: 'e-CPF',
+      holderName: 'BEATRIZ SANTOS',
+      documentNumber: '987.654.321-11',
+      issuerAuthority: 'AC CERTISIGN v5 (ICP-Brasil)',
+      model: 'A3_TOKEN_SMARTCARD',
+      validUntil: '22/08/2026',
+      status: 'HOMOLOGADO_ATIVO',
+      authorizedPin: '123456',
+      linkedUserEmail: 'beatriz.tributario@soberanocontabil.com.br',
+      role: 'TAX_SPECIALIST',
+      roleLabel: 'Especialista Tributário & SPED'
+    },
+    {
+      id: 'cert-carlos',
+      type: 'e-CPF',
+      holderName: 'CARLOS MENDES',
+      documentNumber: '456.789.123-22',
+      issuerAuthority: 'AC VALID v5 (ICP-Brasil)',
+      model: 'A1_ARQUIVO',
+      validUntil: '18/11/2026',
+      status: 'HOMOLOGADO_ATIVO',
+      authorizedPin: '123456',
+      linkedUserEmail: 'carlos.dp@soberanocontabil.com.br',
+      role: 'PAYROLL_SPECIALIST',
+      roleLabel: 'Coordenador DP & eSocial'
+    }
+  ];
+
+  public getAuthorizedCertificates(): AuthorizedDigitalCertificate[] {
+    return [...this.authorizedCertificates];
+  }
+
+  public isCertificateAuthorizedForLogin(certId: string, providedPin: string): {
+    authorized: boolean;
+    certificate?: AuthorizedDigitalCertificate;
+    reason?: string;
+  } {
+    const cleanCertId = certId ? certId.trim() : '';
+    const cleanPin = providedPin ? providedPin.trim() : '';
+
+    const cert = this.authorizedCertificates.find(c => c.id === cleanCertId);
+    
+    // 1. Verificação de homologação na base de dados
+    if (!cert) {
+      this.logAuthSecurityEvent({
+        userEmail: 'desconhecido@icp-brasil.gov.br',
+        userName: cleanCertId || 'Certificado Não Cadastrado',
+        method: 'CERTIFICATE_ICP_BRASIL',
+        ipAddress: '127.0.0.1 (Local)',
+        deviceInfo: 'Token Hardware / A1 Não Homologado',
+        status: 'BLOCKED_BY_GOVERNANCE',
+        hashSha256: 'NON_EXISTENT_CERT_HASH',
+        encryptionTag: 'GOVERNANCE_BLOCKED'
+      });
+      return {
+        authorized: false,
+        reason: '❌ Certificado Digital não homologado na base de dados do escritório. O titular deve ter autorização prévia concedida pelo Administrador Geral (dfvalu@gmail.com) no módulo de Certificados Digitais.'
+      };
+    }
+
+    // 2. Verificação de status do certificado
+    if (cert.status !== 'HOMOLOGADO_ATIVO') {
+      this.logAuthSecurityEvent({
+        userEmail: cert.linkedUserEmail,
+        userName: cert.holderName,
+        method: `Certificado ICP-Brasil (${cert.type})`,
+        ipAddress: '127.0.0.1 (Local)',
+        deviceInfo: `Status: ${cert.status}`,
+        status: 'BLOCKED_BY_GOVERNANCE',
+        hashSha256: 'STATUS_INVALID_HASH',
+        encryptionTag: 'GOVERNANCE_BLOCKED'
+      });
+      return {
+        authorized: false,
+        reason: `❌ Certificado Digital com status "${cert.status}". Acesso suspenso pela Governança.`
+      };
+    }
+
+    // 3. Verificação de PIN / Senha da Chave Privada
+    if (!cleanPin || cleanPin !== cert.authorizedPin) {
+      this.logAuthSecurityEvent({
+        userEmail: cert.linkedUserEmail,
+        userName: cert.holderName,
+        method: `Certificado ICP-Brasil (${cert.type})`,
+        ipAddress: '127.0.0.1 (Local)',
+        deviceInfo: 'Tentativa de Acesso com PIN Incorreto',
+        status: 'FAILED_CREDENTIALS',
+        hashSha256: 'INVALID_PIN_ATTEMPT',
+        encryptionTag: 'CHALLENGE_FAILED'
+      });
+      return {
+        authorized: false,
+        reason: '❌ Senha PIN / Token A3 incorreta para este Certificado Digital. Acesso à chave privada ICP-Brasil negado.'
+      };
+    }
+
+    return {
+      authorized: true,
+      certificate: cert
+    };
+  }
+
+  // =========================================================================
+  // VALIDAÇÃO DE PRIMEIRO ACESSO & CRIAÇÃO DE SENHA POR E-MAIL PRÉ-APROVADO
+  // =========================================================================
+  private userPasswordVault: Record<string, string> = {};
+
+  public isUserAuthorizedForPasswordCreation(email: string): { authorized: boolean; userName?: string; role?: string; companyName?: string; reason?: string } {
+    const cleanEmail = email.trim().toLowerCase();
+    
+    // 1. Verificar na matriz oficial de usuários ativos
+    const config = this.userAccessConfigs.find(c => c.userEmail.toLowerCase() === cleanEmail);
+    if (config && config.isActive) {
+      return {
+        authorized: true,
+        userName: config.userName,
+        role: config.role,
+        companyName: config.companyName
+      };
+    }
+
+    // 2. Verificar na lista de solicitações aprovadas pelo Master Admin
+    const approvedRequest = this.pendingApprovals.find(r => r.email && r.email.toLowerCase() === cleanEmail && r.status === 'APPROVED');
+    if (approvedRequest) {
+      return {
+        authorized: true,
+        userName: approvedRequest.name,
+        role: approvedRequest.role,
+        companyName: approvedRequest.department
+      };
+    }
+
+    return {
+      authorized: false,
+      reason: 'E-mail corporativo não localizado na lista de usuários autorizados pelo escritório. Solicite a liberação ao Administrador Master (dfvalu@gmail.com).'
+    };
+  }
+
+  public registerUserPassword(email: string, passwordHash: string): boolean {
+    const check = this.isUserAuthorizedForPasswordCreation(email);
+    if (!check.authorized) return false;
+
+    const cleanEmail = email.trim().toLowerCase();
+    this.userPasswordVault[cleanEmail] = passwordHash;
+    
+    this.logAuthSecurityEvent({
+      userEmail: cleanEmail,
+      eventType: 'AUDIT_TRAIL',
+      methodUsed: 'EMAIL_PASSWORD_HASH',
+      status: 'SUCCESS',
+      ipAddress: '127.0.0.1 (Local)',
+      deviceDetails: 'Primeiro Acesso / Definição de Senha Homologada'
+    });
+
+    return true;
   }
 
   public isModuleAllowedForUser(email: string, moduleId: string, departmentId?: string): boolean {
