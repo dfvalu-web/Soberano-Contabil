@@ -604,8 +604,8 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
 
         {/* Botões de Ação Master 3D 4K */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button
-            onClick={() => handleDirectLoginWithProfile(PRESET_PROFILES[0])}
+          <a
+            href="#contato"
             style={{
               background: 'linear-gradient(180deg, #10B981 0%, #059669 60%, #047857 100%)',
               border: '1.5px solid #6EE7B7',
@@ -615,7 +615,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               borderRadius: '8px',
               fontSize: '0.78rem',
               fontWeight: 900,
-              cursor: 'pointer',
+              textDecoration: 'none',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
@@ -631,8 +631,8 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               e.currentTarget.style.boxShadow = 'inset 0 1px 1px rgba(255, 255, 255, 0.7), 0 4px 16px rgba(16, 185, 129, 0.5), 0 0 20px rgba(16, 185, 129, 0.35)';
             }}
           >
-            <Zap size={14} /> <span>Entrar em 1-Click</span>
-          </button>
+            <Send size={13} /> <span>Solicitar Proposta</span>
+          </a>
 
           <a
             href="#login-card-anchor"
@@ -663,7 +663,7 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               e.currentTarget.style.boxShadow = 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 4px 14px rgba(0, 0, 0, 0.5)';
             }}
           >
-            <Lock size={13} style={{ color: '#38BDF8' }} /> <span>Autenticação</span>
+            <Lock size={13} style={{ color: '#38BDF8' }} /> <span>Acessar Plataforma</span>
           </a>
         </div>
       </header>
@@ -762,38 +762,99 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               </div>
             </div>
 
-            {/* Acesso Instantâneo aos 4 Perfis de Demonstração */}
-            <div style={{ marginTop: '10px' }}>
-              <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '8px' }}>
-                Acesse como um dos Perfis Corporativos (1-Click):
+            {/* Painel de Recursos & Diferenciais de Alto Impacto */}
+            <div style={{ marginTop: '6px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+                <div
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(19, 30, 53, 0.85) 0%, rgba(9, 14, 26, 0.95) 100%)',
+                    border: '1px solid rgba(52, 211, 153, 0.35)',
+                    borderRadius: '10px',
+                    padding: '10px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 16px rgba(0, 0, 0, 0.4)'
+                  }}
+                >
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(16, 185, 129, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>
+                    🏛️
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#FFFFFF' }}>IFRS Full & ECD/ECF</div>
+                    <div style={{ fontSize: '0.62rem', color: '#94A3B8' }}>Partidas dobradas automáticas</div>
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(19, 30, 53, 0.85) 0%, rgba(9, 14, 26, 0.95) 100%)',
+                    border: '1px solid rgba(56, 189, 248, 0.35)',
+                    borderRadius: '10px',
+                    padding: '10px 12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 4px 16px rgba(0, 0, 0, 0.4)'
+                  }}
+                >
+                  <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'rgba(56, 189, 248, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', flexShrink: 0 }}>
+                    ⚖️
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '0.76rem', fontWeight: 800, color: '#FFFFFF' }}>Reforma IBS/CBS 2026</div>
+                    <div style={{ fontSize: '0.62rem', color: '#94A3B8' }}>Simulador de transição tributária</div>
+                  </div>
+                </div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                {PRESET_PROFILES.map((prof) => (
-                  <button
-                    key={prof.id}
-                    type="button"
-                    onClick={() => handleDirectLoginWithProfile(prof)}
-                    className="dept-accordion-card"
-                    style={{
-                      padding: '8px 10px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      cursor: 'pointer',
-                      textAlign: 'left'
-                    }}
-                  >
-                    <span style={{ fontSize: '1.0rem' }}>{prof.avatarIcon}</span>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={{ fontSize: '0.74rem', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {prof.name}
-                      </div>
-                      <div style={{ fontSize: '0.62rem', color: '#34D399', fontWeight: 700 }}>
-                        {prof.roleLabel.split('•')[0]}
-                      </div>
-                    </div>
-                  </button>
-                ))}
+
+              {/* Botões de Ação na Hero */}
+              <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+                <a
+                  href="#contato"
+                  style={{
+                    flex: 1,
+                    background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+                    border: '1.5px solid #6EE7B7',
+                    borderBottom: '2.5px solid #064E3B',
+                    color: '#FFFFFF',
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.80rem',
+                    fontWeight: 900,
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 16px rgba(16, 185, 129, 0.4)'
+                  }}
+                >
+                  <span>📞 Falar com Especialista</span>
+                </a>
+                <a
+                  href="#pilares"
+                  style={{
+                    flex: 1,
+                    background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
+                    border: '1.5px solid rgba(255, 255, 255, 0.15)',
+                    borderBottom: '2.5px solid rgba(0, 0, 0, 0.6)',
+                    color: '#E2E8F0',
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    fontSize: '0.80rem',
+                    fontWeight: 800,
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <span>🏛️ Ver os 4 Pilares</span>
+                </a>
               </div>
             </div>
           </div>
@@ -1840,13 +1901,13 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '6px' }}>
-              <button
-                onClick={() => handleDirectLoginWithProfile(PRESET_PROFILES[0])}
+              <a
+                href="#contato"
                 className="btn-1click-3d"
-                style={{ padding: '12px 32px', fontSize: '0.92rem', borderRadius: '10px' }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', textDecoration: 'none', padding: '12px 32px', fontSize: '0.92rem', borderRadius: '10px' }}
               >
-                <span>⚡</span> Entrar em 1-Click & Ativar Esta Economia Imediata
-              </button>
+                <span>⚡</span> Solicitar Proposta & Ativar Esta Economia Imediata
+              </a>
             </div>
           </div>
         </div>

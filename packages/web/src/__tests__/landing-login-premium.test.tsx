@@ -63,17 +63,18 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
     expect(html).toContain('atendimento@soberanocontabil.com.br');
   });
 
-  it('5. Renderiza o sistema de autenticação robusto por email com abas e perfis', () => {
+  it('5. Renderiza o sistema de autenticação corporativo e CTAs de alta conversão', () => {
     const html = renderToStaticMarkup(
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
 
     expect(html).toContain('E-mail Corporativo');
     expect(html).toContain('Senha de Acesso');
-    expect(html).toContain('David Valu');
-    expect(html).toContain('Dra. Beatriz Santos');
-    expect(html).toContain('Carlos Mendes');
-    expect(html).toContain('Diretoria Executiva');
+    expect(html).toContain('Solicitar Proposta');
+    expect(html).toContain('Acessar Plataforma');
+    expect(html).toContain('Falar com Especialista');
+    expect(html).toContain('IFRS Full &amp; ECD/ECF');
+    expect(html).toContain('Reforma IBS/CBS 2026');
     expect(html).toContain('CALCULADORA DE ECONOMIA OPERACIONAL');
   });
 });
