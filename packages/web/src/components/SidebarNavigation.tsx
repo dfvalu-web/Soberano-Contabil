@@ -56,6 +56,13 @@ export interface SidebarNavigationProps {
   className?: string;
   activeFilter?: QuickFilterTab;
   onFilterChange?: (filter: QuickFilterTab) => void;
+  currentUser?: {
+    name: string;
+    roleLabel: string;
+    avatarIcon: string;
+    email: string;
+  };
+  onLogout?: () => void;
 }
 
 const STORAGE_FAVORITES_KEY = 'soberano_favorite_modules';
@@ -107,7 +114,9 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   tenant,
   className = '',
   activeFilter: controlledActiveFilter,
-  onFilterChange: controlledOnFilterChange
+  onFilterChange: controlledOnFilterChange,
+  currentUser,
+  onLogout
 }) => {
   // 1. Search Query State
   const [searchQuery, setSearchQuery] = useState('');
@@ -585,15 +594,71 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         )}
       </div>
 
-      {/* 6. Footer & Live Status */}
-      <div className="sidebar-footer" style={{ padding: '8px 12px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', background: '#090E1A', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.68rem', color: 'var(--text-muted)', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--emerald-400)', display: 'inline-block', boxShadow: '0 0 6px rgba(16, 185, 129, 0.8)' }} />
-          <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>181 Módulos Ativos</span>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--emerald-400)', background: 'rgba(16, 185, 129, 0.12)', padding: '2px 6px', borderRadius: '4px', border: '1px solid rgba(16, 185, 129, 0.25)', fontWeight: 700, fontSize: '0.62rem' }}>
-          <ShieldCheck size={10} />
-          <span>mTLS v1.3</span>
+      {/* 6. Footer & User Logout Card */}
+      <div className="sidebar-footer" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.1)', background: '#090E1A', flexShrink: 0, padding: '8px 10px' }}>
+        {currentUser && (
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #0C1220 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '8px',
+              padding: '6px 8px',
+              marginBottom: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '6px'
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0 }}>
+              <span style={{ fontSize: '0.90rem' }}>{currentUser.avatarIcon}</span>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '0.72rem', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {currentUser.name}
+                </div>
+                <div style={{ fontSize: '0.58rem', color: '#34D399', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {currentUser.roleLabel.split('•')[0]}
+                </div>
+              </div>
+            </div>
+
+            {onLogout && (
+              <button
+                type="button"
+                onClick={onLogout}
+                title="Deslogar e voltar para a Página Principal"
+                style={{
+                  background: 'linear-gradient(180deg, #3B1818 0%, #200D0D 100%)',
+                  border: '1px solid rgba(239, 68, 68, 0.5)',
+                  borderBottom: '2px solid rgba(185, 28, 28, 0.8)',
+                  color: '#FCA5A5',
+                  padding: '3px 7px',
+                  borderRadius: '6px',
+                  fontSize: '0.64rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  flexShrink: 0,
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+                }}
+              >
+                <span>🚪</span> Sair
+              </button>
+            )}
+          </div>
+        )}
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.64rem', color: 'var(--text-muted)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--emerald-400)', display: 'inline-block', boxShadow: '0 0 6px rgba(16, 185, 129, 0.8)' }} />
+            <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>181 Módulos Ativos</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '3px', color: 'var(--emerald-400)', background: 'rgba(16, 185, 129, 0.12)', padding: '1px 5px', borderRadius: '4px', border: '1px solid rgba(16, 185, 129, 0.25)', fontWeight: 700, fontSize: '0.58rem' }}>
+            <ShieldCheck size={9} />
+            <span>mTLS v1.3</span>
+          </div>
         </div>
       </div>
     </nav>

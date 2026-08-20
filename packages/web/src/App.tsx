@@ -571,6 +571,42 @@ export const App: React.FC = () => {
           >
             <span>🤖</span> {isRightDeckOpen ? 'Copiloto' : 'Copiloto'}
           </button>
+
+          {/* User Profile 3D Capsule */}
+          <div
+            className="control-pod-3d"
+            title={`Usuário Ativo: ${currentUser.name} (${currentUser.roleLabel})`}
+            style={{ padding: '3px 8px', gap: '5px' }}
+          >
+            <span style={{ fontSize: '0.80rem' }}>{currentUser.avatarIcon}</span>
+            <span style={{ fontSize: '0.72rem', fontWeight: 800, color: '#FFFFFF', maxWidth: '85px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {currentUser.name}
+            </span>
+          </div>
+
+          {/* Botão de Deslogar / Sair 3D */}
+          <button
+            onClick={handleLogout}
+            title="Encerrar sessão e voltar para a Página Principal"
+            style={{
+              background: 'linear-gradient(180deg, #3B1818 0%, #1F0D0D 100%)',
+              border: '1.5px solid rgba(239, 68, 68, 0.6)',
+              borderBottom: '2.5px solid rgba(185, 28, 28, 0.9)',
+              color: '#FCA5A5',
+              fontWeight: 900,
+              fontSize: '0.74rem',
+              padding: '5px 12px',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 12px rgba(239, 68, 68, 0.25)',
+              transition: 'all 0.15s ease'
+            }}
+          >
+            <span style={{ fontSize: '0.82rem' }}>🚪</span> Sair
+          </button>
         </div>
       </header>
 
