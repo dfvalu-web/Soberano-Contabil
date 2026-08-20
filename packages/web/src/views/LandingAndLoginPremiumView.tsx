@@ -231,8 +231,8 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               height: 'auto',
               transform: 'translate(-50%, -50%)',
               objectFit: 'cover',
-              opacity: 0.30,
-              filter: 'saturate(1.2) contrast(1.1) brightness(0.7)'
+              opacity: 0.72,
+              filter: 'saturate(1.25) contrast(1.05) brightness(1.05)'
             }}
           >
             <source src="/hero-video.mp4" type="video/mp4" />
@@ -244,8 +244,8 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'radial-gradient(circle at center, rgba(10, 18, 36, 0.7) 0%, rgba(5, 9, 18, 0.95) 85%, #070B14 100%)',
-              backdropFilter: 'blur(3px)'
+              background: 'radial-gradient(circle at center, rgba(10, 18, 36, 0.30) 0%, rgba(7, 11, 20, 0.65) 80%, #070B14 100%)',
+              backdropFilter: 'blur(1px)'
             }}
           />
         </div>
