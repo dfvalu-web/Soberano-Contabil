@@ -58,7 +58,7 @@ export const PRESET_PROFILES: UserProfile[] = [
     crc: 'CRC 1SP999999/O-0 • DEV & OWNER FULL ACCESS',
     email: 'dfvalu@gmail.com',
     avatarIcon: '👑',
-    initialModuleId: 'dashboard'
+    initialModuleId: 'office_login_security_governance'
   },
   {
     id: 'user-master',

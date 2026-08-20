@@ -561,6 +561,23 @@ export const App: React.FC = () => {
           </div>
 
           <button
+            onClick={() => setCurrentModuleId('office_login_security_governance')}
+            className="btn-copilot-3d"
+            style={{
+              background: currentModuleId === 'office_login_security_governance'
+                ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.2) 100%)'
+                : 'linear-gradient(180deg, #18263D 0%, #0F172A 100%)',
+              border: currentModuleId === 'office_login_security_governance'
+                ? '1.5px solid #34D399'
+                : '1px solid rgba(52, 211, 153, 0.45)',
+              color: '#34D399',
+              fontWeight: 800
+            }}
+            title="Central de Controle de Login, Aprovação de Acessos & Criptografia"
+          >
+            <span>🛡️</span> Controle de Acesso
+          </button>
+          <button
             onClick={() => setCurrentModuleId('office_batch_dispatch_bundle')}
             className="btn-1click-3d"
           >

@@ -43,8 +43,8 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
     "modules": [
       {
         "id": "office_login_security_governance",
-        "name": "Governança de Login & Criptografia Real",
-        "label": "Governança de Login & Criptografia Real",
+        "name": "Controle de Acesso & Governança de Login",
+        "label": "Controle de Acesso & Governança de Login",
         "icon": "🛡️",
         "file": "OfficeLoginSecurityGovernanceView",
         "departmentId": "gestao",
@@ -1846,6 +1846,7 @@ export const DEPARTMENT_CATEGORIES: DepartmentCategory[] = [
 export const ALL_MODULES: NavigationModule[] = DEPARTMENT_CATEGORIES.flatMap(dept => dept.modules);
 
 export const DEFAULT_FAVORITE_MODULE_IDS: string[] = [
+  'office_login_security_governance',
   'office_sped_batch_prevalidator',
   'office_multi_client_grid',
   'office_products_services_stock',
