@@ -997,160 +997,172 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       {/* ========================================================================= */}
       <section id="pilares" style={{ padding: '80px 24px', maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 12px', borderRadius: '20px', background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', fontSize: '0.68rem', fontWeight: 900, border: '1px solid rgba(56, 189, 248, 0.3)', marginBottom: '10px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 14px', borderRadius: '20px', background: 'linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.1) 100%)', color: '#38BDF8', fontSize: '0.70rem', fontWeight: 900, border: '1px solid rgba(56, 189, 248, 0.4)', boxShadow: '0 0 16px rgba(56, 189, 248, 0.25)', marginBottom: '12px' }}>
             <span>🏛️</span> OS 4 PILARES ARQUITETURAIS DO SOBERANO CONTÁBIL
           </div>
-          <h2 style={{ fontSize: '2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em' }}>
+          <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
             Engenharia de Alta Precisão para o Escritório do Futuro
           </h2>
-          <p style={{ color: '#94A3B8', fontSize: '0.92rem', maxWidth: '750px', margin: '12px auto 0', lineHeight: 1.5 }}>
+          <p style={{ color: '#94A3B8', fontSize: '0.92rem', maxWidth: '750px', margin: '12px auto 0', lineHeight: 1.6 }}>
             Uma plataforma holística projetada para unificar Contabilidade IFRS, Inteligência Fiscal, Departamento Pessoal e Governança Corporativa em perfeita harmonia.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '22px' }}>
           
           {/* Pilar 1 */}
           <div
             style={{
-              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
-              border: '1.5px solid rgba(52, 211, 153, 0.35)',
-              borderBottom: '3px solid #059669',
-              borderRadius: '14px',
-              padding: '24px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.12)',
+              background: 'linear-gradient(180deg, #15223C 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.45)',
+              borderBottom: '3.5px solid #059669',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(16, 185, 129, 0.18)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #34D399', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)', border: '1.5px solid #34D399', borderBottom: '2px solid #065F46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.35rem', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 16px rgba(16, 185, 129, 0.4)' }}>
                   🏛️
                 </div>
-                <span style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                <span style={{ background: 'rgba(16, 185, 129, 0.18)', color: '#34D399', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.64rem', fontWeight: 900, boxShadow: '0 0 10px rgba(16, 185, 129, 0.2)' }}>
                   NBC TG • IFRS
                 </span>
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
                 1. Contabilidade & IFRS
               </h3>
-              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '0.80rem', color: '#94A3B8', lineHeight: 1.6, margin: '0 0 18px 0' }}>
                 Partidas dobradas automáticas, conciliação bancária OFX em lote, Balanço Patrimonial em tempo real, DRE gerencial, DFC e encerramento anual ARE com 1-Click.
               </p>
             </div>
-            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
-              ✓ Plano de Contas Referencial SPED ECD/ECF
+            <div style={{ background: 'rgba(8, 13, 26, 0.85)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(52, 211, 153, 0.25)', fontSize: '0.72rem', color: '#34D399', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>✓</span> Plano de Contas Referencial SPED ECD/ECF
             </div>
           </div>
 
           {/* Pilar 2 */}
           <div
             style={{
-              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
-              border: '1.5px solid rgba(56, 189, 248, 0.35)',
-              borderBottom: '3px solid #0284C7',
-              borderRadius: '14px',
-              padding: '24px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.12)',
+              background: 'linear-gradient(180deg, #15223C 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(56, 189, 248, 0.45)',
+              borderBottom: '3.5px solid #0284C7',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.18)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(56, 189, 248, 0.15)', border: '1px solid #38BDF8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(56, 189, 248, 0.3) 0%, rgba(2, 132, 199, 0.15) 100%)', border: '1.5px solid #38BDF8', borderBottom: '2px solid #0369A1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.35rem', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 16px rgba(56, 189, 248, 0.4)' }}>
                   ⚡
                 </div>
-                <span style={{ background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', border: '1px solid rgba(56, 189, 248, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                <span style={{ background: 'rgba(56, 189, 248, 0.18)', color: '#38BDF8', border: '1px solid rgba(56, 189, 248, 0.4)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.64rem', fontWeight: 900, boxShadow: '0 0 10px rgba(56, 189, 248, 0.2)' }}>
                   SPED • REFORMA IBS/CBS
                 </span>
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
                 2. Fiscal & Tributário
               </h3>
-              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '0.80rem', color: '#94A3B8', lineHeight: 1.6, margin: '0 0 18px 0' }}>
                 Dropzone OCR massivo, captura direta SEFAZ WebService, apuração PGDAS-D, segregação de monofásicos PIS/COFINS, Reinf R-4000 e prontidão total para a Reforma Tributária.
               </p>
             </div>
-            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
-              ✓ Emissor de NF-e, NFS-e, NFC-e Integrado
+            <div style={{ background: 'rgba(8, 13, 26, 0.85)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(56, 189, 248, 0.25)', fontSize: '0.72rem', color: '#38BDF8', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>✓</span> Emissor de NF-e, NFS-e, NFC-e Integrado
             </div>
           </div>
 
           {/* Pilar 3 */}
           <div
             style={{
-              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
-              border: '1.5px solid rgba(167, 139, 250, 0.35)',
-              borderBottom: '3px solid #7C3AED',
-              borderRadius: '14px',
-              padding: '24px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(124, 58, 237, 0.12)',
+              background: 'linear-gradient(180deg, #15223C 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(167, 139, 250, 0.45)',
+              borderBottom: '3.5px solid #7C3AED',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(124, 58, 237, 0.18)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(124, 58, 237, 0.15)', border: '1px solid #A78BFA', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(167, 139, 250, 0.3) 0%, rgba(124, 58, 237, 0.15) 100%)', border: '1.5px solid #A78BFA', borderBottom: '2px solid #5B21B6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.35rem', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 16px rgba(167, 139, 250, 0.4)' }}>
                   👥
                 </div>
-                <span style={{ background: 'rgba(124, 58, 237, 0.15)', color: '#A78BFA', border: '1px solid rgba(167, 139, 250, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                <span style={{ background: 'rgba(124, 58, 237, 0.18)', color: '#C4B5FD', border: '1px solid rgba(167, 139, 250, 0.4)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.64rem', fontWeight: 900, boxShadow: '0 0 10px rgba(124, 58, 237, 0.2)' }}>
                   CLT • eSOCIAL S-1.2
                 </span>
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
                 3. Departamento Pessoal
               </h3>
-              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '0.80rem', color: '#94A3B8', lineHeight: 1.6, margin: '0 0 18px 0' }}>
                 Cálculo determinístico de Folha CLT, rescisões TRCT com aviso prévio proporcional, gestão de férias e ponto eletrônico com validação estrita do eSocial e FGTS Digital.
               </p>
             </div>
-            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
-              ✓ Recibos e Holerites Assinados em 1-Click
+            <div style={{ background: 'rgba(8, 13, 26, 0.85)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(167, 139, 250, 0.25)', fontSize: '0.72rem', color: '#A78BFA', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>✓</span> Recibos e Holerites Assinados em 1-Click
             </div>
           </div>
 
           {/* Pilar 4 */}
           <div
             style={{
-              background: 'linear-gradient(180deg, #131E35 0%, #0A101E 100%)',
-              border: '1.5px solid rgba(251, 191, 36, 0.35)',
-              borderBottom: '3px solid #D97706',
-              borderRadius: '14px',
-              padding: '24px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.12)',
+              background: 'linear-gradient(180deg, #15223C 0%, #0A101E 100%)',
+              border: '1.5px solid rgba(251, 191, 36, 0.45)',
+              borderBottom: '3.5px solid #D97706',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(245, 158, 11, 0.18)',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
-              transition: 'all 0.2s ease'
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
+            <div style={{ position: 'absolute', top: 0, right: 0, width: '120px', height: '120px', background: 'radial-gradient(circle, rgba(251, 191, 36, 0.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-                <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid #FBBF24', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(251, 191, 36, 0.3) 0%, rgba(217, 119, 6, 0.15) 100%)', border: '1.5px solid #FBBF24', borderBottom: '2px solid #B45309', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.35rem', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.4), 0 0 16px rgba(245, 158, 11, 0.4)' }}>
                   🛡️
                 </div>
-                <span style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24', border: '1px solid rgba(251, 191, 36, 0.3)', padding: '2px 8px', borderRadius: '4px', fontSize: '0.62rem', fontWeight: 900 }}>
+                <span style={{ background: 'rgba(245, 158, 11, 0.18)', color: '#FBBF24', border: '1px solid rgba(251, 191, 36, 0.4)', padding: '3px 10px', borderRadius: '6px', fontSize: '0.64rem', fontWeight: 900, boxShadow: '0 0 10px rgba(245, 158, 11, 0.2)' }}>
                   HSM • ICP-BRASIL
                 </span>
               </div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 8px 0' }}>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#FFFFFF', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
                 4. Governança & CFO Virtual
               </h3>
-              <p style={{ fontSize: '0.78rem', color: '#94A3B8', lineHeight: 1.5, margin: '0 0 16px 0' }}>
+              <p style={{ fontSize: '0.80rem', color: '#94A3B8', lineHeight: 1.6, margin: '0 0 18px 0' }}>
                 Cofre seguro de Certificados Digitais A1/A3, trilha forense imutável, análise financeira com modelo DuPont em 5 estágios, liquidez, solvência e pareceres de IA.
               </p>
             </div>
-            <div style={{ background: '#080D1A', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(255, 255, 255, 0.06)', fontSize: '0.70rem', color: '#CBD5E1' }}>
-              ✓ Dossiês Executivos A4 Oficiais para Bancos
+            <div style={{ background: 'rgba(8, 13, 26, 0.85)', padding: '10px 14px', borderRadius: '8px', border: '1px solid rgba(251, 191, 36, 0.25)', fontSize: '0.72rem', color: '#FBBF24', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span>✓</span> Dossiês Executivos A4 Oficiais para Bancos
             </div>
           </div>
 
@@ -1163,87 +1175,153 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       {/* ========================================================================= */}
       <section id="diferenciais" style={{ padding: '80px 24px', maxWidth: '1280px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div style={{ fontSize: '0.74rem', fontWeight: 900, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            Diferenciais Únicos de Mercado
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 14px', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontSize: '0.70rem', fontWeight: 900, border: '1px solid rgba(52, 211, 153, 0.35)', marginBottom: '12px', boxShadow: '0 0 16px rgba(16, 185, 129, 0.2)' }}>
+            <span>⚡</span> DIFERENCIAIS ÚNICOS DE MERCADO
           </div>
-          <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', marginTop: '6px' }}>
+          <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
             Construído para Eliminar 100% do Retrabalho
           </h2>
-          <p style={{ fontSize: '0.88rem', color: '#94A3B8', maxWidth: '640px', margin: '8px auto 0 auto' }}>
+          <p style={{ fontSize: '0.92rem', color: '#94A3B8', maxWidth: '680px', margin: '12px auto 0 auto', lineHeight: 1.6 }}>
             Enquanto os sistemas legados operam em silos isolados com arquivos de texto manuais, o Soberano Contábil integra tudo em memória de alta performance.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '22px' }}>
           
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
-              <Workflow size={22} />
+          {/* Card 1 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(52, 211, 153, 0.35)',
+              borderBottom: '3.5px solid #059669',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #10B981 0%, #06B6D4 100%)', border: '1.5px solid #6EE7B7', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(16, 185, 129, 0.5)' }}>
+              <Workflow size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               1. Esteira de Fechamento Integrada (5 Etapas)
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Triangulação automática <strong>Fiscal ➔ DP ➔ DCTFWeb ➔ Contábil ➔ Dossiê</strong> com cálculo de SLA e avanço em 1-Click. O sócio do escritório sabe exatamente o status de cada cliente da carteira em tempo real.
             </p>
           </div>
 
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #059669 0%, #0284C7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '14px' }}>
-              <Radar size={22} />
+          {/* Card 2 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(56, 189, 248, 0.35)',
+              borderBottom: '3.5px solid #0284C7',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)', border: '1.5px solid #7DD3FC', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(2, 132, 199, 0.5)' }}>
+              <Radar size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               2. Radar Preditivo contra Malhas Fiscais
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Simulação prévia dos algoritmos da Receita Federal e SEFAZ: cruzamento DIMP/PIX vs EFD, eSocial vs DCTFWeb e EFD vs ECD, com botão de <strong>auto-ajuste preventivo com isenção de multas (Art. 138 do CTN)</strong>.
             </p>
           </div>
 
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #F59E0B 0%, #B45309 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
-              <BookOpen size={22} />
+          {/* Card 3 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(251, 191, 36, 0.35)',
+              borderBottom: '3.5px solid #D97706',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)', border: '1.5px solid #FDE68A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(245, 158, 11, 0.5)' }}>
+              <BookOpen size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               3. Book Contábil Executivo A4 (Rating AAA)
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Caderno executivo unificado com Capa, Parecer DuPont do CFO Virtual, DRE, Balanço IFRS, CNDs e <strong>3 Assinaturas Formais (Contador CRC, Diretor e Auditor)</strong> sem quebras de página para apresentação a bancos.
             </p>
           </div>
 
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '14px' }}>
-              <Scale size={22} />
+          {/* Card 4 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(167, 139, 250, 0.35)',
+              borderBottom: '3.5px solid #7C3AED',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(124, 58, 237, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)', border: '1.5px solid #C4B5FD', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(139, 92, 246, 0.5)' }}>
+              <Scale size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               4. Motor da Reforma Tributária (2026–2033)
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Simulador comparativo completo: Lucro Presumido vs Lucro Real vs Novo IVA Dual (IBS estadual/municipal + CBS federal - LC 214/25) com cronograma de transição gradual e créditos de insumos.
             </p>
           </div>
 
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
-              <FileSpreadsheet size={22} />
+          {/* Card 5 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(6, 182, 212, 0.35)',
+              borderBottom: '3.5px solid #0891B2',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(6, 182, 212, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #06B6D4 0%, #0891B2 100%)', border: '1.5px solid #67E8F9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(6, 182, 212, 0.5)' }}>
+              <FileSpreadsheet size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               5. Dropzone Massivo com OCR Inteligente
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Arraste centenas de arquivos (XML de NF-e/NFC-e/NFS-e, Danfes em PDF, extratos bancários OFX/DDA) com leitura OCR e <strong>autoclassificação automática de CFOP, CST e plano de contas</strong>.
             </p>
           </div>
 
-          <div className="dept-accordion-card" style={{ padding: '24px' }}>
-            <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '14px' }}>
-              <Users size={22} />
+          {/* Card 6 */}
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+              border: '1.5px solid rgba(16, 185, 129, 0.35)',
+              borderBottom: '3.5px solid #059669',
+              borderRadius: '16px',
+              padding: '26px',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.18), 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.15)',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+          >
+            <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'linear-gradient(135deg, #34D399 0%, #059669 100%)', border: '1.5px solid #A7F3D0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#070B12', marginBottom: '16px', boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.8), 0 0 18px rgba(52, 211, 153, 0.5)' }}>
+              <Users size={24} />
             </div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 900, color: '#FFFFFF', margin: 0 }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.01em' }}>
               6. Folha CLT & eSocial/SST Determinístico
             </h3>
-            <p style={{ fontSize: '0.78rem', color: '#94A3B8', marginTop: '8px', lineHeight: 1.5 }}>
+            <p style={{ fontSize: '0.80rem', color: '#94A3B8', marginTop: '10px', lineHeight: 1.6 }}>
               Processamento com DSR sobre horas extras, provisões trabalhistas CPC 33 (13º/férias), laudos SST com PPP Digital (S-2240) e quitação Homolognet rescisória em 1 clique.
             </p>
           </div>
@@ -1254,89 +1332,136 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
       {/* ========================================================================= */}
       {/* 4. TABELA COMPARATIVA: SOBERANO CONTÁBIL VS SISTEMAS TRADICIONAIS          */}
       {/* ========================================================================= */}
-      <section id="comparativo" style={{ padding: '60px 24px', background: '#0B1120', borderTop: '1px solid rgba(255, 255, 255, 0.08)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+      <section id="comparativo" style={{ padding: '80px 24px', background: '#080D1A', borderTop: '1px solid rgba(255, 255, 255, 0.08)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           
-          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-            <div style={{ fontSize: '0.74rem', fontWeight: 900, color: '#38BDF8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              Comparativo Tecnológico
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 14px', borderRadius: '20px', background: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', fontSize: '0.70rem', fontWeight: 900, border: '1px solid rgba(56, 189, 248, 0.35)', marginBottom: '12px', boxShadow: '0 0 16px rgba(56, 189, 248, 0.2)' }}>
+              <span>📊</span> COMPARATIVO TECNOLÓGICO
             </div>
-            <h2 style={{ fontSize: '2.0rem', fontWeight: 900, color: '#FFFFFF', marginTop: '6px' }}>
+            <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', margin: 0, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
               Por que o Soberano Contábil é Líder Absoluto?
             </h2>
           </div>
 
-          <table className="diamond-table" style={{ margin: 0 }}>
-            <thead>
-              <tr>
-                <th style={{ textAlign: 'left', width: '35%' }}>Capacidade / Funcionalidade</th>
-                <th style={{ textAlign: 'center', width: '30%', color: '#94A3B8' }}>Sistemas Legados de Mercado</th>
-                <th style={{ textAlign: 'center', width: '35%', color: '#34D399', fontWeight: 900 }}>Soberano Contábil Platinum Suite</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Integração Fiscal ➔ DP ➔ Contábil</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Exportação manual de TXT com retrabalho</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ Esteira em 5 Etapas 1-Click em Memória</td>
-              </tr>
-              <tr>
-                <td><strong>Prevenção contra Malhas Fiscais</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Descoberta tardia após notificação RFB</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ Radar Preditivo com Auto-Ajuste (Art. 138 CTN)</td>
-              </tr>
-              <tr>
-                <td><strong>Reforma Tributária (EC 132/23)</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Inexistente ou sem transição temporal</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ Simulador IBS/CBS 2026–2033 Nativo</td>
-              </tr>
-              <tr>
-                <td><strong>Dossiês A4 para Bancos & Investidores</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Relatórios genéricos com quebras visuais</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ Dossiês Executivos Oficiais com 3 Assinaturas</td>
-              </tr>
-              <tr>
-                <td><strong>Captura e Leitura de Documentos</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Digitação manual ou upload unitário lento</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ Dropzone Massivo OCR + Autoclassificação</td>
-              </tr>
-              <tr>
-                <td><strong>Análise Econômico-Financeira</strong></td>
-                <td style={{ textAlign: 'center', color: '#EF4444' }}>Balancetes frios sem inteligência consultiva</td>
-                <td style={{ textAlign: 'center', color: '#34D399', fontWeight: 800 }}>✓ CFO Virtual com DuPont em 5 Estágios & WACC</td>
-              </tr>
-            </tbody>
-          </table>
+          <div
+            style={{
+              background: 'linear-gradient(180deg, #131E35 0%, #0A0F1E 100%)',
+              border: '1.5px solid rgba(56, 189, 248, 0.35)',
+              borderBottom: '3.5px solid #0284C7',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15)'
+            }}
+          >
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.80rem' }}>
+              <thead>
+                <tr style={{ background: 'linear-gradient(180deg, #182542 0%, #0E1628 100%)', borderBottom: '2px solid rgba(255, 255, 255, 0.12)' }}>
+                  <th style={{ textAlign: 'left', padding: '16px 20px', width: '34%', color: '#E2E8F0', fontWeight: 900, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Capacidade / Funcionalidade
+                  </th>
+                  <th style={{ textAlign: 'center', padding: '16px 16px', width: '33%', color: '#94A3B8', fontWeight: 800, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Sistemas Legados de Mercado
+                  </th>
+                  <th style={{ textAlign: 'center', padding: '16px 20px', width: '33%', color: '#34D399', fontWeight: 900, fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.04em', background: 'rgba(16, 185, 129, 0.12)', borderLeft: '1px solid rgba(52, 211, 153, 0.3)' }}>
+                    💎 Soberano Contábil Platinum Suite
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  {
+                    title: 'Integração Fiscal ➔ DP ➔ Contábil',
+                    legacy: 'Exportação manual de TXT com retrabalho',
+                    soberano: '✓ Esteira em 5 Etapas 1-Click em Memória'
+                  },
+                  {
+                    title: 'Prevenção contra Malhas Fiscais',
+                    legacy: 'Descoberta tardia após notificação RFB',
+                    soberano: '✓ Radar Preditivo com Auto-Ajuste (Art. 138 CTN)'
+                  },
+                  {
+                    title: 'Reforma Tributária (EC 132/23)',
+                    legacy: 'Inexistente ou sem transição temporal',
+                    soberano: '✓ Simulador IBS/CBS 2026–2033 Nativo'
+                  },
+                  {
+                    title: 'Dossiês A4 para Bancos & Investidores',
+                    legacy: 'Relatórios genéricos com quebras visuais',
+                    soberano: '✓ Dossiês Executivos Oficiais com 3 Assinaturas'
+                  },
+                  {
+                    title: 'Captura e Leitura de Documentos',
+                    legacy: 'Digitação manual ou upload unitário lento',
+                    soberano: '✓ Dropzone Massivo OCR + Autoclassificação'
+                  },
+                  {
+                    title: 'Análise Econômico-Financeira',
+                    legacy: 'Balancetes frios sem inteligência consultiva',
+                    soberano: '✓ CFO Virtual com DuPont em 5 Estágios & WACC'
+                  }
+                ].map((row, idx) => (
+                  <tr
+                    key={idx}
+                    style={{
+                      background: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.015)' : 'rgba(15, 23, 42, 0.45)',
+                      borderBottom: '1px solid rgba(255, 255, 255, 0.06)'
+                    }}
+                  >
+                    <td style={{ padding: '14px 20px', color: '#FFFFFF', fontWeight: 800 }}>
+                      {row.title}
+                    </td>
+                    <td style={{ textAlign: 'center', padding: '14px 16px', color: '#F87171', fontWeight: 600 }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ fontSize: '0.72rem', background: 'rgba(239, 68, 68, 0.15)', color: '#EF4444', padding: '2px 6px', borderRadius: '4px', fontWeight: 900 }}>✕</span>
+                        {row.legacy}
+                      </span>
+                    </td>
+                    <td style={{ textAlign: 'center', padding: '14px 20px', color: '#34D399', fontWeight: 900, background: 'rgba(16, 185, 129, 0.08)', borderLeft: '1px solid rgba(52, 211, 153, 0.2)' }}>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(16, 185, 129, 0.15)', padding: '4px 10px', borderRadius: '6px', border: '1px solid rgba(52, 211, 153, 0.3)', boxShadow: '0 0 10px rgba(16, 185, 129, 0.2)' }}>
+                        {row.soberano}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
       {/* 5. CALCULADORA INTERATIVA DE RETORNO SOBRE O INVESTIMENTO (ROI)           */}
       {/* ========================================================================= */}
-      <section id="roi" style={{ padding: '80px 24px', maxWidth: '1000px', margin: '0 auto' }}>
+      <section id="roi" style={{ padding: '80px 24px', maxWidth: '1050px', margin: '0 auto' }}>
         <div
           style={{
-            background: 'linear-gradient(135deg, #131E35 0%, #0B1120 100%)',
-            border: '1.5px solid rgba(52, 211, 153, 0.4)',
-            borderRadius: '16px',
-            padding: '36px',
-            boxShadow: '0 12px 36px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+            background: 'linear-gradient(180deg, #131E35 0%, #0A0F1E 100%)',
+            border: '1.5px solid rgba(52, 211, 153, 0.45)',
+            borderBottom: '3.5px solid #059669',
+            borderRadius: '20px',
+            padding: '40px',
+            boxShadow: 'inset 0 1.5px 0 rgba(255, 255, 255, 0.2), 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 35px rgba(16, 185, 129, 0.2)'
           }}
         >
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '3px 10px', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', fontSize: '0.68rem', fontWeight: 900 }}>
-              <Sliders size={12} /> CALCULADORA DE ECONOMIA OPERACIONAL
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 14px', borderRadius: '20px', background: 'rgba(16, 185, 129, 0.2)', color: '#34D399', fontSize: '0.70rem', fontWeight: 900, border: '1px solid rgba(52, 211, 153, 0.4)', boxShadow: '0 0 16px rgba(16, 185, 129, 0.25)' }}>
+              <Sliders size={13} /> CALCULADORA DE ECONOMIA OPERACIONAL
             </div>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#FFFFFF', marginTop: '8px' }}>
+            <h2 style={{ fontSize: '2.0rem', fontWeight: 900, color: '#FFFFFF', marginTop: '12px', letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}>
               Descubra quanto seu escritório economiza por mês
             </h2>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '600px', margin: '0 auto' }}>
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#CBD5E1' }}>Empresas Atendidas na Carteira:</span>
-                <strong style={{ fontSize: '1.05rem', color: '#34D399' }}>{clientsCount} clientes</strong>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '26px', maxWidth: '680px', margin: '0 auto' }}>
+            
+            {/* Slider Pod 3D */}
+            <div style={{ background: '#080D1A', padding: '20px 24px', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <span style={{ fontSize: '0.86rem', fontWeight: 800, color: '#E2E8F0' }}>Empresas Atendidas na Carteira:</span>
+                <div style={{ background: 'rgba(16, 185, 129, 0.2)', border: '1px solid rgba(52, 211, 153, 0.4)', padding: '4px 12px', borderRadius: '8px', boxShadow: '0 0 12px rgba(16, 185, 129, 0.3)' }}>
+                  <strong style={{ fontSize: '1.2rem', color: '#34D399', fontFamily: 'var(--font-mono)' }}>{clientsCount} clientes</strong>
+                </div>
               </div>
               <input
                 type="range"
@@ -1345,30 +1470,62 @@ export const LandingAndLoginPremiumView: React.FC<LandingAndLoginPremiumViewProp
                 step="5"
                 value={clientsCount}
                 onChange={(e) => setClientsCount(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#10B981', cursor: 'pointer' }}
+                style={{ width: '100%', accentColor: '#10B981', cursor: 'pointer', height: '8px' }}
               />
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.66rem', color: '#64748B', marginTop: '6px', fontWeight: 700 }}>
+                <span>5 clientes</span>
+                <span>150 clientes</span>
+                <span>300 clientes</span>
+              </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '14px', marginTop: '10px' }}>
-              <div className="control-pod-3d" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '16px' }}>
-                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Tempo Economizado / Mês</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#38BDF8', fontFamily: 'var(--font-mono)' }}>
+            {/* Resultado 3D 4K */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+              <div
+                style={{
+                  background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+                  border: '1.5px solid rgba(56, 189, 248, 0.35)',
+                  borderBottom: '3.5px solid #0284C7',
+                  padding: '20px',
+                  borderRadius: '14px',
+                  textAlign: 'center',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5)'
+                }}
+              >
+                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Tempo Economizado / Mês</div>
+                <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#38BDF8', fontFamily: 'var(--font-mono)', margin: '8px 0 4px 0', textShadow: '0 0 16px rgba(56, 189, 248, 0.5)' }}>
                   {hoursSavedPerMonth} horas
                 </div>
-                <div style={{ fontSize: '0.66rem', color: '#CBD5E1', marginTop: '2px' }}>
-                  Eliminação de digitação e fechamentos em 1-Click
-                </div>
+                <div style={{ fontSize: '0.68rem', color: '#64748B' }}>Equivalente a {(hoursSavedPerMonth / 160).toFixed(1)} analistas dedicados</div>
               </div>
 
-              <div className="control-pod-3d" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '16px' }}>
-                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase' }}>Economia Financeira Direta</div>
-                <div style={{ fontSize: '1.6rem', fontWeight: 900, color: '#34D399', fontFamily: 'var(--font-mono)' }}>
-                  R$ {monthlyCostSavings.toLocaleString('pt-BR')} /mês
+              <div
+                style={{
+                  background: 'linear-gradient(180deg, #141E34 0%, #090E1A 100%)',
+                  border: '1.5px solid rgba(52, 211, 153, 0.45)',
+                  borderBottom: '3.5px solid #059669',
+                  padding: '20px',
+                  borderRadius: '14px',
+                  textAlign: 'center',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.2)'
+                }}
+              >
+                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Economia Financeira Direta</div>
+                <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#34D399', fontFamily: 'var(--font-mono)', margin: '8px 0 4px 0', textShadow: '0 0 16px rgba(52, 211, 153, 0.6)' }}>
+                  R$ {monthlyCostSavings.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} /mês
                 </div>
-                <div style={{ fontSize: '0.66rem', color: '#CBD5E1', marginTop: '2px' }}>
-                  Ganho de margem operacional líquida
-                </div>
+                <div style={{ fontSize: '0.68rem', color: '#64748B' }}>R$ {(monthlyCostSavings * 12).toLocaleString('pt-BR', { minimumFractionDigits: 2 })} economizados por ano</div>
               </div>
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: '6px' }}>
+              <button
+                onClick={() => handleDirectLoginWithProfile(PRESET_PROFILES[0])}
+                className="btn-1click-3d"
+                style={{ padding: '12px 32px', fontSize: '0.92rem', borderRadius: '10px' }}
+              >
+                <span>⚡</span> Entrar em 1-Click & Ativar Esta Economia Imediata
+              </button>
             </div>
           </div>
         </div>

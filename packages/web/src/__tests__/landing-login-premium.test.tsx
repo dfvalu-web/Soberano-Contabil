@@ -21,7 +21,7 @@ describe('Landing Page & Login Premium 3D 4K Suite', () => {
       React.createElement(LandingAndLoginPremiumView, { onLoginSuccess: () => {} })
     );
 
-    expect(html).toContain('Diferenciais Únicos de Mercado');
+    expect(html).toContain('DIFERENCIAIS ÚNICOS DE MERCADO');
     expect(html).toContain('1. Esteira de Fechamento Integrada (5 Etapas)');
     expect(html).toContain('2. Radar Preditivo contra Malhas Fiscais');
     expect(html).toContain('3. Book Contábil Executivo A4 (Rating AAA)');
