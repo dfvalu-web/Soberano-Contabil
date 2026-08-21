@@ -1,5 +1,5 @@
 import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   TrendingUp,
   DollarSign,
@@ -20,7 +20,15 @@ import { officeStore } from '../state/office-store.js';
 
 export const FinancialBpoOfficeView: React.FC = () => {
   const [notification, setNotification] = useState<string | null>(null);
+  const [period, setPeriod] = useState<PeriodFilterState>(() => officeStore.getPeriodFilter());
   const [isSyncing, setIsSyncing] = useState(false);
+
+  useEffect(() => {
+    const unsub = officeStore.subscribePeriodFilter((newPeriod) => {
+      setPeriod(newPeriod);
+    });
+    return unsub;
+  }, []);
   const [selectedBank, setSelectedBank] = useState('ITAU');
   const [showDossierModal, setShowDossierModal] = useState(false);
 
@@ -358,7 +366,7 @@ export const FinancialBpoOfficeView: React.FC = () => {
                 <div className="diamond-subtitle">Demonstração do Fluxo de Caixa Operacional & EBITDA • Padrão Diamante</div>
               </div>
               <div style={{ textAlign: 'right', fontSize: '0.68rem', color: '#64748B' }}>
-                <div><strong>Competência:</strong> 08/2026</div>
+                <div><strong>Competência / Período:</strong> {period.label}</div>\n                <div><strong>Intervalo:</strong> {period.startDate} até {period.endDate}</div>
                 <div><strong>Status:</strong> 100% CONCILIADO</div>
               </div>
             </div>
