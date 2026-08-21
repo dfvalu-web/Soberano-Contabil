@@ -1,3 +1,5 @@
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
+import { officeStore, PeriodFilterState } from '../state/office-store.js';
 import React, { useState } from 'react';
 import {
   generateExecutiveDossier,
@@ -12,6 +14,14 @@ import {
 import { Award, Printer, ShieldCheck, FileCheck, CheckCircle2, TrendingUp, Building, Layers } from 'lucide-react';
 
 export const ExecutiveReportsView: React.FC = () => {
+  const [period, setPeriod] = useState<PeriodFilterState>(() => officeStore.getPeriodFilter());
+
+  useEffect(() => {
+    const unsub = officeStore.subscribePeriodFilter((newPeriod) => {
+      setPeriod(newPeriod);
+    });
+    return unsub;
+  }, []);
   const mockCompany: Company = {
     id: 'comp-01',
     tenantId: 'tenant-01',
@@ -45,7 +55,7 @@ export const ExecutiveReportsView: React.FC = () => {
     { accountId: '1.1.3.01', accountCode: '1.1.3.01', accountName: 'Mercadorias para Revenda', type: 'CREDIT', amount: 120000.00 }
   ]);
 
-  const stmtsRes = generateFinancialStatements(engine.getAccounts(), '2026-01-01', '2026-01-31');
+  const stmtsRes = generateFinancialStatements(engine.getAccounts(), period.startDate, period.endDate);
   const dossierRes = stmtsRes.success ? generateExecutiveDossier(mockCompany, stmtsRes.data.balanceSheet, stmtsRes.data.incomeStatement, 100) : null;
   const dossier = dossierRes && dossierRes.success ? dossierRes.data : null;
 

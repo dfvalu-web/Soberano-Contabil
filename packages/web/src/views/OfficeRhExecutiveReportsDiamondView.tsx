@@ -1,9 +1,12 @@
+import React, { useState, useMemo, useEffect } from 'react';
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
+import { PeriodFilterState } from '../state/office-store.js';
 // ==========================================================================
 // SOBERANO CONTÁBIL — DOSSIÊ EXECUTIVO DE RH & GESTÃO DE PESSOAS (PADRÃO DIAMANTE)
 // RELATÓRIO EXECUTIVO DE ELITE: 1 PÁGINA A4 PERFEITA, AUDITORIA & KPIS
 // ==========================================================================
 
-import React, { useState, useMemo } from 'react';
+
 import { officeStore, Employee, PayrollStatement } from '../state/office-store.js';
 import {
   Award,
@@ -24,6 +27,14 @@ import {
 } from 'lucide-react';
 
 export const OfficeRhExecutiveReportsDiamondView: React.FC = () => {
+  const [period, setPeriod] = useState<PeriodFilterState>(() => officeStore.getPeriodFilter());
+
+  useEffect(() => {
+    const unsub = officeStore.subscribePeriodFilter((newPeriod) => {
+      setPeriod(newPeriod);
+    });
+    return unsub;
+  }, []);
   const tenants = useMemo(() => officeStore.getTenants(), []);
   const [selectedTenantId, setSelectedTenantId] = useState<string>('t1');
   const employees = useMemo(() => officeStore.getEmployees(selectedTenantId), [selectedTenantId]);

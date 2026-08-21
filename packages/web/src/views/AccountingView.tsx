@@ -1,4 +1,7 @@
-import { useState, useTransition } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
+import { officeStore, PeriodFilterState } from '../state/office-store.js';
+
 import {
   createStandardChartOfAccounts,
   DoubleEntryEngine,
@@ -12,6 +15,14 @@ import {
 import { Scale, FileSpreadsheet, BookOpen, Layers, FileText, CheckCircle2, DollarSign } from 'lucide-react';
 
 export const AccountingView = () => {
+  const [period, setPeriod] = useState<PeriodFilterState>(() => officeStore.getPeriodFilter());
+
+  useEffect(() => {
+    const unsub = officeStore.subscribePeriodFilter((newPeriod) => {
+      setPeriod(newPeriod);
+    });
+    return unsub;
+  }, []);
   const [tenantId] = useState('tenant-01');
   const [, startTransition] = useTransition();
   const [contas] = useState(() => createStandardChartOfAccounts(tenantId));
@@ -57,13 +68,13 @@ export const AccountingView = () => {
     updatedAt: new Date()
   };
 
-  const statementsRes = generateFinancialStatements(engine.getAccounts(), '2026-01-01', '2026-01-31');
+  const statementsRes = generateFinancialStatements(engine.getAccounts(), period.startDate, period.endDate);
   const stmts = statementsRes.success ? statementsRes.data : null;
 
-  const dfcRes = generateDfcStatement(engine.getAccounts(), 50000.00, '2026-01-01', '2026-01-31', 'INDIRETO');
+  const dfcRes = generateDfcStatement(engine.getAccounts(), 50000.00, period.startDate, period.endDate, 'INDIRETO');
   const dfc = dfcRes.success ? dfcRes.data : null;
 
-  const dmplRes = generateDmplStatement(150000, 15000, 20000, 55000, 10000, '2026-01-01', '2026-01-31');
+  const dmplRes = generateDmplStatement(150000, 15000, 20000, 55000, 10000, period.startDate, period.endDate);
   const dmpl = dmplRes.success ? dmplRes.data : null;
 
   const notesRes = stmts ? generateExplanatoryNotes(mockCompany, '2026', stmts.balanceSheet, stmts.incomeStatement) : null;

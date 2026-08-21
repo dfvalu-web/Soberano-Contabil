@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
+import { officeStore, PeriodFilterState } from '../state/office-store.js';
+
 import {
   BookOpen,
   Printer,
@@ -17,6 +20,14 @@ import {
 import { CompanyTenant } from '../state/office-store';
 
 export const OfficeMonthlyConsolidatedBookView: React.FC<{ tenant?: CompanyTenant }> = ({ tenant }) => {
+  const [period, setPeriod] = useState<PeriodFilterState>(() => officeStore.getPeriodFilter());
+
+  useEffect(() => {
+    const unsub = officeStore.subscribePeriodFilter((newPeriod) => {
+      setPeriod(newPeriod);
+    });
+    return unsub;
+  }, []);
   const [selectedCompetencia, setSelectedCompetencia] = useState<string>('08/2026');
   const [activeTab, setActiveTab] = useState<'Dossie' | 'Demonstracoes' | 'Certidoes'>('Dossie');
 
@@ -89,7 +100,8 @@ export const OfficeMonthlyConsolidatedBookView: React.FC<{ tenant?: CompanyTenan
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div className="control-pod-3d">
             <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>📅</span>
-            <select
+            <SmartPeriodPicker compact={true} />
+            <select style={{ display: 'none' }}
               value={selectedCompetencia}
               onChange={(e) => setSelectedCompetencia(e.target.value)}
               style={{
