@@ -469,27 +469,7 @@ export const App: React.FC = () => {
             </span>
           </div>
 
-          <div className="control-pod-3d">
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>📅</span>
-            <select
-              value={selectedCompetencia}
-              onChange={(e) => setSelectedCompetencia(e.target.value)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#34D399',
-                fontWeight: 900,
-                fontSize: '0.76rem',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <option value="08/2026" style={{ background: '#111726', color: '#fff' }}>08/2026 (Aberto)</option>
-              <option value="07/2026" style={{ background: '#111726', color: '#fff' }}>07/2026 (Fechado)</option>
-              <option value="06/2026" style={{ background: '#111726', color: '#fff' }}>06/2026 (Fechado)</option>
-              <option value="2026" style={{ background: '#111726', color: '#fff' }}>Exercício 2026</option>
-            </select>
-          </div>
+          <SmartPeriodPicker />
         </div>
 
         {/* FLANCO DIREITO: 3D STATUS GOV + BOTÕES 3D 4K */}

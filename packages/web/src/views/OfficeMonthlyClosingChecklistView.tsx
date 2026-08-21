@@ -139,7 +139,7 @@ export const OfficeMonthlyClosingChecklistView: React.FC<OfficeMonthlyClosingChe
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <SmartPeriodPicker compact={true} />
+          
 
           <button
             onClick={handleToggleLock}

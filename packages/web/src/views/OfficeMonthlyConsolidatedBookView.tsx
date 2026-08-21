@@ -98,7 +98,7 @@ export const OfficeMonthlyConsolidatedBookView: React.FC<{ tenant?: CompanyTenan
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <SmartPeriodPicker compact={true} />
+          
 
           <button
             onClick={handlePrint}

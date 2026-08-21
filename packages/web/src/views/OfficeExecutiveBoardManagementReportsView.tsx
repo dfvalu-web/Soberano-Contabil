@@ -117,7 +117,7 @@ export const OfficeExecutiveBoardManagementReportsView: React.FC = () => {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <SmartPeriodPicker compact={true} />
+          
 
           <button
             onClick={() => setShowDossierModal(true)}
