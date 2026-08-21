@@ -192,13 +192,13 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         type="button"
         onClick={handleToggle}
         style={{
-          height: '36px',
-          minHeight: '36px',
-          maxHeight: '36px',
-          background: 'linear-gradient(180deg, #1A2438 0%, #0D1524 100%)',
+          height: '38px',
+          minHeight: '38px',
+          maxHeight: '38px',
+          background: 'linear-gradient(180deg, #1C2A44 0%, #0F1829 100%)',
           border: '1px solid rgba(56, 189, 248, 0.45)',
-          borderBottom: '2px solid rgba(0, 0, 0, 0.6)',
-          borderRadius: '8px',
+          borderBottom: '2.5px solid rgba(0, 0, 0, 0.6)',
+          borderRadius: '10px',
           color: '#FFFFFF',
           padding: '0 14px',
           fontSize: '0.78rem',
@@ -207,8 +207,8 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
           display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 8px rgba(0, 0, 0, 0.4)',
-          transition: 'all 0.18s ease',
+          boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 4px 12px rgba(0, 0, 0, 0.5)',
+          transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
           boxSizing: 'border-box'
         }}
       >
