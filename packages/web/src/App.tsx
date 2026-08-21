@@ -477,25 +477,59 @@ export const App: React.FC = () => {
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '3px',
             background: 'linear-gradient(180deg, #141E32 0%, #0C1220 100%)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
             borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
-            padding: '4px 9px',
+            padding: '3px',
             borderRadius: '8px',
-            fontSize: '0.66rem',
-            fontWeight: 800,
             boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 6px rgba(0, 0, 0, 0.35)'
           }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#34D399' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)' }}></span>
-              SEFAZ
-            </span>
-            <span style={{ color: 'rgba(255,255,255,0.2)' }}>|</span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#38BDF8' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#06B6D4', boxShadow: '0 0 8px rgba(6, 182, 212, 0.8)' }}></span>
-              eSocial
-            </span>
+            <button
+              type="button"
+              onClick={() => setCurrentModuleId('sefaz_k8s_prod')}
+              style={{
+                background: currentModuleId === 'sefaz_k8s_prod' ? 'rgba(16, 185, 129, 0.25)' : 'transparent',
+                border: currentModuleId === 'sefaz_k8s_prod' ? '1px solid rgba(52, 211, 153, 0.5)' : '1px solid transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                color: '#34D399',
+                fontSize: '0.68rem',
+                fontWeight: 800,
+                padding: '3px 8px',
+                borderRadius: '6px',
+                transition: 'all 0.15s ease'
+              }}
+              title="🟢 SEFAZ Nacional Online (Latência 35ms) • Clique para abrir Transmissão mTLS, Contingência SVC & Kubernetes"
+            >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 8px rgba(16, 185, 129, 0.9)' }}></span>
+              <span>SEFAZ</span>
+            </button>
+            <span style={{ color: 'rgba(255,255,255,0.2)', fontSize: '0.65rem' }}>|</span>
+            <button
+              type="button"
+              onClick={() => setCurrentModuleId('office_payroll_esocial_audit')}
+              style={{
+                background: currentModuleId === 'office_payroll_esocial_audit' ? 'rgba(56, 189, 248, 0.25)' : 'transparent',
+                border: currentModuleId === 'office_payroll_esocial_audit' ? '1px solid rgba(56, 189, 248, 0.5)' : '1px solid transparent',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                color: '#38BDF8',
+                fontSize: '0.68rem',
+                fontWeight: 800,
+                padding: '3px 8px',
+                borderRadius: '6px',
+                transition: 'all 0.15s ease'
+              }}
+              title="🔵 eSocial Governamental Online • Clique para abrir a Central de Eventos, S-1299 & DCTFWeb"
+            >
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#06B6D4', boxShadow: '0 0 8px rgba(6, 182, 212, 0.9)' }}></span>
+              <span>eSocial</span>
+            </button>
           </div>
 
           {isMasterOwner && (
