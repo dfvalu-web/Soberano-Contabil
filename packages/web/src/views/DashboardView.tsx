@@ -142,15 +142,7 @@ export const DashboardView: React.FC = () => {
 
         {/* Controles de Topo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-          <select
-            value={selectedCompetencia}
-            onChange={(e) => setSelectedCompetencia(e.target.value)}
-            style={{ background: '#0B1120', border: '1px solid rgba(255, 255, 255, 0.15)', color: '#38BDF8', padding: '7px 12px', borderRadius: '8px', fontSize: '0.78rem', fontWeight: 800, outline: 'none' }}
-          >
-            <option value="08/2026">Competência 08/2026</option>
-            <option value="07/2026">Competência 07/2026</option>
-            <option value="06/2026">Competência 06/2026</option>
-          </select>
+          <SmartPeriodPicker compact={true} />
 
           <button
             onClick={handleRunFullScan}

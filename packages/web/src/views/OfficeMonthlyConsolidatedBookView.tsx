@@ -98,27 +98,7 @@ export const OfficeMonthlyConsolidatedBookView: React.FC<{ tenant?: CompanyTenan
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div className="control-pod-3d">
-            <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>📅</span>
-            <SmartPeriodPicker compact={true} />
-            <select style={{ display: 'none' }}
-              value={selectedCompetencia}
-              onChange={(e) => setSelectedCompetencia(e.target.value)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#34D399',
-                fontWeight: 800,
-                fontSize: '0.74rem',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              <option value="08/2026" style={{ background: '#111726', color: '#fff' }}>Competência 08/2026</option>
-              <option value="07/2026" style={{ background: '#111726', color: '#fff' }}>Competência 07/2026</option>
-              <option value="2026" style={{ background: '#111726', color: '#fff' }}>Exercício 2026 Completo</option>
-            </select>
-          </div>
+          <SmartPeriodPicker compact={true} />
 
           <button
             onClick={handlePrint}
