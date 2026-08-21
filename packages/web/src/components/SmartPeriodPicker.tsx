@@ -8,7 +8,8 @@ import {
   Zap,
   Layers,
   ArrowRight,
-  RotateCcw
+  RotateCcw,
+  X
 } from 'lucide-react';
 import { officeStore, PeriodFilterState, PeriodFilterMode, DEFAULT_PERIOD_FILTER } from '../state/office-store.js';
 
@@ -30,7 +31,9 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   const [customStart, setCustomStart] = useState<string>(periodState.startDate);
   const [customEnd, setCustomEnd] = useState<string>(periodState.endDate);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const popoverRef = useRef<HTMLDivElement>(null);
+  const [popoverPos, setPopoverPos] = useState<{ top: number; right: number }>({ top: 70, right: 20 });
 
   useEffect(() => {
     const unsubscribe = officeStore.subscribePeriodFilter((newFilter) => {
@@ -40,16 +43,45 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
     return unsubscribe;
   }, [onPeriodChange]);
 
+  const updatePopoverPosition = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const top = rect.bottom + 8;
+      const right = Math.max(12, window.innerWidth - rect.right);
+      setPopoverPos({ top, right });
+    }
+  };
+
+  const handleToggle = () => {
+    if (!isOpen) {
+      updatePopoverPosition();
+    }
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (
+        popoverRef.current &&
+        !popoverRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
         setIsOpen(false);
       }
     };
+
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('resize', updatePopoverPosition);
+      window.addEventListener('scroll', updatePopoverPosition, true);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('resize', updatePopoverPosition);
+      window.removeEventListener('scroll', updatePopoverPosition, true);
+    };
   }, [isOpen]);
 
   const monthNames = [
@@ -165,11 +197,12 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   };
 
   return (
-    <div ref={containerRef} style={{ position: 'relative', display: 'inline-block' }}>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
       {/* Botão Gatilho Diamond 3D */}
       <button
+        ref={buttonRef}
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         style={{
           background: 'linear-gradient(180deg, #18263D 0%, #0E1626 100%)',
           border: '1.5px solid rgba(56, 189, 248, 0.45)',
@@ -207,40 +240,54 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         <ChevronDown size={13} color="#94A3B8" />
       </button>
 
-      {/* Popover Flutuante 3D (Glassmorphism) */}
+      {/* Popover Flutuante em 1º PLANO ABSOLUTO (position: fixed & zIndex: 99999999) */}
       {isOpen && (
-        <div style={{
-          position: 'absolute',
-          top: 'calc(100% + 8px)',
-          right: 0,
-          zIndex: 99999,
-          width: '390px',
-          background: 'linear-gradient(180deg, #131E33 0%, #090E1A 100%)',
-          border: '1.5px solid rgba(56, 189, 248, 0.4)',
-          borderRadius: '12px',
-          padding: '16px',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.75), 0 0 20px rgba(56, 189, 248, 0.25)',
-          backdropFilter: 'blur(16px)',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '14px',
-          color: '#FFFFFF'
-        }}>
+        <div
+          ref={popoverRef}
+          style={{
+            position: 'fixed',
+            top: `${popoverPos.top}px`,
+            right: `${popoverPos.right}px`,
+            zIndex: 99999999,
+            width: 'min(390px, calc(100vw - 24px))',
+            maxHeight: 'calc(100vh - 100px)',
+            overflowY: 'auto',
+            background: 'linear-gradient(180deg, #131E33 0%, #090E1A 100%)',
+            border: '1.5px solid #38BDF8',
+            borderRadius: '12px',
+            padding: '16px',
+            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(56, 189, 248, 0.4)',
+            backdropFilter: 'blur(24px)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '14px',
+            color: '#FFFFFF'
+          }}
+        >
           {/* Header do Popover */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.1rem' }}>🎛️</span>
               <strong style={{ fontSize: '0.85rem', color: '#FFFFFF' }}>Seletor Temporal Multi-Granular</strong>
             </div>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(Number(e.target.value))}
-              style={{ background: '#0B1120', border: '1px solid rgba(255,255,255,0.2)', color: '#38BDF8', padding: '3px 8px', borderRadius: '6px', fontSize: '0.74rem', fontWeight: 800, outline: 'none' }}
-            >
-              <option value="2026">Ano 2026</option>
-              <option value="2025">Ano 2025</option>
-              <option value="2024">Ano 2024</option>
-            </select>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                style={{ background: '#0B1120', border: '1px solid rgba(255,255,255,0.2)', color: '#38BDF8', padding: '3px 8px', borderRadius: '6px', fontSize: '0.74rem', fontWeight: 800, outline: 'none' }}
+              >
+                <option value="2026">Ano 2026</option>
+                <option value="2025">Ano 2025</option>
+                <option value="2024">Ano 2024</option>
+              </select>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+              >
+                <X size={16} />
+              </button>
+            </div>
           </div>
 
           {/* Abas de Modo */}
