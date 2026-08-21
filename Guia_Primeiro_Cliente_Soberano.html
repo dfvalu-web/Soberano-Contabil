@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guia Estratégico - Onboarding do 1º Cliente • Soberano Contábil</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 15mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      line-height: 1.45;
+      font-size: 11pt;
+    }
+
+    .no-print {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: #0B1120;
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn-print {
+      background: linear-gradient(180deg, #10B981 0%, #059669 100%);
+      color: #FFFFFF;
+      border: 1.5px solid #34D399;
+      padding: 10px 24px;
+      font-size: 13pt;
+      font-weight: 800;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+      display: flex;
+      alignItems: center;
+      gap: 8px;
+    }
+
+    .btn-print:hover {
+      background: #047857;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      padding: 16mm 18mm;
+      margin: 20px auto;
+      background: #FFFFFF;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    @media print {
+      body { background: #FFFFFF; }
+      .no-print { display: none; }
+      .page {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+    }
+
+    /* Cabeçalho Executivo Diamante */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2.5px solid #059669;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+      color: #34D399;
+      border: 2px solid #34D399;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20pt;
+    }
+
+    .header-title {
+      font-size: 16pt;
+      font-weight: 900;
+      color: #064E3B;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .header-subtitle {
+      font-size: 8.5pt;
+      color: #64748B;
+      font-weight: 600;
+      margin: 2px 0 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-official {
+      background: #ECFDF5;
+      color: #047857;
+      border: 1px solid #A7F3D0;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 8pt;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    /* Steps Cards */
+    .step-card {
+      background: #F8FAFC;
+      border: 1.5px solid #E2E8F0;
+      border-left: 5px solid #059669;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .step-title {
+      font-size: 11pt;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-badge {
+      background: #0F172A;
+      color: #38BDF8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .step-content {
+      font-size: 9pt;
+      color: #334155;
+      margin: 0;
+    }
+
+    .step-checklist {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      font-size: 8.5pt;
+      color: #475569;
+    }
+
+    .step-checklist li {
+      margin-bottom: 3px;
+    }
+
+    .step-checklist strong {
+      color: #064E3B;
+    }
+
+    /* Grid Dicas de Ouro */
+    .golden-box {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border: 1.5px solid #38BDF8;
+      border-radius: 8px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .golden-title {
+      font-size: 10pt;
+      font-weight: 800;
+      color: #38BDF8;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .golden-text {
+      font-size: 8.5pt;
+      color: #CBD5E1;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .footer-signatures {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-top: 24px;
+      padding-top: 12px;
+      border-top: 1px solid #E2E8F0;
+    }
+
+    .sig-line {
+      border-top: 1px solid #0F172A;
+      padding-top: 4px;
+      text-align: center;
+      font-size: 8pt;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .sig-role {
+      font-size: 7pt;
+      color: #64748B;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print">
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Imprimir / Salvar PDF Oficial (A4)
+    </button>
+  </div>
+
+  <div class="page">
+    <div class="header">
+      <div class="logo-container">
+        <div class="logo-badge">💎</div>
+        <div>
+          <h1 class="header-title">SOBERANO CONTÁBIL • PADRÃO DIAMANTE</h1>
+          <div class="header-subtitle">Manual Estratégico de Onboarding & Fechamento do 1º Cliente</div>
+        </div>
+      </div>
+      <div class="badge-official">
+        <div><strong>PROTOCOLO:</strong> SC-2026-CLIENTE-01</div>
+        <div>DIRETORIA DE OPERAÇÕES</div>
+      </div>
+    </div>
+
+    <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 8px 12px; margin-bottom: 12px; font-size: 8.5pt; color: #065F46;">
+      <strong>🎯 OBJETIVO:</strong> Transformar a entrada do seu primeiro cliente em uma experiência de Controladoria Executiva e CFO Virtual, garantindo retenção imediata e diferenciação total perante escritórios tradicionais.
+    </div>
+
+    <!-- Passo 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title"><span>1.</span> Cadastro & Parametrização Setorial</div>
+        <span class="step-badge">MENU SUPERIOR / TENANTS</span>
+      </div>
+      <p class="step-content">Cadastre o perfil tributário completo da empresa cliente para que o sistema ative as regras automáticas.</p>
+      <ul class="step-checklist">
+        <li>Insira <strong>Razão Social, CNPJ, Cidade/UF</strong> e <strong>CNAE Principal</strong>;</li>
+        <li>Defina o Regime Tributário: <em>Simples Nacional, Lucro Presumido ou Lucro Real</em>;</li>
+        <li>O motor ativa os módulos setorizados recomendados para o nicho do cliente.</li>
+      </ul>
+    </div>
+
+    <!-- Passo 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title"><span>2.</span> Migração dos Dados do Contador Anterior</div>
+        <span class="step-badge">CENTRAL DE MIGRAÇÃO UNIVERSAL</span>
+      </div>
+      <p class="step-content">Importe o histórico contábil sem digitação manual de saldos.</p>
+      <ul class="step-checklist">
+        <li>Solicite o <strong>Balancete de Encerramento</strong> ou arquivo do <strong>SPED ECD</strong> do contador anterior;</li>
+        <li>Selecione o sistema de origem (<em>Domínio, Alterdata, TOTVS, Questor, Contmatic, Fortes</em>);</li>
+        <li>Clique em <strong>Iniciar Migração 1-Click</strong> para realizar o De-Para de contas IFRS e emitir o <strong>Laudo de Homologação</strong>.</li>
+      </ul>
+    </div>
+
+    <!-- Passo 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title"><span>3.</span> Captura Massiva no Dropzone & OCR Neural</div>
+        <span class="step-badge">DROPZONE MULTI-DOC & OCR</span>
+      </div>
+      <p class="step-content">Automatize a entrada de documentos fiscais e bancários com IA.</p>
+      <ul class="step-checklist">
+        <li>Arraste os XMLs de notas fiscais (<strong>NF-e, NFC-e, NFS-e</strong>) de entrada e saída do mês;</li>
+        <li>Arraste os <strong>extratos bancários em PDF ou OFX</strong>;</li>
+        <li>O OCR neural segrega monofásicos, calcula tributos e gera lançamentos de partidas dobradas automaticamente.</li>
+      </ul>
+    </div>
+
+    <!-- Passo 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title"><span>4.</span> Faturamento dos Honorários com Cobrança Pix</div>
+        <span class="step-badge">HONORÁRIOS & DISPARO EM LOTE</span>
+      </div>
+      <p class="step-content">Profissionalize a cobrança da mensalidade com liquidação instantânea.</p>
+      <ul class="step-checklist">
+        <li>Cadastre a mensalidade acordada (ex: R$ 1.500,00 ou R$ 3.500,00);</li>
+        <li>Gere a fatura com <strong>QR Code Pix Dinâmico</strong>;</li>
+        <li>Envie em lote para o <strong>WhatsApp e E-mail</strong> do cliente com protocolo criptográfico SHA-256.</li>
+      </ul>
+    </div>
+
+    <!-- Passo 5 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-title"><span>5.</span> Fechamento & Entrega do Dossiê Diamante A4</div>
+        <span class="step-badge">ESTEIRA DE FECHAMENTO INTEGRADA</span>
+      </div>
+      <p class="step-content">O momento do "Efeito Uau" que consolida o valor do seu escritório.</p>
+      <ul class="step-checklist">
+        <li>Selecione a competência no <strong>SmartPeriodPicker</strong> (ex: <em>Agosto/2026 ou 3º Trimestre</em>);</li>
+        <li>Percorra as etapas fiscais, folha e contabilidade;</li>
+        <li>Clique em <strong>Visualizar Dossiê A4 ➔ Imprimir / Salvar PDF</strong> e envie ao dono da empresa com DRE, Balanço, CNDs e Margem EBITDA.</li>
+      </ul>
+    </div>
+
+    <!-- Dica de Ouro -->
+    <div class="golden-box">
+      <div class="golden-title">💎 DICA DE OURO PARA FECHAR O CONTRATO COM SUCESSO:</div>
+      <p class="golden-text">
+        Na primeira reunião ou entrega de documentos, não entregue apenas as guias de impostos (DAS/DARF). Apresente o <strong>Dossiê Executivo A4</strong> com a análise de custos, geração de caixa e regularidade fiscal. Mostre que o Soberano Contábil atua como o <strong>Diretor Financeiro / CFO Estratégico</strong> da empresa dele.
+      </p>
+    </div>
+
+    <div class="footer-signatures">
+      <div class="sig-line">
+        <div>DIRETORIA DE OPERAÇÕES & TECNOLOGIA</div>
+        <div class="sig-role">Soberano Contábil • Plataforma Autônoma</div>
+      </div>
+      <div class="sig-line">
+        <div>CONTADOR RESPONSÁVEL / SÓCIO</div>
+        <div class="sig-role">CRC Ativo • Gestão & Controladoria</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
