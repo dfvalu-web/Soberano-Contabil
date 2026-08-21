@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Calendar,
   ChevronDown,
@@ -37,7 +38,7 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [popoverPos, setPopoverPos] = useState<{ top: number; right: number }>({ top: 70, right: 20 });
+  const [popoverPos, setPopoverPos] = useState<{ top: number; left?: number; right?: number }>({ top: 62, right: 20 });
 
   useEffect(() => {
     const unsubscribe = officeStore.subscribePeriodFilter((newFilter) => {
@@ -53,8 +54,8 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   const updatePopoverPosition = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      const top = rect.bottom + 6;
-      const right = Math.max(12, window.innerWidth - rect.right);
+      const top = rect.bottom + 8;
+      const right = Math.max(16, window.innerWidth - rect.right);
       setPopoverPos({ top, right });
     }
   };
@@ -80,6 +81,7 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
     };
 
     if (isOpen) {
+      updatePopoverPosition();
       document.addEventListener('mousedown', handleClickOutside);
       window.addEventListener('resize', updatePopoverPosition);
       window.addEventListener('scroll', updatePopoverPosition, true);
@@ -106,27 +108,6 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         return [...prev, mNum].sort((a, b) => a - b);
       }
     });
-  };
-
-  // Selecionar apenas um único mês direto
-  const handleSelectSingleMonth = (mNum: number) => {
-    const mStr = String(mNum).padStart(2, '0');
-    const lastDay = new Date(selectedYear, mNum, 0).getDate();
-    const newFilter: PeriodFilterState = {
-      mode: 'MONTH',
-      year: selectedYear,
-      month: mNum,
-      selectedMonths: [mNum],
-      monthsCount: 1,
-      startDate: `${selectedYear}-${mStr}-01`,
-      endDate: `${selectedYear}-${mStr}-${lastDay}`,
-      label: `${monthNames[mNum - 1]} / ${selectedYear}`
-    };
-    setSelectedMonths([mNum]);
-    setPeriodState(newFilter);
-    officeStore.setPeriodFilter(newFilter);
-    if (onPeriodChange) onPeriodChange(newFilter);
-    setIsOpen(false);
   };
 
   // Aplicar seleção dos meses escolhidos
@@ -185,12 +166,13 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   };
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      {/* Botão Único Ultra Premium */}
+    <div style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}>
+      {/* Botão Cápsula 3D 4K */}
       <button
         ref={buttonRef}
         type="button"
         onClick={handleToggle}
+        className="topbar-capsule-4k"
         style={{
           height: '38px',
           minHeight: '38px',
@@ -213,7 +195,7 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         }}
       >
         <Calendar size={14} color="#38BDF8" />
-        <span style={{ color: '#F8FAFC', fontWeight: 800 }}>
+        <span style={{ color: '#F8FAFC', fontWeight: 800, whiteSpace: 'nowrap' }}>
           {periodState.label}
         </span>
         {periodState.monthsCount && periodState.monthsCount > 1 && (
@@ -231,24 +213,25 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         <ChevronDown size={14} color="#94A3B8" />
       </button>
 
-      {/* Popover em 1º Plano Absoluto */}
-      {isOpen && (
+      {/* RENDERIZAÇÃO VIA PORTAL DIRETO NO BODY (1º PLANO ABSOLUTO SEM RESTRIÇÃO) */}
+      {isOpen && typeof document !== 'undefined' && createPortal(
         <div
           ref={popoverRef}
           style={{
             position: 'fixed',
             top: `${popoverPos.top}px`,
             right: `${popoverPos.right}px`,
-            zIndex: 99999999,
-            width: '420px',
-            maxWidth: 'calc(100vw - 20px)',
-            maxHeight: 'calc(100vh - 90px)',
+            zIndex: 2147483647, // Z-Index máximo do browser
+            width: '430px',
+            maxWidth: 'calc(100vw - 24px)',
+            maxHeight: 'calc(100vh - 80px)',
             overflowY: 'auto',
-            background: '#0F172A',
-            border: '1.5px solid rgba(56, 189, 248, 0.45)',
+            background: 'linear-gradient(180deg, #131E33 0%, #090E1A 100%)',
+            border: '1.5px solid #38BDF8',
             borderRadius: '12px',
             padding: '16px',
-            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(56, 189, 248, 0.25)',
+            boxShadow: '0 25px 70px rgba(0, 0, 0, 0.98), 0 0 35px rgba(56, 189, 248, 0.45)',
+            backdropFilter: 'blur(24px)',
             display: 'flex',
             flexDirection: 'column',
             gap: '12px',
@@ -256,7 +239,7 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
           }}
         >
           {/* Header do Popover */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '10px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span style={{ fontSize: '1.1rem' }}>🎛️</span>
               <div>
@@ -573,7 +556,8 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
               </button>
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
