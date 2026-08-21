@@ -365,72 +365,68 @@ export const App: React.FC = () => {
       {/* ========================================================================= */}
       <header className="app-topbar-global">
         {/* FLANCO ESQUERDO: MENU + BRAND 3D + BREADCRUMB 3D */}
-        <div className="topbar-left-flank">
+        <div className="topbar-left-flank" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
+            type="button"
             onClick={() => setIsSidebarOpen(prev => !prev)}
-            style={{
-              background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderBottom: '2px solid rgba(0, 0, 0, 0.4)',
-              color: '#FFFFFF',
-              padding: '5px 9px',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '0.74rem',
-              fontWeight: 800,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.35)',
-              transition: 'all 0.15s ease'
-            }}
+            className="topbar-element-3d topbar-btn-slate"
+            title="Alternar visibilidade do menu lateral"
           >
-            <span>☰</span> {isSidebarOpen ? 'Recolher' : 'Menu'}
+            <span style={{ fontSize: '0.85rem' }}>☰</span> <span>{isSidebarOpen ? 'Recolher' : 'Menu'}</span>
           </button>
 
-          {/* Logo 3D 4K */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Logo Brand Pod 3D 4K */}
+          <div className="topbar-element-3d" style={{
+            background: 'linear-gradient(180deg, #18243A 0%, #0D1524 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
+            padding: '0 10px',
+            gap: '8px',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 8px rgba(0, 0, 0, 0.4)'
+          }}>
             <div style={{
-              width: '28px',
-              height: '28px',
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #34D399 0%, #059669 50%, #0891B2 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.35)',
-              borderBottom: '2px solid #065F46',
+              width: '22px',
+              height: '22px',
+              borderRadius: '6px',
+              background: 'linear-gradient(135deg, #34D399 0%, #059669 100%)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontWeight: 900,
-              fontSize: '0.78rem',
+              fontSize: '0.70rem',
               color: '#070B12',
-              boxShadow: '0 0 14px rgba(16, 185, 129, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.7), 0 2px 4px rgba(0, 0, 0, 0.5)'
+              boxShadow: '0 0 10px rgba(52, 211, 153, 0.6)'
             }}>
-              SC
+              💎
             </div>
-            <span style={{ fontWeight: 900, fontSize: '0.88rem', color: '#FFFFFF', letterSpacing: '-0.02em', whiteSpace: 'nowrap', textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)' }}>
-              Soberano <span style={{ color: '#34D399', textShadow: '0 0 12px rgba(52, 211, 153, 0.6)' }}>Contábil</span>
+            <span style={{ fontWeight: 900, fontSize: '0.82rem', color: '#FFFFFF', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
+              Soberano <span style={{ color: '#34D399' }}>Contábil</span>
             </span>
             <span style={{
-              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)',
+              background: 'rgba(16, 185, 129, 0.2)',
               color: '#34D399',
-              border: '1px solid rgba(52, 211, 153, 0.5)',
-              borderBottom: '1.5px solid rgba(5, 150, 105, 0.6)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
               padding: '1px 5px',
               borderRadius: '4px',
               fontSize: '0.58rem',
-              fontWeight: 900,
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3)'
+              fontWeight: 900
             }}>
               PRO
             </span>
           </div>
-
-
         </div>
 
         {/* FLANCO CENTRAL: 3D LUXURY CONTROL PODS */}
-        <div className="topbar-center-flank">
-          <div className="control-pod-3d" style={{ maxWidth: '320px' }}>
+        <div className="topbar-center-flank" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Seletor de Empresa Pod 3D 4K */}
+          <div className="topbar-element-3d" style={{
+            background: 'linear-gradient(180deg, #1A2438 0%, #0D1524 100%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            borderBottom: '2px solid rgba(0, 0, 0, 0.6)',
+            padding: '0 12px',
+            gap: '8px',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 8px rgba(0, 0, 0, 0.4)'
+          }}>
             <span style={{ fontSize: '0.85rem' }}>🏢</span>
             <select
               value={selectedTenant}
@@ -440,10 +436,10 @@ export const App: React.FC = () => {
                 border: 'none',
                 color: '#FFFFFF',
                 fontWeight: 800,
-                fontSize: '0.76rem',
+                fontSize: '0.78rem',
                 outline: 'none',
                 cursor: 'pointer',
-                maxWidth: '210px',
+                maxWidth: '200px',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap'
               }}
@@ -455,20 +451,19 @@ export const App: React.FC = () => {
               ))}
             </select>
             <span style={{
-              background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%)',
+              background: 'rgba(16, 185, 129, 0.2)',
               color: '#34D399',
-              border: '1px solid rgba(52, 211, 153, 0.5)',
+              border: '1px solid rgba(52, 211, 153, 0.4)',
               padding: '1px 5px',
               borderRadius: '4px',
-              fontSize: '0.56rem',
-              fontWeight: 900,
-              flexShrink: 0,
-              boxShadow: '0 0 8px rgba(16, 185, 129, 0.3)'
+              fontSize: '0.58rem',
+              fontWeight: 900
             }}>
               CND OK
             </span>
           </div>
 
+          {/* Seletor de Período Soberano Master */}
           <SmartPeriodPicker />
         </div>
 

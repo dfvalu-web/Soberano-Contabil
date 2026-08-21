@@ -192,19 +192,24 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         type="button"
         onClick={handleToggle}
         style={{
-          background: 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)',
-          border: '1.5px solid rgba(56, 189, 248, 0.45)',
+          height: '36px',
+          minHeight: '36px',
+          maxHeight: '36px',
+          background: 'linear-gradient(180deg, #1A2438 0%, #0D1524 100%)',
+          border: '1px solid rgba(56, 189, 248, 0.45)',
+          borderBottom: '2px solid rgba(0, 0, 0, 0.6)',
           borderRadius: '8px',
           color: '#FFFFFF',
-          padding: compact ? '6px 12px' : '8px 16px',
-          fontSize: '0.80rem',
+          padding: '0 14px',
+          fontSize: '0.78rem',
           fontWeight: 800,
           cursor: 'pointer',
-          display: 'flex',
+          display: 'inline-flex',
           alignItems: 'center',
           gap: '8px',
-          boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
-          transition: 'all 0.15s ease'
+          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 3px 8px rgba(0, 0, 0, 0.4)',
+          transition: 'all 0.18s ease',
+          boxSizing: 'border-box'
         }}
       >
         <Calendar size={14} color="#38BDF8" />
