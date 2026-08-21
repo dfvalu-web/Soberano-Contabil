@@ -61,6 +61,17 @@ export const OfficeMonthlyClosingChecklistView: React.FC<OfficeMonthlyClosingChe
 
   const completedCount = checklist.filter(c => c.done).length;
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (typeof setShowDossierModal !== 'undefined') setShowDossierModal(false);
+        if (typeof setShowA4Dossier !== 'undefined') setShowA4Dossier(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>
       {notification && (

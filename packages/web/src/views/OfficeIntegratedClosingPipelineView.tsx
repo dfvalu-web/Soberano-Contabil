@@ -1,5 +1,5 @@
 import { SmartPeriodPicker } from '../components/SmartPeriodPicker.js';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Layers,
   ArrowRight,
@@ -113,6 +113,17 @@ export const OfficeIntegratedClosingPipelineView: React.FC<OfficeIntegratedClosi
       showToast('O ciclo de encerramento já atingiu a Etapa 5 (Dossiê & Entrega Final)!');
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (typeof setShowDossierModal !== 'undefined') setShowDossierModal(false);
+        if (typeof setShowA4Dossier !== 'undefined') setShowA4Dossier(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '22px', color: '#FFFFFF' }}>

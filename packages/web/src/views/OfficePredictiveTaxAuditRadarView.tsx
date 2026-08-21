@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Radar,
   ShieldCheck,
@@ -111,6 +111,17 @@ export const OfficePredictiveTaxAuditRadarView: React.FC<{ tenant?: CompanyTenan
   const totalDivergences = crossChecks.reduce((acc, c) => acc + (resolvedIds.includes(c.id) ? 0 : c.divergenceAmount), 0);
   const criticalCount = crossChecks.filter(c => c.riskLevel === 'CRITICO' && !resolvedIds.includes(c.id)).length;
   const alertCount = crossChecks.filter(c => c.riskLevel === 'ALERTA' && !resolvedIds.includes(c.id)).length;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (typeof setShowDossierModal !== 'undefined') setShowDossierModal(false);
+        if (typeof setShowA4Dossier !== 'undefined') setShowA4Dossier(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="audit-radar-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

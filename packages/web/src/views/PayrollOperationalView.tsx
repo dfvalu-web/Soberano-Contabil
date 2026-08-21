@@ -692,36 +692,141 @@ ${payrollStatements.map(stmt => `
         </form>
       )}
 
-      {/* ABA 3: EMISSOR DE HOLERITE */}
+      {/* ABA 3: EMISSOR DE HOLERITE COM BARRA DE NAVEGAÇÃO & FECHAMENTO */}
       {activeTab === 'HOLERITE_VIEW' && activeHoleriteEmp && activeHoleriteStatement && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg-surface-elevated)', padding: '12px 18px', borderRadius: '10px', border: '1px solid var(--border-subtle)', flexWrap: 'wrap', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Selecionar Colaborador:</span>
-              <select
-                value={activeHoleriteEmp.id}
-                onChange={e => setSelectedEmployeeIdForHolerite(e.target.value)}
-                style={{ background: '#0B1120', border: '1px solid var(--border-medium)', color: '#fff', padding: '6px 10px', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700 }}
+          {/* Barra Superior de Controle do Holerite */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            background: 'linear-gradient(180deg, #18263D 0%, #0F172A 100%)',
+            padding: '14px 20px',
+            borderRadius: '12px',
+            border: '1.5px solid rgba(56, 189, 248, 0.4)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            {/* Botão Fechar / Voltar + Seletor de Colaborador */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => setActiveTab('FOLHA_GERAL')}
+                style={{
+                  background: 'linear-gradient(180deg, #334155 0%, #1E293B 100%)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  borderBottom: '2px solid rgba(0, 0, 0, 0.5)',
+                  color: '#FFFFFF',
+                  padding: '8px 14px',
+                  borderRadius: '8px',
+                  fontSize: '0.80rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 6px rgba(0, 0, 0, 0.3)',
+                  transition: 'all 0.15s ease'
+                }}
+                title="Fechar visualização do Holerite e voltar para o Quadro Geral"
               >
-                {employees.map(e => (
-                  <option key={e.id} value={e.id}>{e.name} ({e.role})</option>
-                ))}
-              </select>
+                <span>⬅</span> <span>Voltar para o Quadro Geral</span>
+              </button>
+
+              <div style={{ width: '1px', height: '24px', background: 'rgba(255, 255, 255, 0.15)' }} />
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '0.80rem', color: '#94A3B8', fontWeight: 700 }}>Alternar Colaborador:</span>
+                <select
+                  value={activeHoleriteEmp.id}
+                  onChange={e => setSelectedEmployeeIdForHolerite(e.target.value)}
+                  style={{
+                    background: '#0B1120',
+                    border: '1.5px solid #38BDF8',
+                    color: '#FFFFFF',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    fontSize: '0.82rem',
+                    fontWeight: 800,
+                    cursor: 'pointer',
+                    outline: 'none',
+                    boxShadow: '0 0 10px rgba(56, 189, 248, 0.25)'
+                  }}
+                >
+                  {employees.map(e => (
+                    <option key={e.id} value={e.id}>{e.name} ({e.role}) — R$ {e.baseSalary.toFixed(2)}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '8px' }}>
+            {/* Ações de Impressão, WhatsApp e Fechar */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <button
+                type="button"
                 onClick={() => {
                   setSelectedEmployeeForWa(activeHoleriteEmp);
                   setShowWhatsAppModal(true);
                 }}
-                style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid rgba(16, 185, 129, 0.4)', color: 'var(--emerald-400)', padding: '6px 12px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                style={{
+                  background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%)',
+                  border: '1px solid #10B981',
+                  color: '#34D399',
+                  padding: '8px 14px',
+                  borderRadius: '8px',
+                  fontSize: '0.80rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
+                }}
               >
-                <Share2 size={14} /> Enviar Holerite Digital (WhatsApp)
+                <Share2 size={15} /> <span>Enviar WhatsApp</span>
               </button>
 
-              <button onClick={() => window.print()} className="btn-primary-action">
-                <Printer size={15} /> Imprimir / Salvar PDF
+              <button
+                type="button"
+                onClick={() => window.print()}
+                style={{
+                  background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
+                  border: '1px solid #38BDF8',
+                  color: '#FFFFFF',
+                  padding: '8px 14px',
+                  borderRadius: '8px',
+                  fontSize: '0.80rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  boxShadow: '0 2px 8px rgba(2, 132, 199, 0.4)'
+                }}
+              >
+                <Printer size={15} /> <span>Imprimir / PDF</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab('FOLHA_GERAL')}
+                style={{
+                  background: 'linear-gradient(180deg, #451A1A 0%, #260E0E 100%)',
+                  border: '1px solid rgba(239, 68, 68, 0.6)',
+                  color: '#FCA5A5',
+                  padding: '8px 12px',
+                  borderRadius: '8px',
+                  fontSize: '0.80rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+                title="Fechar e retornar ao Quadro Geral"
+              >
+                <span>✕</span> <span>Fechar</span>
               </button>
             </div>
           </div>

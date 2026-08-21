@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Scale,
   TrendingUp,
@@ -67,6 +67,17 @@ export const OfficeStrategicTaxRegimeComparisonView: React.FC<{ tenant?: Company
 
   const melhorRegime = regimes.reduce((prev, curr) => prev.total < curr.total ? prev : curr);
   const economiaEstimada = presumidoTributoTotal - realTributoTotal;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (typeof setShowDossierModal !== 'undefined') setShowDossierModal(false);
+        if (typeof setShowA4Dossier !== 'undefined') setShowA4Dossier(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="tax-regime-container" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
