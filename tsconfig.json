@@ -17,10 +17,20 @@
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "maxNodeModuleJsDepth": 0
   },
   "include": [
     "packages/web/src",
     "packages/core/src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "packages/web/dist",
+    ".git",
+    ".gemini",
+    "scratch",
+    "**/*.spec.ts"
   ]
 }
