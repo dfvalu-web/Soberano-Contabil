@@ -1,16 +1,19 @@
 
-export type PeriodFilterMode = 'CUSTOM' | 'MONTH' | 'BIMONTH' | 'QUARTER' | 'SEMESTER' | 'YEAR' | 'YTD';
+export type PeriodFilterMode = 'CUSTOM' | 'MONTH' | 'MULTI_MONTH' | 'BIMONTH' | 'QUARTER' | 'QUADRIMESTER' | 'SEMESTER' | 'YEAR' | 'YTD';
 
 export interface PeriodFilterState {
   mode: PeriodFilterMode;
   year: number;
   month?: number; // 1-12
+  selectedMonths?: number[]; // ex: [1, 2] ou [1, 2, 3]
+  monthsCount?: number; // quantidade de meses no periodo
   bimonth?: number; // 1-6
   quarter?: number; // 1-4
+  quadrimester?: number; // 1-3
   semester?: number; // 1-2
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
-  label: string; // ex: "Agosto / 2026" ou "3º Trimestre (Jul a Set / 2026)" ou "01/08/2026 a 20/08/2026"
+  label: string; // ex: "Janeiro e Fevereiro / 2026 (2 Meses)" ou "Agosto / 2026"
   isComparative?: boolean;
 }
 
