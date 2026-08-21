@@ -38,7 +38,7 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [popoverPos, setPopoverPos] = useState<{ top: number; left?: number; right?: number }>({ top: 62, right: 20 });
+  const [popoverPos, setPopoverPos] = useState<{ top: number; right: number }>({ top: 62, right: 20 });
 
   useEffect(() => {
     const unsubscribe = officeStore.subscribePeriodFilter((newFilter) => {
@@ -54,8 +54,9 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   const updatePopoverPosition = () => {
     if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      const top = rect.bottom + 8;
-      const right = Math.max(16, window.innerWidth - rect.right);
+      const top = Math.min(window.innerHeight - 100, Math.max(10, rect.bottom + 8));
+      const isMobile = window.innerWidth < 500;
+      const right = isMobile ? 12 : Math.max(16, window.innerWidth - rect.right);
       setPopoverPos({ top, right });
     }
   };
@@ -68,26 +69,20 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   };
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node;
-      if (
-        popoverRef.current &&
-        !popoverRef.current.contains(target) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(target)
-      ) {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
       updatePopoverPosition();
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
       window.addEventListener('resize', updatePopoverPosition);
       window.addEventListener('scroll', updatePopoverPosition, true);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('resize', updatePopoverPosition);
       window.removeEventListener('scroll', updatePopoverPosition, true);
     };
@@ -111,45 +106,46 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
   };
 
   // Aplicar seleção dos meses escolhidos
-  const handleApplyMultiMonths = (monthsList = selectedMonths) => {
+  const handleApplyMultiMonths = (monthsList = selectedMonths, yearOverride?: number) => {
     if (monthsList.length === 0) return;
     const sorted = [...monthsList].sort((a, b) => a - b);
     const minM = sorted[0];
     const maxM = sorted[sorted.length - 1];
+    const y = yearOverride || selectedYear;
 
     const sMStr = String(minM).padStart(2, '0');
     const eMStr = String(maxM).padStart(2, '0');
-    const lastDay = new Date(selectedYear, maxM, 0).getDate();
+    const lastDay = new Date(y, maxM, 0).getDate();
 
     let label = '';
     if (sorted.length === 1) {
-      label = `${monthNames[minM - 1]} / ${selectedYear}`;
+      label = `${monthNames[minM - 1]} / ${y}`;
     } else if (sorted.length === 2 && maxM === minM + 1) {
-      label = `${monthNames[minM - 1]} e ${monthNames[maxM - 1]} / ${selectedYear} (Bimestre)`;
+      label = `${monthNames[minM - 1]} e ${monthNames[maxM - 1]} / ${y} (Bimestre)`;
     } else if (sorted.length === 3 && (minM === 1 || minM === 4 || minM === 7 || minM === 10) && maxM === minM + 2) {
       const qNum = Math.ceil(maxM / 3);
-      label = `${qNum}º Trimestre / ${selectedYear} (${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)})`;
+      label = `${qNum}º Trimestre / ${y} (${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)})`;
     } else if (sorted.length === 4 && (minM === 1 || minM === 5 || minM === 9) && maxM === minM + 3) {
       const quadNum = Math.ceil(maxM / 4);
-      label = `${quadNum}º Quadrimestre / ${selectedYear} (${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)})`;
+      label = `${quadNum}º Quadrimestre / ${y} (${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)})`;
     } else if (sorted.length === 6 && minM === 1 && maxM === 6) {
-      label = `1º Semestre / ${selectedYear} (Jan a Jun)`;
+      label = `1º Semestre / ${y} (Jan a Jun)`;
     } else if (sorted.length === 6 && minM === 7 && maxM === 12) {
-      label = `2º Semestre / ${selectedYear} (Jul a Dez)`;
+      label = `2º Semestre / ${y} (Jul a Dez)`;
     } else if (sorted.length === 12) {
-      label = `Exercício Anual ${selectedYear} (12 Meses)`;
+      label = `Exercício Anual ${y} (12 Meses)`;
     } else {
-      label = `${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)} / ${selectedYear} (${sorted.length} Meses)`;
+      label = `${monthNames[minM - 1].slice(0, 3)} a ${monthNames[maxM - 1].slice(0, 3)} / ${y} (${sorted.length} Meses)`;
     }
 
     const newFilter: PeriodFilterState = {
       mode: sorted.length === 1 ? 'MONTH' : sorted.length === 3 ? 'QUARTER' : sorted.length === 6 ? 'SEMESTER' : sorted.length === 12 ? 'YEAR' : 'MULTI_MONTH',
-      year: selectedYear,
+      year: y,
       month: sorted.length === 1 ? sorted[0] : undefined,
       selectedMonths: sorted,
       monthsCount: sorted.length,
-      startDate: `${selectedYear}-${sMStr}-01`,
-      endDate: `${selectedYear}-${eMStr}-${lastDay}`,
+      startDate: `${y}-${sMStr}-01`,
+      endDate: `${y}-${eMStr}-${lastDay}`,
       label: label
     };
 
@@ -200,8 +196,9 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         </span>
         {periodState.monthsCount && periodState.monthsCount > 1 && (
           <span style={{
-            background: 'rgba(56, 189, 248, 0.2)',
+            background: 'rgba(56, 189, 248, 0.25)',
             color: '#38BDF8',
+            border: '1px solid rgba(56, 189, 248, 0.4)',
             padding: '1px 6px',
             borderRadius: '4px',
             fontSize: '0.64rem',
@@ -213,350 +210,374 @@ export const SmartPeriodPicker: React.FC<SmartPeriodPickerProps> = ({ compact = 
         <ChevronDown size={14} color="#94A3B8" />
       </button>
 
-      {/* RENDERIZAÇÃO VIA PORTAL DIRETO NO BODY (1º PLANO ABSOLUTO SEM RESTRIÇÃO) */}
+      {/* RENDERIZAÇÃO VIA PORTAL DIRETO NO BODY (1º PLANO ABSOLUTO COM ESCUDO TÁTIL) */}
       {isOpen && typeof document !== 'undefined' && createPortal(
-        <div
-          ref={popoverRef}
-          style={{
-            position: 'fixed',
-            top: `${popoverPos.top}px`,
-            right: `${popoverPos.right}px`,
-            zIndex: 2147483647, // Z-Index máximo do browser
-            width: '430px',
-            maxWidth: 'calc(100vw - 24px)',
-            maxHeight: 'calc(100vh - 80px)',
-            overflowY: 'auto',
-            background: 'linear-gradient(180deg, #131E33 0%, #090E1A 100%)',
-            border: '1.5px solid #38BDF8',
-            borderRadius: '12px',
-            padding: '16px',
-            boxShadow: '0 25px 70px rgba(0, 0, 0, 0.98), 0 0 35px rgba(56, 189, 248, 0.45)',
-            backdropFilter: 'blur(24px)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '12px',
-            color: '#FFFFFF'
-          }}
-        >
-          {/* Header do Popover */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: '1.1rem' }}>🎛️</span>
-              <div>
-                <strong style={{ fontSize: '0.85rem', color: '#FFFFFF', display: 'block' }}>Filtro de Competências do Escritório</strong>
-                <span style={{ fontSize: '0.66rem', color: '#94A3B8' }}>Selecione 1 mês, múltiplos meses ou períodos fiscais</span>
-              </div>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <select
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(Number(e.target.value))}
-                style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#38BDF8', padding: '3px 8px', borderRadius: '6px', fontSize: '0.74rem', fontWeight: 800, outline: 'none' }}
-              >
-                <option value="2026">Ano 2026</option>
-                <option value="2025">Ano 2025</option>
-                <option value="2024">Ano 2024</option>
-              </select>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                style={{ background: 'transparent', border: 'none', color: '#94A3B8', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
-              >
-                <X size={16} />
-              </button>
-            </div>
-          </div>
+        <>
+          {/* Escudo de clique de fundo (fecha ao clicar fora) */}
+          <div
+            onClick={() => setIsOpen(false)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 2147483646,
+              background: 'rgba(5, 10, 20, 0.3)',
+              backdropFilter: 'blur(3px)',
+              animation: 'fadeIn 0.15s ease'
+            }}
+          />
 
-          {/* Abas */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', background: '#1E293B', padding: '3px', borderRadius: '6px' }}>
-            <button
-              type="button"
-              onClick={() => setActiveTab('MONTHS')}
-              style={{
-                background: activeTab === 'MONTHS' ? '#0284C7' : 'transparent',
-                border: 'none',
-                color: activeTab === 'MONTHS' ? '#FFFFFF' : '#94A3B8',
-                padding: '6px 2px',
-                borderRadius: '4px',
-                fontSize: '0.72rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              🗓️ Seleção de Meses ({selectedMonths.length})
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('PERIODS')}
-              style={{
-                background: activeTab === 'PERIODS' ? '#0284C7' : 'transparent',
-                border: 'none',
-                color: activeTab === 'PERIODS' ? '#FFFFFF' : '#94A3B8',
-                padding: '6px 2px',
-                borderRadius: '4px',
-                fontSize: '0.72rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              ⚡ Bim / Trim / Sem
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('CUSTOM')}
-              style={{
-                background: activeTab === 'CUSTOM' ? '#0284C7' : 'transparent',
-                border: 'none',
-                color: activeTab === 'CUSTOM' ? '#FFFFFF' : '#94A3B8',
-                padding: '6px 2px',
-                borderRadius: '4px',
-                fontSize: '0.72rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              📅 Por Datas
-            </button>
-          </div>
-
-          {/* Aba 1: Seleção Livre de Meses com Suporte Multi-Meses */}
-          {activeTab === 'MONTHS' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '0.70rem', color: '#94A3B8', fontWeight: 700 }}>
-                  Clique nos meses desejados (ex: Jan + Fev):
-                </span>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMonths([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])}
-                    style={{ background: 'transparent', border: 'none', color: '#38BDF8', fontSize: '0.66rem', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    Todos
-                  </button>
-                  <span style={{ color: '#475569' }}>•</span>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMonths([8])}
-                    style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '0.66rem', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    Apenas Atual
-                  </button>
-                </div>
-              </div>
-
-              {/* Grade de 12 Meses com Seleção Múltipla */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
-                {monthNames.map((mName, idx) => {
-                  const mNum = idx + 1;
-                  const isChecked = selectedMonths.includes(mNum);
-                  return (
-                    <button
-                      key={mNum}
-                      type="button"
-                      onClick={() => handleToggleMonth(mNum)}
-                      style={{
-                        background: isChecked ? 'linear-gradient(180deg, #10B981 0%, #059669 100%)' : '#1E293B',
-                        border: isChecked ? '1.5px solid #34D399' : '1px solid rgba(255,255,255,0.06)',
-                        color: isChecked ? '#FFFFFF' : '#CBD5E1',
-                        padding: '10px 6px',
-                        borderRadius: '6px',
-                        fontSize: '0.76rem',
-                        fontWeight: 800,
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}
-                    >
-                      <span>{mName}</span>
-                      {isChecked ? <Check size={14} color="#FFFFFF" /> : <span style={{ width: '14px', height: '14px', borderRadius: '3px', border: '1px solid #475569' }} />}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Botão de Aplicar Seleção Múltipla */}
-              <button
-                type="button"
-                onClick={() => handleApplyMultiMonths()}
-                style={{
-                  background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
-                  border: '1.5px solid #38BDF8',
-                  color: '#FFFFFF',
-                  padding: '10px',
-                  borderRadius: '8px',
-                  fontSize: '0.80rem',
-                  fontWeight: 900,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 4px 14px rgba(2, 132, 199, 0.4)'
-                }}
-              >
-                <CheckCircle2 size={16} />
-                <span>
-                  Aplicar Filtro ({selectedMonths.length} {selectedMonths.length === 1 ? 'Mês' : 'Meses Selecionados'})
-                </span>
-              </button>
-            </div>
-          )}
-
-          {/* Aba 2: Períodos Contábeis Rápidos (Bimestres, Trimestres, Quadrimestres e Semestres) */}
-          {activeTab === 'PERIODS' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div>
-                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
-                  2 Meses (Bimestres):
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
-                  {[
-                    { label: '1º Bim (Jan-Fev)', m: [1, 2] },
-                    { label: '2º Bim (Mar-Abr)', m: [3, 4] },
-                    { label: '3º Bim (Mai-Jun)', m: [5, 6] },
-                    { label: '4º Bim (Jul-Ago)', m: [7, 8] },
-                    { label: '5º Bim (Set-Out)', m: [9, 10] },
-                    { label: '6º Bim (Nov-Dez)', m: [11, 12] }
-                  ].map((b, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => applyPresetMonths(b.m)}
-                      style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.08)', color: '#38BDF8', padding: '6px 4px', borderRadius: '5px', fontSize: '0.68rem', fontWeight: 800, cursor: 'pointer' }}
-                    >
-                      {b.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
-                  3 Meses (Trimestres Fiscais - IRPJ / EBITDA):
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px' }}>
-                  {[
-                    { label: '1º Trimestre (Jan a Mar)', m: [1, 2, 3] },
-                    { label: '2º Trimestre (Abr a Jun)', m: [4, 5, 6] },
-                    { label: '3º Trimestre (Jul a Set)', m: [7, 8, 9] },
-                    { label: '4º Trimestre (Out a Dez)', m: [10, 11, 12] }
-                  ].map((q, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => applyPresetMonths(q.m)}
-                      style={{ background: '#1E293B', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#FFFFFF', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
-                    >
-                      {q.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
-                  4 & 6 Meses (Quadrimestres & Semestres):
-                </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px' }}>
-                  <button
-                    type="button"
-                    onClick={() => applyPresetMonths([1, 2, 3, 4, 5, 6])}
-                    style={{ background: '#1E293B', border: '1px solid rgba(192, 132, 252, 0.3)', color: '#C084FC', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
-                  >
-                    1º Semestre (Jan a Jun)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => applyPresetMonths([7, 8, 9, 10, 11, 12])}
-                    style={{ background: '#1E293B', border: '1px solid rgba(192, 132, 252, 0.3)', color: '#C084FC', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
-                  >
-                    2º Semestre (Jul a Dez)
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => applyPresetMonths([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])}
-                style={{
-                  background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
-                  border: '1.5px solid #34D399',
-                  color: '#FFFFFF',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  fontSize: '0.78rem',
-                  fontWeight: 900,
-                  cursor: 'pointer'
-                }}
-              >
-                🏆 Exercício Anual Completo {selectedYear} (12 Meses)
-              </button>
-            </div>
-          )}
-
-          {/* Aba 3: Datas Personalizadas */}
-          {activeTab === 'CUSTOM' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div
+            ref={popoverRef}
+            style={{
+              position: 'fixed',
+              top: `${popoverPos.top}px`,
+              right: `${popoverPos.right}px`,
+              zIndex: 2147483647, // Z-Index máximo do browser
+              width: '430px',
+              maxWidth: 'calc(100vw - 24px)',
+              maxHeight: 'calc(100vh - 80px)',
+              overflowY: 'auto',
+              background: 'linear-gradient(180deg, #131E33 0%, #090E1A 100%)',
+              border: '1.5px solid #38BDF8',
+              borderRadius: '12px',
+              padding: '16px',
+              boxShadow: '0 25px 70px rgba(0, 0, 0, 0.98), 0 0 35px rgba(56, 189, 248, 0.45)',
+              backdropFilter: 'blur(24px)',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              color: '#FFFFFF'
+            }}
+          >
+            {/* Header do Popover */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255, 255, 255, 0.12)', paddingBottom: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '1.1rem' }}>🎛️</span>
                 <div>
-                  <label style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700 }}>Data Início:</label>
-                  <input
-                    type="date"
-                    value={customStart}
-                    onChange={(e) => setCustomStart(e.target.value)}
-                    style={{ width: '100%', background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '6px 8px', borderRadius: '6px', fontSize: '0.74rem', marginTop: '2px', outline: 'none' }}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700 }}>Data Fim:</label>
-                  <input
-                    type="date"
-                    value={customEnd}
-                    onChange={(e) => setCustomEnd(e.target.value)}
-                    style={{ width: '100%', background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '6px 8px', borderRadius: '6px', fontSize: '0.74rem', marginTop: '2px', outline: 'none' }}
-                  />
+                  <strong style={{ fontSize: '0.85rem', color: '#FFFFFF', display: 'block' }}>Filtro de Competências do Escritório</strong>
+                  <span style={{ fontSize: '0.66rem', color: '#94A3B8' }}>Selecione 1 mês, múltiplos meses ou períodos fiscais</span>
                 </div>
               </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <select
+                  value={selectedYear}
+                  onChange={(e) => {
+                    const newY = Number(e.target.value);
+                    setSelectedYear(newY);
+                  }}
+                  style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#38BDF8', padding: '4px 8px', borderRadius: '6px', fontSize: '0.74rem', fontWeight: 800, outline: 'none', cursor: 'pointer' }}
+                >
+                  <option value="2026">Ano 2026</option>
+                  <option value="2025">Ano 2025</option>
+                  <option value="2024">Ano 2024</option>
+                  <option value="2023">Ano 2023</option>
+                  <option value="2022">Ano 2022</option>
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', color: '#94A3B8', cursor: 'pointer', padding: '5px', display: 'flex', alignItems: 'center' }}
+                  title="Fechar (Esc)"
+                >
+                  <X size={15} />
+                </button>
+              </div>
+            </div>
+
+            {/* Abas */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', background: '#1E293B', padding: '3px', borderRadius: '6px' }}>
               <button
                 type="button"
-                onClick={() => {
-                  const newFilter: PeriodFilterState = {
-                    mode: 'CUSTOM',
-                    year: selectedYear,
-                    startDate: customStart,
-                    endDate: customEnd,
-                    label: `${customStart.split('-').reverse().join('/')} a ${customEnd.split('-').reverse().join('/')}`
-                  };
-                  setPeriodState(newFilter);
-                  officeStore.setPeriodFilter(newFilter);
-                  if (onPeriodChange) onPeriodChange(newFilter);
-                  setIsOpen(false);
-                }}
+                onClick={() => setActiveTab('MONTHS')}
                 style={{
-                  background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
-                  border: '1.5px solid #38BDF8',
-                  color: '#FFFFFF',
-                  padding: '10px',
-                  borderRadius: '6px',
-                  fontSize: '0.78rem',
-                  fontWeight: 900,
+                  background: activeTab === 'MONTHS' ? '#0284C7' : 'transparent',
+                  border: 'none',
+                  color: activeTab === 'MONTHS' ? '#FFFFFF' : '#94A3B8',
+                  padding: '6px 2px',
+                  borderRadius: '4px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
                   cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px'
+                  textAlign: 'center'
                 }}
               >
-                <Zap size={14} /> <span>Filtrar por Intervalo de Datas</span>
+                🗓️ Seleção de Meses ({selectedMonths.length})
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('PERIODS')}
+                style={{
+                  background: activeTab === 'PERIODS' ? '#0284C7' : 'transparent',
+                  border: 'none',
+                  color: activeTab === 'PERIODS' ? '#FFFFFF' : '#94A3B8',
+                  padding: '6px 2px',
+                  borderRadius: '4px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+              >
+                ⚡ Bim / Trim / Sem
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab('CUSTOM')}
+                style={{
+                  background: activeTab === 'CUSTOM' ? '#0284C7' : 'transparent',
+                  border: 'none',
+                  color: activeTab === 'CUSTOM' ? '#FFFFFF' : '#94A3B8',
+                  padding: '6px 2px',
+                  borderRadius: '4px',
+                  fontSize: '0.72rem',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  textAlign: 'center'
+                }}
+              >
+                📅 Por Datas
               </button>
             </div>
-          )}
-        </div>,
+
+            {/* Aba 1: Seleção Livre de Meses com Suporte Multi-Meses */}
+            {activeTab === 'MONTHS' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.70rem', color: '#94A3B8', fontWeight: 700 }}>
+                    Clique nos meses desejados (ex: Jan + Fev):
+                  </span>
+                  <div style={{ display: 'flex', gap: '6px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMonths([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])}
+                      style={{ background: 'transparent', border: 'none', color: '#38BDF8', fontSize: '0.66rem', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline' }}
+                    >
+                      Todos
+                    </button>
+                    <span style={{ color: '#475569' }}>•</span>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMonths([8])}
+                      style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '0.66rem', fontWeight: 800, cursor: 'pointer', textDecoration: 'underline' }}
+                    >
+                      Apenas Atual
+                    </button>
+                  </div>
+                </div>
+
+                {/* Grade de 12 Meses com Seleção Múltipla */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+                  {monthNames.map((mName, idx) => {
+                    const mNum = idx + 1;
+                    const isChecked = selectedMonths.includes(mNum);
+                    return (
+                      <button
+                        key={mNum}
+                        type="button"
+                        onClick={() => handleToggleMonth(mNum)}
+                        style={{
+                          background: isChecked ? 'linear-gradient(180deg, #10B981 0%, #059669 100%)' : '#1E293B',
+                          border: isChecked ? '1.5px solid #34D399' : '1px solid rgba(255,255,255,0.06)',
+                          color: isChecked ? '#FFFFFF' : '#CBD5E1',
+                          padding: '10px 6px',
+                          borderRadius: '6px',
+                          fontSize: '0.76rem',
+                          fontWeight: 800,
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <span>{mName}</span>
+                        {isChecked ? <Check size={14} color="#FFFFFF" /> : <span style={{ width: '14px', height: '14px', borderRadius: '3px', border: '1px solid #475569' }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Botão de Aplicar Seleção Múltipla */}
+                <button
+                  type="button"
+                  onClick={() => handleApplyMultiMonths()}
+                  style={{
+                    background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
+                    border: '1.5px solid #38BDF8',
+                    color: '#FFFFFF',
+                    padding: '10px',
+                    borderRadius: '8px',
+                    fontSize: '0.80rem',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    boxShadow: '0 4px 14px rgba(2, 132, 199, 0.4)'
+                  }}
+                >
+                  <CheckCircle2 size={16} />
+                  <span>
+                    Aplicar Filtro ({selectedMonths.length} {selectedMonths.length === 1 ? 'Mês' : 'Meses Selecionados'})
+                  </span>
+                </button>
+              </div>
+            )}
+
+            {/* Aba 2: Períodos Contábeis Rápidos (Bimestres, Trimestres, Quadrimestres e Semestres) */}
+            {activeTab === 'PERIODS' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
+                    2 Meses (Bimestres):
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+                    {[
+                      { label: '1º Bim (Jan-Fev)', m: [1, 2] },
+                      { label: '2º Bim (Mar-Abr)', m: [3, 4] },
+                      { label: '3º Bim (Mai-Jun)', m: [5, 6] },
+                      { label: '4º Bim (Jul-Ago)', m: [7, 8] },
+                      { label: '5º Bim (Set-Out)', m: [9, 10] },
+                      { label: '6º Bim (Nov-Dez)', m: [11, 12] }
+                    ].map((b, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => applyPresetMonths(b.m)}
+                        style={{ background: '#1E293B', border: '1px solid rgba(255,255,255,0.08)', color: '#38BDF8', padding: '6px 4px', borderRadius: '5px', fontSize: '0.68rem', fontWeight: 800, cursor: 'pointer' }}
+                      >
+                        {b.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
+                    3 Meses (Trimestres Fiscais - IRPJ / EBITDA):
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px' }}>
+                    {[
+                      { label: '1º Trimestre (Jan a Mar)', m: [1, 2, 3] },
+                      { label: '2º Trimestre (Abr a Jun)', m: [4, 5, 6] },
+                      { label: '3º Trimestre (Jul a Set)', m: [7, 8, 9] },
+                      { label: '4º Trimestre (Out a Dez)', m: [10, 11, 12] }
+                    ].map((q, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => applyPresetMonths(q.m)}
+                        style={{ background: '#1E293B', border: '1px solid rgba(56, 189, 248, 0.3)', color: '#FFFFFF', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                      >
+                        {q.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase' }}>
+                    4 & 6 Meses (Quadrimestres & Semestres):
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '4px' }}>
+                    <button
+                      type="button"
+                      onClick={() => applyPresetMonths([1, 2, 3, 4, 5, 6])}
+                      style={{ background: '#1E293B', border: '1px solid rgba(192, 132, 252, 0.3)', color: '#C084FC', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                    >
+                      1º Semestre (Jan a Jun)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => applyPresetMonths([7, 8, 9, 10, 11, 12])}
+                      style={{ background: '#1E293B', border: '1px solid rgba(192, 132, 252, 0.3)', color: '#C084FC', padding: '8px', borderRadius: '5px', fontSize: '0.72rem', fontWeight: 800, cursor: 'pointer', textAlign: 'left' }}
+                    >
+                      2º Semestre (Jul a Dez)
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => applyPresetMonths([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])}
+                  style={{
+                    background: 'linear-gradient(180deg, #10B981 0%, #059669 100%)',
+                    border: '1.5px solid #34D399',
+                    color: '#FFFFFF',
+                    padding: '10px',
+                    borderRadius: '6px',
+                    fontSize: '0.78rem',
+                    fontWeight: 900,
+                    cursor: 'pointer'
+                  }}
+                >
+                  🏆 Exercício Anual Completo {selectedYear} (12 Meses)
+                </button>
+              </div>
+            )}
+
+            {/* Aba 3: Datas Personalizadas */}
+            {activeTab === 'CUSTOM' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700 }}>Data Início:</label>
+                    <input
+                      type="date"
+                      value={customStart}
+                      onChange={(e) => setCustomStart(e.target.value)}
+                      style={{ width: '100%', background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '6px 8px', borderRadius: '6px', fontSize: '0.74rem', marginTop: '2px', outline: 'none' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '0.68rem', color: '#94A3B8', fontWeight: 700 }}>Data Fim:</label>
+                    <input
+                      type="date"
+                      value={customEnd}
+                      onChange={(e) => setCustomEnd(e.target.value)}
+                      style={{ width: '100%', background: '#1E293B', border: '1px solid rgba(255,255,255,0.2)', color: '#FFFFFF', padding: '6px 8px', borderRadius: '6px', fontSize: '0.74rem', marginTop: '2px', outline: 'none' }}
+                    />
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const newFilter: PeriodFilterState = {
+                      mode: 'CUSTOM',
+                      year: selectedYear,
+                      startDate: customStart,
+                      endDate: customEnd,
+                      label: `${customStart.split('-').reverse().join('/')} a ${customEnd.split('-').reverse().join('/')}`
+                    };
+                    setPeriodState(newFilter);
+                    officeStore.setPeriodFilter(newFilter);
+                    if (onPeriodChange) onPeriodChange(newFilter);
+                    setIsOpen(false);
+                  }}
+                  style={{
+                    background: 'linear-gradient(180deg, #0284C7 0%, #0369A1 100%)',
+                    border: '1.5px solid #38BDF8',
+                    color: '#FFFFFF',
+                    padding: '10px',
+                    borderRadius: '6px',
+                    fontSize: '0.78rem',
+                    fontWeight: 900,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Zap size={14} /> <span>Filtrar por Intervalo de Datas</span>
+                </button>
+              </div>
+            )}
+          </div>
+        </>,
         document.body
       )}
     </div>
